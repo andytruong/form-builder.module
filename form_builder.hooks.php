@@ -19,7 +19,7 @@ function form_builder_entity_info()
 {
     $info = array();
 
-    $info['fob_form'] = array(
+    $info['form_builder_form'] = array(
         'label'            => t('Form'),
         'plural label'     => t('Forms'),
         'entity class'     => 'Drupal\form_builder\FormEntity',
@@ -34,7 +34,7 @@ function form_builder_entity_info()
             'language' => 'language',
         ),
         'bundles'          => array(
-            'fob_form' => array(
+            'form_builder_form' => array(
                 'label' => t('Form'),
                 'admin' => array(
                     'path'             => 'admin/structure/fob-form',
