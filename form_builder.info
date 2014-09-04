@@ -1,0 +1,8 @@
+name = Form Builder
+core = 7.x
+version = 7.x-1.0
+description = "Just an other form builder"
+package = GO1
+
+dependencies[] = xautoload (>= 7.x-4.0)
+dependencies[] = composer_manager

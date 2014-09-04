@@ -1,0 +1,19 @@
+{
+    "name": "go1/form-builder-module",
+    "type": "drupal-module",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@code.go1.com.au:go1/form-center.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@code.go1.com.au:gc/synccenter.git"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "go1/form-center": "dev-master",
+        "gocatalyze/sync_center": "dev-master"
+    }
+}
