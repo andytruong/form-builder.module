@@ -2,10 +2,10 @@
 
 namespace Drupal\form_builder;
 
+use GO1\FormCenter\Entity\Provider\EntityTypeProviderBase;
 use GO1\FormCenter\Entity\Type\EntityTypeInterface;
-use GO1\FormCenter\Extension\GOC\EntityTypeProvider;
 
-class EntityTypeProvider extends EntityTypeProvider
+class EntityTypeProvider extends EntityTypeProviderBase
 {
 
     public function __construct()
