@@ -6,4 +6,3 @@ package = GO1
 
 dependencies[] = xautoload (>= 7.x-4.0)
 dependencies[] = composer_manager
-dependencies[] = entity
