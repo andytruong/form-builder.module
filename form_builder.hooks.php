@@ -52,3 +52,35 @@ function form_builder_entity_info()
 
     return $info;
 }
+
+/**
+ * Implements hook_entity_propety_info().
+ */
+function form_builder_entity_property_info()
+{
+    $info = array('fob_form' => array('properties' => array()));
+    $pties = &$info['fob_form']['properties'];
+
+    $pties['language'] = array(
+        'label'             => t("Language"),
+        'type'              => 'token',
+        'description'       => t("The language the node is written in."),
+        'setter callback'   => 'entity_metadata_verbatim_set',
+        'options list'      => 'entity_metadata_language_list',
+        'schema field'      => 'language',
+        'setter permission' => 'administer forms',
+    );
+
+    $pties['author'] = array(
+        'label'             => t("Author"),
+        'type'              => 'user',
+        'description'       => t("The author of the form."),
+        'getter callback'   => 'entity_metadata_node_get_properties',
+        'setter callback'   => 'entity_metadata_node_set_properties',
+        'setter permission' => 'administer forms',
+        'required'          => true,
+        'schema field'      => 'uid',
+    );
+
+    return $info;
+}
