@@ -1,37 +1,7 @@
 <?php
 
-/**
- * Implements hook_entity_info().
- */
-function form_builder_entity_info()
-{
-    $info = array();
+use AndyTruong\Uuid\Uuid;
+use GO1\FormCenter\Manager\Manager;
 
-    $info['fob_form'] = array(
-        'label'            => t('Form'),
-        'controller class' => 'Drupal\form_builder\Entity',
-        'static cache'     => true,
-        'fieldable'        => true,
-        'entity keys'      => array(
-            'id'       => 'fid',
-            'label'    => 'name',
-            'language' => 'language',
-        ),
-        'bundles'          => array(
-            'form' => array(
-                'label' => t('Form'),
-                'admin' => array(
-                    'path' => 'admin/structure/fob-form',
-                ),
-            ),
-        ),
-        'view modes'       => array(
-            'full' => array(
-                'label'           => t('Form Render'),
-                'custom settings' => false,
-            ),
-        ),
-    );
+require_once dirname(__FILE__) . '/form_builder.hooks.php';
 
-    return $info;
-}
