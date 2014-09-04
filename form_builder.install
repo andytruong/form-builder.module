@@ -1,0 +1,59 @@
+<?php
+
+function form_builder_schema()
+{
+    $schema = array();
+
+    $schema['fob_form'] = array(
+        'description' => 'FOB forms',
+        'fields'      => array(
+            'fid'      => array(
+                'type'        => 'int',
+                'unsigned'    => TRUE,
+                'not null'    => TRUE,
+                'description' => 'Primary Key: Unique form ID.',
+                'default'     => 0,
+            ),
+            'name'     => array(
+                'type'        => 'varchar',
+                'length'      => 255,
+                'not null'    => TRUE,
+                'default'     => '',
+                'description' => 'Summary of name.',
+            ),
+            'created'  => array(
+                'type'        => 'int',
+                'not null'    => TRUE,
+                'default'     => 0,
+                'description' => 'Timestamp for when form was created.',
+            ),
+            'updated'  => array(
+                'type'        => 'int',
+                'not null'    => TRUE,
+                'default'     => 0,
+                'description' => 'Last timestamp for when form was updated.',
+            ),
+            'status'   => array(
+                'type'        => 'int',
+                'not null'    => TRUE,
+                'default'     => 0,
+                'size'        => 'tiny',
+                'description' => 'Whether the form is active (1) or disabled (0).',
+            ),
+            'language' => array(
+                'type'        => 'varchar',
+                'length'      => 12,
+                'not null'    => TRUE,
+                'default'     => '',
+                'description' => "User's default language.",
+            ),
+        ),
+        'indexes'     => array(
+            'form_status'  => array('status'),
+            'form_created' => array('created'),
+            'form_updated' => array('updated'),
+        )
+    );
+
+    return $schema;
+}
