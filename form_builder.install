@@ -2,7 +2,7 @@
 
 /**
  * Implements hook_schema().
- * 
+ *
  * @return array
  */
 function form_builder_schema()
@@ -12,45 +12,73 @@ function form_builder_schema()
     $schema['fob_form'] = array(
         'description' => 'FOB forms',
         'fields'      => array(
-            'fid'      => array(
+            'fid'            => array(
                 'type'        => 'int',
-                'unsigned'    => TRUE,
-                'not null'    => TRUE,
+                'unsigned'    => true,
+                'not null'    => true,
                 'description' => 'Primary Key: Unique form ID.',
                 'default'     => 0,
             ),
-            'name'     => array(
+            'name'           => array(
                 'type'        => 'varchar',
                 'length'      => 255,
-                'not null'    => TRUE,
+                'not null'    => true,
                 'default'     => '',
                 'description' => 'Summary of name.',
             ),
-            'created'  => array(
+            'created'        => array(
                 'type'        => 'int',
                 'not null'    => TRUE,
                 'default'     => 0,
                 'description' => 'Timestamp for when form was created.',
             ),
-            'updated'  => array(
+            'updated'        => array(
                 'type'        => 'int',
-                'not null'    => TRUE,
+                'not null'    => true,
                 'default'     => 0,
                 'description' => 'Last timestamp for when form was updated.',
             ),
-            'status'   => array(
+            'status'         => array(
                 'type'        => 'int',
-                'not null'    => TRUE,
+                'not null'    => true,
                 'default'     => 0,
                 'size'        => 'tiny',
                 'description' => 'Whether the form is active (1) or disabled (0).',
             ),
-            'language' => array(
+            'language'       => array(
                 'type'        => 'varchar',
                 'length'      => 12,
-                'not null'    => TRUE,
+                'not null'    => true,
                 'default'     => '',
                 'description' => "User's default language.",
+            ),
+            'entity types'   => array(
+                'description' => 'JSON encoded of supported entity type',
+                'type'        => 'text',
+                'not null'    => true,
+                'default'     => '{}',
+            ),
+            'fields'         => array(
+                'description' => 'JSON encoded of added forms.',
+                'type'        => 'text',
+                'not null'    => true,
+            ),
+            'layout'         => array(
+                'type'     => 'varchar',
+                'not null' => true,
+                'default'  => 'html',
+            ),
+            'layout_options' => array(
+                'description' => 'JSON encoded of layout options.',
+                'type'        => 'text',
+                'not null'    => true,
+                'default'     => '{}',
+            ),
+            'listeners'      => array(
+                'description' => 'JSON encoded of added listeners.',
+                'type'        => 'text',
+                'not null'    => true,
+                'default'     => '{}',
             ),
         ),
         'indexes'     => array(
