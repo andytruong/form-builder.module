@@ -22,3 +22,16 @@ function form_builder_manager()
 
     return $manager;
 }
+
+/**
+ * Wrapper for entity_access().
+ *
+ * @return boolean
+ */
+function form_builder_entity_access()
+{
+    if (user_access('administer forms')) {
+        return true;
+    }
+    return call_user_func_array('entity_access', func_get_args());
+}

@@ -11,8 +11,11 @@ class FormUIController extends EntityDefaultUIController
     {
         $items = parent::hook_menu();
 
-        $items['admin/structure/fob-form']['access callback'] = 'user_access';
-        $items['admin/structure/fob-form']['access arguments'] = array('administer forms');
+        foreach ($items as &$item) {
+            if (isset($item['access callback']) && $item['access callback'] === 'entity_access') {
+                $item['access callback'] = 'form_builder_entity_access';
+            }
+        }
 
         return $items;
     }
