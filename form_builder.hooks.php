@@ -13,23 +13,6 @@ function form_builder_permission()
 }
 
 /**
- * Implements hook_menu().
- */
-function form_builder_menu()
-{
-    $items = array();
-
-    $items['admin/structure/fob-form'] = array(
-        'title'            => 'Forms',
-        'description'      => 'Manage entity forms.',
-        'access arguments' => array('administer forms'),
-        'page callback'    => 'Drupal\form_builder\Controller\AdminLandingController::pageCallback',
-    );
-
-    return $items;
-}
-
-/**
  * Implements hook_entity_info().
  */
 function form_builder_entity_info()
@@ -64,6 +47,10 @@ function form_builder_entity_info()
                 'label'           => t('Default'),
                 'custom settings' => false,
             ),
+        ),
+        'admin ui'         => array(
+            'path'             => 'admin/structure/fob-form',
+            'controller class' => 'Drupal\form_builder\Controller\FormUIController',
         ),
     );
 
