@@ -9,7 +9,9 @@ function form_builder_entity_info()
 
     $info['fob_form'] = array(
         'label'            => t('Form'),
-        'controller class' => 'Drupal\form_builder\Entity',
+        'plural label'     => t('Forms'),
+        'entity class'     => 'Drupal\form_builder\Entity',
+        'controller class' => 'EntityAPIController',
         'static cache'     => true,
         'fieldable'        => false,
         'entity class'     => 'Drupal\form_builder\FormEntity',
