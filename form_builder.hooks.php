@@ -22,8 +22,9 @@ function form_builder_entity_info()
     $info['fob_form'] = array(
         'label'            => t('Form'),
         'plural label'     => t('Forms'),
-        'entity class'     => 'Drupal\form_builder\Entity',
-        'controller class' => 'EntityAPIController',
+        'entity class'     => 'Drupal\form_builder\FormEntity',
+        'controller class' => 'Drupal\form_builder\FormEntityController',
+        'base table'       => 'fob_form',
         'static cache'     => true,
         'fieldable'        => false,
         'entity class'     => 'Drupal\form_builder\FormEntity',
@@ -33,16 +34,17 @@ function form_builder_entity_info()
             'language' => 'language',
         ),
         'bundles'          => array(
-            'form' => array(
+            'fob_form' => array(
                 'label' => t('Form'),
                 'admin' => array(
-                    'path' => 'admin/structure/fob-form',
+                    'path'             => 'admin/structure/fob-form',
+                    'access arguments' => array('administer forms'),
                 ),
             ),
         ),
         'view modes'       => array(
-            'full' => array(
-                'label'           => t('Form Render'),
+            'default' => array(
+                'label'           => t('Default'),
                 'custom settings' => false,
             ),
         ),

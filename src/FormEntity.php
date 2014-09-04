@@ -2,9 +2,10 @@
 
 namespace Drupal\form_builder;
 
-use GO1\FormCenter\Form\Form;
+use Entity;
 
-class FormEntity extends Form
+class FormEntity extends Entity
 {
 
+    use \GO1\FormCenter\Entity\Type\EntityTypeTrait;
 }
