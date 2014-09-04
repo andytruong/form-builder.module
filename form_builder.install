@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Implements hook_schema().
+ * 
+ * @return array
+ */
 function form_builder_schema()
 {
     $schema = array();
