@@ -58,7 +58,7 @@ function form_builder_schema()
                 'not null'    => true,
                 'default'     => '{}',
             ),
-            'fields'         => array(
+            'form_fields'         => array(
                 'description' => 'JSON encoded of added forms.',
                 'type'        => 'text',
                 'not null'    => true,
