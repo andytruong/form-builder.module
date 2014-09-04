@@ -7,9 +7,26 @@ function form_builder_permission()
 {
     $permissions['administer forms'] = array(
         'title'           => t('Administer forms'),
-        'restrict access' => true,
+        'restrict access' => false,
     );
     return $permissions;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function form_builder_menu()
+{
+    $items = array();
+
+    $items['admin/structure/fob-form'] = array(
+        'title'            => 'Forms',
+        'description'      => 'Manage entity forms.',
+        'access arguments' => array('administer forms'),
+        'page callback'    => 'Drupal\form_builder\Controller\AdminLandingController::pageCallback',
+    );
+
+    return $items;
 }
 
 /**
