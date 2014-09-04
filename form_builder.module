@@ -1,2 +1,24 @@
 <?php
 
+use AndyTruong\Uuid\Uuid;
+use GO1\FormCenter\Manager\Manager;
+
+require_once dirname(__FILE__) . '/form_builder.hooks.php';
+
+/**
+ * Factory access to form-center's manger.
+ *
+ * @staticvar Manager $manager
+ * @return Manager
+ */
+function form_builder_manager()
+{
+    static $manager = null;
+
+    if (null === $manager) {
+        $manager = new Manager();
+        $manager->setUuidGenerator($uuid_generator = Uuid::getGenerator());
+    }
+
+    return $manager;
+}
