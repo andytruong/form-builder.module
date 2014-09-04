@@ -1,6 +1,18 @@
 <?php
 
 /**
+ * Implements hook_permisison().
+ */
+function form_builder_permission()
+{
+    $permissions['administer forms'] = array(
+        'title'           => t('Administer forms'),
+        'restrict access' => true,
+    );
+    return $permissions;
+}
+
+/**
  * Implements hook_entity_info().
  */
 function form_builder_entity_info()
