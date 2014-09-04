@@ -26,6 +26,13 @@ function form_builder_schema()
                 'default'     => '',
                 'description' => 'Summary of name.',
             ),
+            'uid'            => array(
+                'type'        => 'int',
+                'unsigned'    => true,
+                'not null'    => false,
+                'default'     => null,
+                'description' => "The {users}.uid of the associated user.",
+            ),
             'created'        => array(
                 'type'        => 'int',
                 'not null'    => TRUE,
@@ -57,7 +64,7 @@ function form_builder_schema()
                 'type'        => 'text',
                 'not null'    => true,
             ),
-            'form_fields'         => array(
+            'form_fields'    => array(
                 'description' => 'JSON encoded of added forms.',
                 'type'        => 'text',
                 'not null'    => true,
