@@ -24,6 +24,7 @@ function form_builder_entity_info()
         'plural label'     => t('Forms'),
         'entity class'     => 'Drupal\form_builder\FormEntity',
         'controller class' => 'Drupal\form_builder\Controller\FormEntityController',
+        'module'           => 'form_builder',
         'base table'       => 'fob_form',
         'static cache'     => true,
         'fieldable'        => false,
@@ -50,6 +51,7 @@ function form_builder_entity_info()
         ),
         'admin ui'         => array(
             'path'             => 'admin/structure/fob-form',
+            'file'             => 'form_builder.admin.php',
             'controller class' => 'Drupal\form_builder\Controller\FormUIController',
         ),
     );
