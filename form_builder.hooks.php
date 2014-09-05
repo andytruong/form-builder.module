@@ -7,7 +7,7 @@ function form_builder_permission()
 {
     $permissions['administer forms'] = array(
         'title'           => t('Administer forms'),
-        'restrict access' => true,
+        'restrict access' => false,
     );
     return $permissions;
 }
@@ -19,22 +19,22 @@ function form_builder_entity_info()
 {
     $info = array();
 
-    $info['fob_form'] = array(
+    $info['form_builder_form'] = array(
         'label'            => t('Form'),
         'plural label'     => t('Forms'),
         'entity class'     => 'Drupal\form_builder\FormEntity',
-        'controller class' => 'Drupal\form_builder\FormEntityController',
+        'controller class' => 'Drupal\form_builder\Controller\FormEntityController',
         'base table'       => 'fob_form',
         'static cache'     => true,
         'fieldable'        => false,
         'entity class'     => 'Drupal\form_builder\FormEntity',
         'entity keys'      => array(
             'id'       => 'fid',
-            'label'    => 'name',
+            'label'    => 'title',
             'language' => 'language',
         ),
         'bundles'          => array(
-            'fob_form' => array(
+            'form_builder_form' => array(
                 'label' => t('Form'),
                 'admin' => array(
                     'path'             => 'admin/structure/fob-form',
@@ -47,6 +47,10 @@ function form_builder_entity_info()
                 'label'           => t('Default'),
                 'custom settings' => false,
             ),
+        ),
+        'admin ui'         => array(
+            'path'             => 'admin/structure/fob-form',
+            'controller class' => 'Drupal\form_builder\Controller\FormUIController',
         ),
     );
 
