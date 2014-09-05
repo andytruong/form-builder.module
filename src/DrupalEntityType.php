@@ -7,6 +7,8 @@ use GO1\FormCenter\Entity\Type\EntityTypeBase;
 class DrupalEntityType extends EntityTypeBase
 {
 
+    use \AndyTruong\Serializer\SerializableTrait;
+
     /** @var array */
     private $drupalEntityTypeInfo;
 
