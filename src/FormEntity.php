@@ -9,7 +9,8 @@ class FormEntity extends Entity implements FormInterface
 {
 
     use \GO1\FormCenter\Form\FormTrait,
-        \AndyTruong\Uuid\UuidGeneratorAwareTrait;
+        \AndyTruong\Uuid\UuidGeneratorAwareTrait,
+        \AndyTruong\Serializer\SerializableTrait;
 
     /** @var int */
     public $fid;
