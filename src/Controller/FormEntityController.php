@@ -31,6 +31,7 @@ class FormEntityController extends EntityAPIController
 
     private function fixEntity(FormEntity $entity)
     {
+        // form_title => title
         $entity->setTitle($entity->form_title);
         unset($entity->form_title);
 

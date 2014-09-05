@@ -15,10 +15,8 @@ class FormEntity extends Entity
     /** @var string Name */
     public $title;
 
-    /**
-     * @var integer The user id of the profile owner.
-     */
     private $uid;
+    /** @var integer The user id of the profile owner. */
 
     /** @var bool */
     private $status = true;
