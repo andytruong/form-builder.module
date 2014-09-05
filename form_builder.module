@@ -1,8 +1,8 @@
 <?php
 
 use AndyTruong\Uuid\Uuid;
-use Drupal\form_builder\EntityTypeProvider;
-use GO1\FormCenter\Manager\Manager;
+use Drupal\form_builder\Manager;
+use Drupal\form_builder\Provider\EntityTypeProvider;
 
 require_once dirname(__FILE__) . '/form_builder.hooks.php';
 
@@ -18,8 +18,6 @@ function form_builder_manager()
 
     if (null === $manager) {
         $manager = new Manager();
-        $manager->setUuidGenerator($uuid_generator = Uuid::getGenerator());
-        $manager->registerEntityTypeProvider(new EntityTypeProvider());
     }
 
     return $manager;
