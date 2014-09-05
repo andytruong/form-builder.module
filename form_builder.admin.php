@@ -40,11 +40,17 @@ function form_builder_form_form($form, &$form_state, FormEntity $entity, $op = '
     );
 
     $form['entity_types'] = array(
-        '#type'             => 'textfield',
-        '#title'            => t('Entity types'),
-        '#description'      => 'Set of supported (form center) entity types.',
-        '#required'         => true,
-        '#element_validate' => 'form_builder_valdiate_json_input',
+        '#type'    => 'checkboxes',
+        '#title'   => t('Entity types'),
+        '#options' => array_map(
+            function($type) {
+                return $type->getHumanName();
+            }, form_builder_manager()->getEntityTypes()
+        ),
+        '#description'        => 'Set of supported (form center) entity types.',
+        '#required'           => true,
+        '#element_validate'   => array('form_builder_valdiate_json_input'),
+        // '#default_value'      => $entity->getEntityTypes(),
     );
 
     $form['actions'] = array('#type' => 'actions');

@@ -22,9 +22,10 @@ class EntityTypeProvider extends EntityTypeProviderBase
     {
         $entityTypes = [];
         foreach (entity_get_info() as $entityName => $entityInfo) {
+            $entityName = "drupal.{$entityName}";
             $entityType = new DrupalEntityType();
             $entityType->setName($entityName);
-            $entityType->setHumanName($entityInfo['label']);
+            $entityType->setHumanName($entityInfo['label'] . ' (Drupal)');
             $entityType->setIDKey($entityInfo['entity keys']['id']);
             $entityTypes[$entityName] = $entityType;
         }
