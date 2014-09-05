@@ -8,7 +8,8 @@ use GO1\FormCenter\Form\FormInterface;
 class FormEntity extends Entity implements FormInterface
 {
 
-    use \GO1\FormCenter\Form\FormTrait;
+    use \GO1\FormCenter\Form\FormTrait,
+        \AndyTruong\Uuid\UuidGeneratorAwareTrait;
 
     /** @var int */
     public $fid;
@@ -16,8 +17,8 @@ class FormEntity extends Entity implements FormInterface
     /** @var string Name */
     public $title;
 
-    private $uid;
     /** @var integer The user id of the profile owner. */
+    private $uid;
 
     /** @var bool */
     private $status = true;
