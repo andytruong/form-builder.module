@@ -12,8 +12,6 @@ class EntityEditController
     public function __construct(FormEntity $entity)
     {
         $this->entity = $entity;
-
-        angularjs_init_application('FormBuilderEntityEditingForm');
     }
 
     public static function pageCallback($entityType, $entity)
@@ -24,19 +22,16 @@ class EntityEditController
 
     public function render()
     {
-        dsm($this->entity);
+        angularjs_init_application('FormBuilderEntityEditingForm');
 
-        return array(
-            '#attached' => array(
-                'js' => array(
-                    drupal_get_path('module', 'form_builder') . '/js/entity.editing.js',
-                    array(
-                        'type' => 'setting',
-                        'data' => array('FormBuilder' => $this->getRenderInfo()),
-                    ),
-                )
-            ),
+        $js = array();
+        $js[] = drupal_get_path('module', 'form_builder') . '/js/entity.editing.js';
+        $js[] = array(
+            'type' => 'setting',
+            'data' => array('FormBuilder' => $this->getRenderInfo()),
         );
+
+        return array('#attached' => array('js' => $js));
     }
 
     private function getRenderInfo()
@@ -66,11 +61,8 @@ class EntityEditController
 
     private function getEntityInfo()
     {
-        return array(
-            'title'       => $this->entity->getTitle(),
-            'status'      => $this->entity->getStatus(),
-            'entityTypes' => $this->entity->getEntityTypes(),
-        );
+        $info = $this->entity->toArray();
+        return $info;
     }
 
 }
