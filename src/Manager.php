@@ -21,12 +21,17 @@ class Manager extends ManagerBase
 
         if (!isset($this->ran[__FUNCTION__]) && $this->ran[__FUNCTION__] = true) {
             foreach (entity_get_info() as $entityName => $entityInfo) {
-                $entityName = "drupal.{$entityName}";
-                $entityType = new DrupalEntityType();
-                $entityType->setName($entityName);
-                $entityType->setHumanName($entityInfo['label'] . ' (Drupal)');
-                $entityType->setIDKey($entityInfo['entity keys']['id']);
-                $entityTypes[$entityName] = $entityType;
+                foreach ($entityInfo['bundles'] as $bundleName => $bundleInfo) {
+                    unset($entityInfo['bundles'][$bundleName]);
+                    $entityName = "drupal.{$entityName}.{$bundleName}";
+                    $entityType = new DrupalEntityType();
+                    $entityType->setName($entityName);
+                    $entityType->setHumanName($entityInfo['label'] . ' (Drupal)');
+                    $entityType->setIDKey($entityInfo['entity keys']['id']);
+                    $entityType->setDrupalEntityTypeInfo($entityInfo);
+                    $entityType->setDrupalBundleInfo($bundleInfo);
+                    $entityTypes[$entityName] = $entityType;
+                }
             }
         }
 
