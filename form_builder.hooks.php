@@ -23,7 +23,7 @@ function form_builder_entity_info()
         'label'            => t('Form'),
         'plural label'     => t('Forms'),
         'entity class'     => 'Drupal\form_builder\FormEntity',
-        'controller class' => 'Drupal\form_builder\FormEntityController',
+        'controller class' => 'Drupal\form_builder\Controller\FormEntityController',
         'base table'       => 'fob_form',
         'static cache'     => true,
         'fieldable'        => false,
