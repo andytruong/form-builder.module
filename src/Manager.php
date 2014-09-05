@@ -8,6 +8,8 @@ use GO1\FormCenter\Manager\Manager as ManagerBase;
 class Manager extends ManagerBase
 {
 
+    private $ran = [];
+
     public function __construct()
     {
         $this->setUuidGenerator(Uuid::getGenerator());
@@ -17,7 +19,7 @@ class Manager extends ManagerBase
     {
         $entityTypes = parent::getEntityTypes();
 
-        if (!isset($entityTypes['drupal.node'])) {
+        if (!isset($this->ran[__FUNCTION__]) && $this->ran[__FUNCTION__] = true) {
             foreach (entity_get_info() as $entityName => $entityInfo) {
                 $entityName = "drupal.{$entityName}";
                 $entityType = new DrupalEntityType();
@@ -33,12 +35,9 @@ class Manager extends ManagerBase
 
     public function getFieldTypes()
     {
-        static $drupalFetched = false;
-
         $fieldTypes = parent::getFieldTypes();
 
-        if (!$drupalFetched) {
-            $drupalFetched = true;
+        if (!isset($this->ran[__FUNCTION__]) && $this->ran[__FUNCTION__] = true) {
             foreach (field_info_field_types() as $name => $info) {
                 $fieldTypes['drupal.' . $name] = $this->drupalArrayToFieldType($name, $info);
             }
