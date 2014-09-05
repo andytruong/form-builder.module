@@ -53,6 +53,7 @@ class Manager extends ManagerBase
         $fieldType->setHumanName($info['label']);
         $fieldType->setDescription($info['description']);
         $fieldType->setSchema($this->drupalFieldTypeSchema($fieldTypeName));
+        $fieldType->setDrupalFieldTypeInfo($info);
         return $fieldType;
     }
 
