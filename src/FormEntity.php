@@ -3,8 +3,9 @@
 namespace Drupal\form_builder;
 
 use Entity;
+use GO1\FormCenter\Form\FormInterface;
 
-class FormEntity extends Entity
+class FormEntity extends Entity implements FormInterface
 {
 
     use \GO1\FormCenter\Form\FormTrait;
