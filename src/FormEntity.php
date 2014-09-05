@@ -53,7 +53,7 @@ class FormEntity extends Entity
 
     function setStatus($status)
     {
-        $this->status = $status;
+        $this->status = (bool) $status;
     }
 
     function getLanguage()
