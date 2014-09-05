@@ -30,7 +30,7 @@ function form_builder_entity_info()
         'entity class'     => 'Drupal\form_builder\FormEntity',
         'entity keys'      => array(
             'id'       => 'fid',
-            'label'    => 'name',
+            'label'    => 'title',
             'language' => 'language',
         ),
         'bundles'          => array(

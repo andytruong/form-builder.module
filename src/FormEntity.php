@@ -15,16 +15,16 @@ class FormEntity extends Entity
     /**
      * @var string Name
      */
-    private $name;
+    public $title;
 
     /**
      * @var integer The user id of the profile owner.
      */
     private $uid;
 
-    function getName()
+    function getTitle()
     {
-        return $this->name;
+        return $this->title;
     }
 
     function getUid()
@@ -32,9 +32,9 @@ class FormEntity extends Entity
         return $this->uid;
     }
 
-    function setName($name)
+    function setTitle($title)
     {
-        $this->name = $name;
+        $this->title = $title;
     }
 
     function setUid($uid)

@@ -1,7 +1,8 @@
 <?php
 
-namespace Drupal\form_builder;
+namespace Drupal\form_builder\Controller;
 
+use Drupal\form_builder\FormEntity;
 use EntityAPIController;
 use GO1\FormCenter\Manager\Manager;
 
@@ -30,6 +31,9 @@ class FormEntityController extends EntityAPIController
 
     private function fixEntity(FormEntity $entity)
     {
+        $entity->setTitle($entity->form_title);
+        unset($entity->form_title);
+
         /* @var $entity FormEntity */
         foreach (array('entity_types', 'form_fields', 'layout_options', 'listeners') as $key) {
             if (!empty($entity->{$key})) {
