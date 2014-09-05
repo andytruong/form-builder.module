@@ -49,7 +49,6 @@ function form_builder_form_form($form, &$form_state, FormEntity $entity, $op = '
         ),
         '#description'        => 'Set of supported (form center) entity types.',
         '#required'           => true,
-        '#element_validate'   => array('form_builder_valdiate_json_input'),
         // '#default_value'      => $entity->getEntityTypes(),
     );
 
