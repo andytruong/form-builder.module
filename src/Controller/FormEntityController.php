@@ -43,10 +43,11 @@ class FormEntityController extends EntityAPIController
 
         // Fix entity types
         if (!empty($entity->entity_types)) {
-            foreach ($entity->entity_types as $entity_type) {
-                kpr($entity_type);
-                exit;
+            foreach ($entity->entity_types as $uuid => $entityTypeName) {
+                $entityType = form_builder_manager()->getEntityType($entityTypeName);
+                $entity->addEntityType($entityType, $uuid);
             }
+            unset($entity->entity_types);
         }
 
         // fix form fields
