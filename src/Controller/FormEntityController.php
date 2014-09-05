@@ -31,6 +31,9 @@ class FormEntityController extends EntityAPIController
 
     private function fixEntity(FormEntity $entity)
     {
+        // Must have uuidGenerator
+        $entity->setUuidGenerator(form_builder_manager()->getUuidGenerator());
+
         /* @var $entity FormEntity */
         foreach (array('entity_types', 'form_fields', 'layout_options', 'form_listeners') as $key) {
             if (!empty($entity->{$key})) {
