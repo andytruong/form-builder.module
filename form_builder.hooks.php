@@ -51,7 +51,6 @@ function form_builder_entity_info()
         ),
         'admin ui'         => array(
             'path'             => 'admin/structure/fob-form',
-            'file'             => 'form_builder.admin.php',
             'controller class' => 'Drupal\form_builder\Controller\FormUIController',
         ),
     );
