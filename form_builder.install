@@ -19,7 +19,7 @@ function form_builder_schema()
                 'description' => 'Primary Key: Unique form ID.',
                 'default'     => 0,
             ),
-            'form_title'     => array(
+            'title'          => array(
                 'type'        => 'varchar',
                 'length'      => 255,
                 'not null'    => true,
@@ -69,7 +69,7 @@ function form_builder_schema()
                 'type'        => 'text',
                 'not null'    => true,
             ),
-            'layout'         => array(
+            'form_layout'    => array(
                 'type'     => 'varchar',
                 'length'   => 12,
                 'not null' => true,
@@ -80,7 +80,7 @@ function form_builder_schema()
                 'type'        => 'text',
                 'not null'    => true,
             ),
-            'listeners'      => array(
+            'form_listeners' => array(
                 'description' => 'JSON encoded of added listeners.',
                 'type'        => 'text',
                 'not null'    => true,

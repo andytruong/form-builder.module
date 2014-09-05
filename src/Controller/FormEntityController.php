@@ -31,12 +31,8 @@ class FormEntityController extends EntityAPIController
 
     private function fixEntity(FormEntity $entity)
     {
-        // form_title => title
-        $entity->setTitle($entity->form_title);
-        unset($entity->form_title);
-
         /* @var $entity FormEntity */
-        foreach (array('entity_types', 'form_fields', 'layout_options', 'listeners') as $key) {
+        foreach (array('entity_types', 'form_fields', 'layout_options', 'form_listeners') as $key) {
             if (!empty($entity->{$key})) {
                 $entity->{$key} = json_decode($entity->{$key}, true);
             }
