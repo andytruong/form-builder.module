@@ -44,11 +44,15 @@ class DrupalEntityType extends EntityTypeBase
 
     public function getFields()
     {
-        list(, $entityTypeName, $bundleName) = explode('.', $this->getName());
-        foreach (field_info_instances($entityTypeName, $bundleName) as $fieldInfo) {
-            $this->addField($this->drupalArrayToField($fieldInfo));
+        if (null === $this->fields) {
+            $this->fields = array();
+            list(, $entityTypeName, $bundleName) = explode('.', $this->getName());
+
+            foreach (field_info_instances($entityTypeName, $bundleName) as $fieldInfo) {
+                $this->addField($this->drupalArrayToField($fieldInfo));
+            }
         }
-        return $this->fields;
+        return parent::getFields();
     }
 
     private function drupalArrayToField(array $fieldInfo)
