@@ -39,7 +39,7 @@ class Manager extends ManagerBase
                 $machineName = "drupal.{$entityName}.{$bundleName}";
                 $entityType = new DrupalEntityType();
                 $entityType->setName($machineName);
-                $entityType->setHumanName($entityInfo['label'] !== $bundleInfo['label'] ? $entityInfo['label'] . ' ' . $bundleInfo['label'] : $entityInfo['label']);
+                $entityType->setHumanName($entityInfo['label'] !== $bundleInfo['label'] ? $entityInfo['label'] . ' › ' . $bundleInfo['label'] : $entityInfo['label']);
                 $entityType->setIDKey($entityInfo['entity keys']['id']);
                 $entityType->setDrupalEntityTypeInfo($entityInfo);
                 $entityType->setDrupalBundleInfo($bundleInfo);
@@ -51,15 +51,15 @@ class Manager extends ManagerBase
 
     public function getFieldTypes()
     {
-        $fieldTypes = parent::getFieldTypes();
+        $this->fieldTypes = parent::getFieldTypes();
 
         if (!isset($this->ran[__FUNCTION__]) && $this->ran[__FUNCTION__] = true) {
             foreach (field_info_field_types() as $name => $info) {
-                $fieldTypes['drupal.' . $name] = $this->drupalArrayToFieldType($name, $info);
+                $this->fieldTypes['drupal.' . $name] = $this->drupalArrayToFieldType($name, $info);
             }
         }
 
-        return $fieldTypes;
+        return $this->fieldTypes;
     }
 
     private function drupalArrayToFieldType($fieldTypeName, array $info)
