@@ -68,6 +68,8 @@
                         <label class="option" for="edit-fields-{{machineName}}">
                             {{field.humanName}}
                         </label>
+
+                        <div class="description">{{field.drupalFieldInfo.description}}</div>
                     </div>
                 </div>
             </div>
