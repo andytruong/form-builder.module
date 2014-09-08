@@ -32,7 +32,7 @@ class Render
         );
 
         return array(
-            '#prefix'   => !empty($_GET['debug']) ? kpr($js[1]['data']['FormBuilder'], true) : '',
+            '#prefix'   => !empty($_GET['debug']) ? kpr($js[2]['data']['FormBuilder'], true) : '',
             '#markup'   => theme_render_template(
                 $this->template, array(
                 'data' => $js[2]['data']['FormBuilder']
