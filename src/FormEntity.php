@@ -3,24 +3,29 @@
 namespace Drupal\form_builder;
 
 use Entity;
+use GO1\FormCenter\Form\FormInterface;
 
-class FormEntity extends Entity
+class FormEntity extends Entity implements FormInterface
 {
 
-    use \GO1\FormCenter\Form\FormTrait;
+    use \GO1\FormCenter\Form\FormTrait,
+        \AndyTruong\Uuid\UuidGeneratorAwareTrait,
+        \AndyTruong\Serializer\SerializableTrait;
 
     /** @var int */
     public $fid;
 
-    /**
-     * @var string Name
-     */
+    /** @var string Name */
     public $title;
 
-    /**
-     * @var integer The user id of the profile owner.
-     */
+    /** @var integer The user id of the profile owner. */
     private $uid;
+
+    /** @var bool */
+    private $status = true;
+
+    /** @var string */
+    private $language;
 
     function getTitle()
     {
@@ -40,6 +45,26 @@ class FormEntity extends Entity
     function setUid($uid)
     {
         $this->uid = $uid;
+    }
+
+    function getStatus()
+    {
+        return $this->status;
+    }
+
+    function setStatus($status)
+    {
+        $this->status = (bool) $status;
+    }
+
+    function getLanguage()
+    {
+        return $this->language;
+    }
+
+    function setLanguage($language)
+    {
+        $this->language = $language;
     }
 
 }

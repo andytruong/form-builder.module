@@ -31,11 +31,11 @@ class FormEntityController extends EntityAPIController
 
     private function fixEntity(FormEntity $entity)
     {
-        $entity->setTitle($entity->form_title);
-        unset($entity->form_title);
+        // Must have uuidGenerator
+        $entity->setUuidGenerator(form_builder_manager()->getUuidGenerator());
 
         /* @var $entity FormEntity */
-        foreach (array('entity_types', 'form_fields', 'layout_options', 'listeners') as $key) {
+        foreach (array('entity_types', 'form_fields', 'layout_options', 'form_listeners') as $key) {
             if (!empty($entity->{$key})) {
                 $entity->{$key} = json_decode($entity->{$key}, true);
             }
@@ -43,10 +43,11 @@ class FormEntityController extends EntityAPIController
 
         // Fix entity types
         if (!empty($entity->entity_types)) {
-            foreach ($entity->entity_types as $entity_type) {
-                kpr($entity_type);
-                exit;
+            foreach ($entity->entity_types as $uuid => $entityTypeName) {
+                $entityType = form_builder_manager()->getEntityType($entityTypeName);
+                $entity->addEntityType($entityType, $uuid);
             }
+            unset($entity->entity_types);
         }
 
         // fix form fields
