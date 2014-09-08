@@ -4,6 +4,7 @@ namespace Drupal\form_builder\Controller;
 
 use AndyTruong\Serializer\Serializer;
 use Drupal\form_builder\FormEntity;
+use GO1\FormCenter\Field\FieldInterface;
 
 class EntityEditController
 {
@@ -58,16 +59,22 @@ class EntityEditController
 
     private function getAvailableInfo()
     {
+        $allEntityTypes = array_map(function($type) {
+            return (new Serializer())->toArray($type);
+        }, form_builder_manager()->getEntityTypes());
+
+        $addedEntityTypeNames = array_map(function($type) {
+            return $type->getName();
+        }, $this->entity->getEntityTypes());
+
+        $fields = array_map(function(FieldInterface $field) {
+            return (new Serializer())->toArray($field);
+        }, form_builder_manager()->getFields($addedEntityTypeNames));
+
         return array(
             'languages'   => language_list('enabled')[1],
-            'entityTypes' => array_map(
-                function($type) {
-                    return (new Serializer())->toArray($type);
-                }, form_builder_manager()->getEntityTypes()
-            ),
-            'fields' => array_map(function($field) {
-                    return $field->getHumanName();
-                }, form_builder_manager()->getFields()),
+            'entityTypes' => $allEntityTypes,
+            'fields'      => $fields,
         );
     }
 
