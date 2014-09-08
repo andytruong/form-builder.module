@@ -21,7 +21,7 @@
                        name="status"
                        class="form-checkbox"
                        ng-model="entity.status" />
-                <label class="option" for="edit-status">Published </label>
+                <label class="option" for="edit-status">Published</label>
             </div>
 
             <div id="edit-language" class="form-radios">

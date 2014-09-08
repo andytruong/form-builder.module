@@ -49,12 +49,12 @@ class FormEntity extends Entity implements FormInterface
 
     function getStatus()
     {
-        return $this->status;
+        return (bool) $this->status;
     }
 
     function setStatus($status)
     {
-        $this->status = (bool) $status;
+        $this->status = $status;
     }
 
     function getLanguage()
