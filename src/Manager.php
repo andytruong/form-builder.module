@@ -17,29 +17,33 @@ class Manager extends ManagerBase
 
     public function getEntityTypes()
     {
-        $entityTypes = parent::getEntityTypes();
+        $this->entityTypes = parent::getEntityTypes();
 
         if (!isset($this->ran[__FUNCTION__]) && $this->ran[__FUNCTION__] = true) {
-            $entityTypes += $this->discoverEntityTypes();
+            $this->entityTypes += $this->discoverEntityTypes();
         }
 
-        return $entityTypes;
+        return $this->entityTypes;
     }
 
     private function discoverEntityTypes()
     {
         $entityTypes = array();
         foreach (entity_get_info() as $entityName => $entityInfo) {
+            if ('form_builder_form' === $entityName) {
+                continue;
+            }
+
             foreach ($entityInfo['bundles'] as $bundleName => $bundleInfo) {
                 unset($entityInfo['bundles'][$bundleName]);
-                $entityName = "drupal.{$entityName}.{$bundleName}";
+                $machineName = "drupal.{$entityName}.{$bundleName}";
                 $entityType = new DrupalEntityType();
-                $entityType->setName($entityName);
-                $entityType->setHumanName($entityInfo['label'] . ' (Drupal)');
+                $entityType->setName($machineName);
+                $entityType->setHumanName($entityInfo['label'] !== $bundleInfo['label'] ? $entityInfo['label'] . ' ' . $bundleInfo['label'] : $entityInfo['label']);
                 $entityType->setIDKey($entityInfo['entity keys']['id']);
                 $entityType->setDrupalEntityTypeInfo($entityInfo);
                 $entityType->setDrupalBundleInfo($bundleInfo);
-                $entityTypes[$entityName] = $entityType;
+                $entityTypes[$machineName] = $entityType;
             }
         }
         return $entityTypes;
