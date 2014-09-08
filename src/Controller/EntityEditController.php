@@ -27,24 +27,21 @@ class EntityEditController
     public function render()
     {
         $js = array();
-        $js[0] = drupal_get_path('module', 'form_builder') . '/js/entity.editing.js';
-        $js[1] = array(
+        $js[0] = array('data' => '//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.0/angular.min.js', array('external' => true));
+        $js[1] = drupal_get_path('module', 'form_builder') . '/js/entity.editing.js';
+        $js[2] = array(
             'type' => 'setting',
             'data' => array('FormBuilder' => $this->getRenderInfo()),
         );
 
         return array(
-            '#prefix'   => '<div ng-app="fob_entity_edit" ng-controller="HelloCtrl">',
-            '#markup'   => kpr($js[1]['data']['FormBuilder'], true) . theme_render_template(
+            // '#prefix'   => kpr($js[1]['data']['FormBuilder'], true),
+            '#markup'   => theme_render_template(
                 $this->template, array(
-                'data' => $js[1]['data']['FormBuilder']
+                'data' => $js[2]['data']['FormBuilder']
             )),
-            '#suffix'   => '</div>',
             '#attached' => array(
-                'library' => array(
-                    array('angularjs', 'angularjs')
-                ),
-                'js'      => $js
+                'js' => $js
             )
         );
     }
