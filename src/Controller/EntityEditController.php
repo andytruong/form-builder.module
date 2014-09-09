@@ -45,7 +45,8 @@ class EntityEditController
                 return $me->getRender()->render($entityType);
 
             case 'POST':
-                return $me->getSubmitHandler()->handle(json_decode(file_get_contents('php://input'), true));
+                $request = json_decode(file_get_contents('php://input'), true);
+                return $me->getSubmitHandler()->handle($request);
         }
     }
 

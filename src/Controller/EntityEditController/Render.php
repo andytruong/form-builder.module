@@ -72,8 +72,7 @@ class Render
 
     private function getEntityInfo()
     {
-        $info = $this->ctrl->entity->toArray();
-        return $info;
+        return (new Serializer())->toArray($this->ctrl->entity);
     }
 
 }

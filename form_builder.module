@@ -1,8 +1,6 @@
 <?php
 
-use AndyTruong\Uuid\Uuid;
 use Drupal\form_builder\Manager;
-use Drupal\form_builder\Provider\EntityTypeProvider;
 
 require_once dirname(__FILE__) . '/form_builder.hooks.php';
 
