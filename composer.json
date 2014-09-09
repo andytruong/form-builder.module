@@ -13,6 +13,7 @@
     ],
     "require": {
         "php": ">=5.4",
+        "andytruong/phpfns": "~0.1.0",
         "go1/form-center": "dev-master",
         "gocatalyze/sync_center": "dev-master"
     }
