@@ -4,6 +4,7 @@ namespace Drupal\form_builder\Controller\EntityEditController;
 
 use AndyTruong\Serializer\Serializer;
 use Drupal\form_builder\Controller\EntityEditController;
+use GO1\FormCenter\Entity\Type\EntityTypeInterface;
 use GO1\FormCenter\Field\FieldInterface;
 
 class Render
@@ -72,7 +73,16 @@ class Render
 
     private function getEntityInfo()
     {
-        return (new Serializer())->toArray($this->ctrl->entity);
+        $array = (new Serializer())->toArray($this->ctrl->entity);
+
+        // AngularJS friendly
+        $array['entityTypes'] = array_keys($array['entityTypes']);
+        foreach ($array['entityTypes'] as $i => $name) {
+            unset($array['entityTypes'][$i]);
+            $array['entityTypes'][$name] = true;
+        }
+
+        return $array;
     }
 
 }

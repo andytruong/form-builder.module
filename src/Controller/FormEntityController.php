@@ -42,13 +42,12 @@ class FormEntityController extends EntityAPIController
         }
 
         // Fix entity types
-        if (!empty($entity->entity_types)) {
-            foreach ($entity->entity_types as $uuid => $entityTypeName) {
-                $entityType = form_builder_manager()->getEntityType($entityTypeName);
-                $entity->addEntityType($entityType, $uuid);
-            }
-            unset($entity->entity_types);
+        $entity->entity_types = empty($entity->entity_types) ? array() : $entity->entity_types;
+        foreach ($entity->entity_types as $entityTypeName) {
+            $entityType = form_builder_manager()->getEntityType($entityTypeName);
+            $entity->addEntityType($entityType);
         }
+        unset($entity->entity_types);
 
         // fix form fields
         if (!empty($entity->form_fields)) {

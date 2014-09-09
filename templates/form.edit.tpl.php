@@ -47,6 +47,7 @@
                             id="edit-entityType-{{machineName}}"
                             name="entityTypes[{{machineName}}]"
                             value="{{machineName}}"
+                            ng-model="entity.entityTypes[machineName]"
                             class="form-checkbox" />
                         <label class="option" for="edit-entityType-{{machineName}}">
                             {{entityType.humanName}}

@@ -22,7 +22,7 @@ class SubmitHandler
     public function handle(array $request)
     {
         if (!isset($request['action'])) {
-            $methods = at_camelize($request['action']);
+            $methods = 'handle' . at_camelize($request['action']);
             unset($request['action']);
             return $this->{$methods}($request);
         }
