@@ -19,6 +19,7 @@ use Drupal\form_builder\FormEntity;
 class EntityEditController
 {
 
+    /** @var FormEntity */
     public $entity;
 
     public function __construct(FormEntity $entity)

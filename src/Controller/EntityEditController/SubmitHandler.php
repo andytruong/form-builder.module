@@ -2,6 +2,9 @@
 
 namespace Drupal\form_builder\Controller\EntityEditController;
 
+use Drupal\form_builder\Controller\EntityEditController;
+use Drupal\form_builder\Helper\ArrayToFormEntity;
+
 class SubmitHandler
 {
 
@@ -21,15 +24,17 @@ class SubmitHandler
      */
     public function handle(array $request)
     {
-        if (!isset($request['action'])) {
-            $methods = 'handle' . at_camelize($request['action']);
+        if (isset($request['action'])) {
+            $method = 'handle' . at_camelize(str_replace(array('-', ' '), '_', $request['action']));
             unset($request['action']);
-            return $this->{$methods}($request);
+            $return = $this->{$method}($request);
+        }
+        elseif (!isset($request['action'])) {
+            $return = array('status' => 'FAIL', 'error' => 'Missing action');
         }
 
-        if (!isset($request['action'])) {
-            return array('status' => 'FAIL', 'error' => 'Missing action');
-        }
+        drupal_add_http_header('Content-Type', 'application/json; charset=utf-8');
+        echo drupal_json_encode($return);
     }
 
     /**
@@ -46,6 +51,20 @@ class SubmitHandler
         ];
     }
 
+    protected function handleAddField(array $reqeuest)
+    {
+        $tmp = explode('.', $reqeuest['fieldName']);
+        $fieldName = array_pop($tmp);
+        $entityTypeName = implode('.', $tmp);
+
+        return [
+            'status'         => 'OK',
+            'entityTypeName' => $entityTypeName,
+            'fieldName'      => $fieldName,
+            'entity'         => (new ArrayToFormEntity($reqeuest['entity']))->convert()
+        ];
+    }
+
     /**
      * Save form-entity.
      *
@@ -54,7 +73,7 @@ class SubmitHandler
      */
     protected function handleSave(array $request)
     {
-        return ['status' => 'OK', 'message' => 'Working…'];
+        return ['status' => 'OK', 'message' => 'Working…', 'request' => $request];
     }
 
 }
