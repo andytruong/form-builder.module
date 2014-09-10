@@ -18,7 +18,8 @@
                                 entity: $scope.entity
                             })
                             .success(function (data) {
-                                console.log(data);
+                                $scope.entity.fields[data.fieldUuid] = data.field;
+                                delete($scope.available.addingFields[data.field.entityTypeName + '.' + data.field.fieldName]);
                             });
                 };
 

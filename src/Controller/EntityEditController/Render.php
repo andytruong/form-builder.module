@@ -97,9 +97,11 @@ class Render
         }
 
         foreach ($array['fields'] as $uuid => $field) {
+            /* @var $field FieldInterface */
             $array['fields'][$uuid] = [
-                'name'      => $field->getName(),
-                'humanName' => $field->getHumanName()
+                'entityTypeName' => $field->getEntityType()->getName(),
+                'name'           => $field->getName(),
+                'humanName'      => $field->getHumanName()
             ];
         }
 
@@ -107,6 +109,3 @@ class Render
     }
 
 }
-
-# $rClass = new \ReflectionClass($obj);
-#$rClass->hasProperty($name);

@@ -56,7 +56,7 @@
                 </div>
             </div>
 
-            <div class="form-item form-type-markup">
+            <div id="availableFields" class="form-item form-type-markup">
                 <label for="entityTypes">Available Fields</label>
                 <div class="form-item-list">
                     <ul>
@@ -64,18 +64,18 @@
                             ng-repeat="(name, field) in available.fields"
                             ui-draggable="true"
                             drag="name">
-                            {{field.humanName}} ({{field.entityTypeName}})
+                            {{field.humanName}} <span class="entity-type-name">({{field.entityTypeName}})</span>
                         </li>
                     </ul>
                 </div>
             </div>
 
-            <div class="form-item form-type-markup">
+            <div id="formFields" class="form-item form-type-markup">
                 <label>Fields</label>
                 <div class="form-item-list">
                     <ul ui-on-Drop="onDrop($event,$data,women)">
                         <li data-uuid="{{uuid}}" ng-repeat="(uuid, field) in entity.fields">
-                            {{field.humanName}} (field.entityTypeName)
+                            {{field.humanName}} <span class="entity-type-name">(field.entityTypeName)</span>
                         </li>
                         <li class="adding" ng-repeat="field in available.addingFields">
                             Adding <strong>{{field.humanName}}</strong>…

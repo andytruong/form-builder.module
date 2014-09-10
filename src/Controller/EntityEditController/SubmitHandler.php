@@ -56,12 +56,20 @@ class SubmitHandler
         $tmp = explode('.', $reqeuest['fieldName']);
         $fieldName = array_pop($tmp);
         $entityTypeName = implode('.', $tmp);
+        $field = form_builder_manager()->getField($entityTypeName, $fieldName);
+
+        $entity = (new ArrayToFormEntity($reqeuest['entity']))->convert();
+        $fieldUuid = $entity->addField($entityTypeName, $field);
 
         return [
-            'status'         => 'OK',
-            'entityTypeName' => $entityTypeName,
-            'fieldName'      => $fieldName,
-            'entity'         => (new ArrayToFormEntity($reqeuest['entity']))->convert()
+            'status'    => 'OK',
+            'fieldUuid' => $fieldUuid,
+            'field'     => [
+                'name'           => $field->getName(),
+                'humanName'      => $field->getHumanName(),
+                'entityTypeName' => $entityTypeName,
+                'fieldName'      => $fieldName,
+            ],
         ];
     }
 

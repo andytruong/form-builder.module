@@ -1,0 +1,15 @@
+#availableFields li {
+    cursor: move;
+}
+
+#availableFields li,
+#formFields li {
+    list-style-type: none;
+    padding: 11px;
+    margin: 2px 0;
+}
+
+#formFields:hover li {
+    padding: 10px;
+    border: 1px #777 dashed;
+}
