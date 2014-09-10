@@ -12,11 +12,14 @@ class ArrayToFormEntity
 
     private $inArray;
 
-    public function __construct(array $array)
+    public function __construct(array $inArray)
     {
-        $this->inArray = $array;
+        $this->inArray = $inArray;
     }
 
+    /**
+     * @return FormEntity
+     */
     public function convert()
     {
         $unserializer = new Unserializer();
@@ -43,9 +46,19 @@ class ArrayToFormEntity
         $form = $event->getOutObject();
         $inArray = $this->inArray;
 
+        // Convert entity types
         if (!empty($inArray['entityTypes'])) {
             $inArray['entity_types'] = array_keys($inArray['entityTypes']);
             unset($inArray['entityTypes']);
+        }
+
+        // Convert fields
+        if (!empty($inArray['fields'])) {
+            $inArray['form_fields'] = array();
+            foreach ($inArray['fields'] as $fieldUuid => $fieldArray) {
+                $inArray['form_fields'][$fieldArray['entityTypeName']][$fieldArray['name']] = $fieldUuid;
+            }
+            unset($inArray['fields']);
         }
 
         foreach (array('entity_types', 'form_fields', 'layout_options', 'form_listeners') as $key) {
@@ -54,8 +67,7 @@ class ArrayToFormEntity
             }
         }
 
-        $ctrl = entity_get_controller('form_builder_form');
-        $ctrl->fixEntity($form, $debug = true);
+        (new FormEntityFixer())->fix($form);
     }
 
 }

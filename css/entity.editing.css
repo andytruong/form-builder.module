@@ -9,6 +9,7 @@
     margin: 2px 0;
 }
 
+#availableFields:hover li,
 #formFields:hover li {
     padding: 10px;
     border: 1px #777 dashed;

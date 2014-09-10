@@ -19,17 +19,17 @@ class FormEntity extends Entity implements FormInterface
     public $title;
 
     /** @var integer The user id of the profile owner. */
-    private $uid;
+    public $uid;
 
     /** @var bool */
-    private $status = true;
+    public $status = true;
 
     /** @var string */
-    private $language;
+    public $language;
 
     public function __construct(array $values = array())
     {
-        parent::__construct($values, 'form_center_form');
+        parent::__construct($values, 'form_builder_form');
     }
 
     function getTitle()

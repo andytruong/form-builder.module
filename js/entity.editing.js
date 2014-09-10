@@ -26,6 +26,7 @@
                 $scope.submit = function () {
                     $http
                             .post(window.location.pathname, {
+                                action: 'save',
                                 entity: $scope.entity
                             })
                             .success(function (data) {

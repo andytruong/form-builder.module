@@ -81,7 +81,9 @@ class SubmitHandler
      */
     protected function handleSave(array $request)
     {
-        return ['status' => 'OK', 'message' => 'Working…', 'request' => $request];
+        $entity = (new ArrayToFormEntity($request['entity']))->convert();
+        $saved_entity = entity_save('form_entity_form', $entity);
+        return ['status' => 'OK', 'message' => 'Working…', 'saved_entity' => $saved_entity];
     }
 
 }
