@@ -29,31 +29,35 @@ class FormEntityController extends EntityAPIController
         return $entities;
     }
 
-    private function fixEntity(FormEntity $entity)
+    public function fixEntity(FormEntity $form)
     {
         // Must have uuidGenerator
-        $entity->setUuidGenerator(form_builder_manager()->getUuidGenerator());
+        $form->setUuidGenerator(form_builder_manager()->getUuidGenerator());
 
-        /* @var $entity FormEntity */
+        /* @var $form FormEntity */
         foreach (array('entity_types', 'form_fields', 'layout_options', 'form_listeners') as $key) {
-            if (!empty($entity->{$key})) {
-                $entity->{$key} = json_decode($entity->{$key}, true);
+            if (!empty($form->{$key}) && is_string($form->{$key})) {
+                $form->{$key} = json_decode($form->{$key}, true);
             }
         }
 
         // Fix entity types
-        $entity->entity_types = empty($entity->entity_types) ? array() : $entity->entity_types;
-        foreach ($entity->entity_types as $entityTypeName) {
+        $form->entity_types = empty($form->entity_types) ? array() : $form->entity_types;
+        foreach ($form->entity_types as $entityTypeName) {
             $entityType = form_builder_manager()->getEntityType($entityTypeName);
-            $entity->addEntityType($entityType);
+            $form->addEntityType($entityType);
         }
-        unset($entity->entity_types);
+        unset($form->entity_types);
 
         // fix form fields
-        if (!empty($entity->form_fields)) {
-            foreach ($entity->form_fields as $fieldUuid => $fieldName) {
-                // $field = $this->getManager()->getFieldType($name);
+        if (!empty($form->form_fields)) {
+            foreach ($form->form_fields as $entityTypeName => $fieldNames) {
+                foreach ($fieldNames as $fieldName) {
+                    $field = $this->getManager()->getField($entityTypeName, $fieldName);
+                    $form->addField($entityTypeName, $field);
+                }
             }
+            unset($form->form_fields);
         }
     }
 
