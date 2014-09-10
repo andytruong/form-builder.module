@@ -24,12 +24,14 @@
                 };
 
                 $scope.submit = function () {
+                    $scope.saving = true;
                     $http
                             .post(window.location.pathname, {
                                 action: 'save',
                                 entity: $scope.entity
                             })
                             .success(function (data) {
+                                $scope.saving = false;
                                 console.log(data);
                             });
                 };

@@ -89,6 +89,8 @@ class Render
     {
         $array = (new Serializer())->toArray($this->ctrl->entity);
 
+        $array['status'] = (bool) $array['status'];
+
         // AngularJS friendly
         $array['entityTypes'] = array_keys($array['entityTypes']);
         foreach ($array['entityTypes'] as $i => $name) {

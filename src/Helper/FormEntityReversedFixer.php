@@ -15,18 +15,20 @@ class FormEntityReversedFixer
 
     private function fixEntityTypes(FormEntity $form)
     {
+        $form->entity_types = array();
         foreach ($form->getEntityTypes() as $entityTypeName => $entityType) {
             $form->entity_types[] = $entityTypeName;
         }
+        $form->entity_types = json_encode($form->entity_types);
     }
 
     private function fixFormFields(FormEntity $form)
     {
+        $form->form_fields = array();
         foreach ($form->getFields() as $fieldUuid => $field) {
             $form->form_fields[$field->getEntityType()->getName()][$field->getName()] = $fieldUuid;
         }
-        print_r([__METHOD__, __LINE__, $form->form_fields]);
-        exit;
+        $form->form_fields = json_encode($form->form_fields);
     }
 
 }

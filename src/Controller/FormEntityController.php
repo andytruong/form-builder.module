@@ -3,7 +3,6 @@
 namespace Drupal\form_builder\Controller;
 
 use DatabaseTransaction;
-use Drupal\form_builder\FormEntity;
 use Drupal\form_builder\Helper\FormEntityFixer;
 use Drupal\form_builder\Helper\FormEntityReversedFixer;
 use EntityAPIController;
@@ -41,9 +40,7 @@ class FormEntityController extends EntityAPIController
     public function save($form, DatabaseTransaction $transaction = NULL)
     {
         (new FormEntityReversedFixer())->fix($form);
-        print_r([__METHOD__, __LINE__, $form]);
-        exit;
-        // parent::save($entity, $transaction);
+        return parent::save($form, $transaction);
     }
 
 }

@@ -85,12 +85,10 @@
             </div>
 
             <div class="form-actions form-wrapper" id="edit-actions">
-                <input type="submit"
-                       id="edit-submit"
-                       name="op"
-                       value="Save"
-                       class="form-submit"
-                       ng-click="submit()" />
+                <button id="edit-submit" class="form-submit" ng-click="submit()">
+                    <span ng-if="!saving">Save</span>
+                    <span ng-if="saving">Saving…</span>
+                </button>
             </div>
         </form>
 
