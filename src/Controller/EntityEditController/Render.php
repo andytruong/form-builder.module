@@ -4,7 +4,6 @@ namespace Drupal\form_builder\Controller\EntityEditController;
 
 use AndyTruong\Serializer\Serializer;
 use Drupal\form_builder\Controller\EntityEditController;
-use GO1\FormCenter\Entity\Type\EntityTypeInterface;
 use GO1\FormCenter\Field\FieldInterface;
 
 class Render
@@ -25,20 +24,26 @@ class Render
     public function render()
     {
         $js = array();
-        $js[0] = array('data' => '//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.0/angular.min.js', array('external' => true));
-        $js[1] = drupal_get_path('module', 'form_builder') . '/js/entity.editing.js';
-        $js[2] = array(
+        $js[0] = array('type' => 'external', 'data' => '//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.0/angular.min.js');
+        $js[1] = array('type' => 'external', 'data' => '//cdn.rawgit.com/ganarajpr/angular-dragdrop/master/draganddrop.js');
+        $js[3] = drupal_get_path('module', 'form_builder') . '/js/entity.editing.js';
+        $js[4] = array(
             'type' => 'setting',
             'data' => array('FormBuilder' => $this->getRenderInfo()),
         );
 
         return array(
-            '#prefix'   => !empty($_GET['debug']) ? kpr($js[2]['data']['FormBuilder'], true) : '',
+            '#prefix'   => !empty($_GET['debug']) ? kpr($js[4]['data']['FormBuilder'], true) : '',
             '#markup'   => theme_render_template(
                 $this->template, array(
-                'data' => $js[2]['data']['FormBuilder']
+                'data' => $js[4]['data']['FormBuilder']
             )),
-            '#attached' => array('js' => $js)
+            '#attached' => array(
+                'css' => array(
+                    drupal_get_path('module', 'form_builder') . '/css/entity.editing.css'
+                ),
+                'js'  => $js
+            )
         );
     }
 
@@ -52,17 +57,26 @@ class Render
 
     private function getAvailableInfo()
     {
-        $allEntityTypes = array_map(function($type) {
-            return (new Serializer())->toArray($type);
+        $serializer = new Serializer();
+        $allEntityTypes = array_map(function($type) use ($serializer) {
+            return $serializer->toArray($type);
         }, form_builder_manager()->getEntityTypes());
 
         $addedEntityTypeNames = array_map(function($type) {
             return $type->getName();
         }, $this->ctrl->entity->getEntityTypes());
 
-        $fields = array_map(function(FieldInterface $field) {
-            return (new Serializer())->toArray($field);
-        }, form_builder_manager()->getFields($addedEntityTypeNames));
+        $fields = array();
+        foreach (form_builder_manager()->getFields($addedEntityTypeNames) as $entityTypeName => $entityFields) {
+            foreach ($entityFields as $fieldName => $field) {
+                /* @var $field FieldInterface */
+                $fields["{$entityTypeName}.{$fieldName}"] = [
+                    'name'           => $field->getName(),
+                    'humanName'      => $field->getHumanName(),
+                    'entityTypeName' => $field->getEntityType()->getName(),
+                ];
+            }
+        }
 
         return array(
             'languages'   => language_list('enabled')[1],
@@ -82,7 +96,17 @@ class Render
             $array['entityTypes'][$name] = true;
         }
 
+        foreach ($array['fields'] as $uuid => $field) {
+            $array['fields'][$uuid] = [
+                'name'      => $field->getName(),
+                'humanName' => $field->getHumanName()
+            ];
+        }
+
         return $array;
     }
 
 }
+
+# $rClass = new \ReflectionClass($obj);
+#$rClass->hasProperty($name);

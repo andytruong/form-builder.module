@@ -56,22 +56,31 @@
                 </div>
             </div>
 
-            <div class="form-item form-type-checkboxes form-item-fields">
-                <label for="entityTypes">Fields</label>
-                <div id="edit-fields" class="form-checkboxes">
-                    <div class="form-item form-type-checkbox" ng-repeat="(machineName, field) in available.fields">
-                        <input
-                            type="checkbox"
-                            id="edit-fields-{{machineName}}"
-                            name="fields[{{machineName}}]"
-                            value="{{machineName}}"
-                            class="form-checkbox" />
-                        <label class="option" for="edit-fields-{{machineName}}">
-                            {{field.humanName}}
-                        </label>
+            <div class="form-item form-type-markup">
+                <label for="entityTypes">Available Fields</label>
+                <div class="form-item-list">
+                    <ul>
+                        <li data-name="{{name}}"
+                            ng-repeat="(name, field) in available.fields"
+                            ui-draggable="true"
+                            drag="name">
+                            {{field.humanName}} ({{field.entityTypeName}})
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-                        <div class="description">{{field.drupalFieldInfo.description}}</div>
-                    </div>
+            <div class="form-item form-type-markup">
+                <label>Fields</label>
+                <div class="form-item-list">
+                    <ul ui-on-Drop="onDrop($event,$data,women)">
+                        <li data-uuid="{{uuid}}" ng-repeat="(uuid, field) in entity.fields">
+                            {{field.humanName}} (field.entityTypeName)
+                        </li>
+                        <li class="adding" ng-repeat="field in available.addingFields">
+                            Adding <strong>{{field.humanName}}</strong>…
+                        </li>
+                    </ul>
                 </div>
             </div>
 
