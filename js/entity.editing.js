@@ -7,6 +7,10 @@
                 $scope.available.addedFields = {};
                 $scope.entity = Drupal.settings.FormBuilder.entity;
 
+                $scope.isAvailableFieldsEmpty = function () {
+                    return angular.equals({}, $scope.available.fields);
+                };
+
                 $scope.isFieldsEmpty = function () {
                     return angular.equals({}, $scope.entity.fields)
                             && angular.equals({}, $scope.available.addingFields);

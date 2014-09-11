@@ -60,6 +60,9 @@
                 <label for="entityTypes">Available Fields</label>
                 <div class="form-item-list">
                     <ul>
+                        <li class="empty" ng-show="isAvailableFieldsEmpty()">
+                            There is no available fields.
+                        </li>
                         <li data-name="{{name}}"
                             ng-repeat="(name, field) in available.fields"
                             ui-draggable="true"
