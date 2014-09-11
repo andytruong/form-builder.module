@@ -44,28 +44,51 @@ class DrupalEntityType extends EntityTypeBase
 
     public function getFields()
     {
-        if (null === $this->fields) {
-            $this->fields = array();
-            list(, $entityTypeName, $bundleName) = explode('.', $this->getName());
+        if (null !== $this->fields) {
+            return parent::getFields();
+        }
 
-            foreach (field_info_instances($entityTypeName, $bundleName) as $fieldInfo) {
-                $this->addField($this->drupalArrayToField($fieldInfo));
+        $this->fields = array();
+        list(, $entityTypeName, $bundleName) = explode('.', $this->getName());
+
+        $propertyInfo = entity_get_property_info($entityTypeName);
+        foreach ($propertyInfo['properties'] as $fieldName => $fieldInfo) {
+            if ($field = $this->drupalArrayToField($fieldName, $fieldInfo)) {
+                $this->addField($field);
             }
         }
+
+        if (!empty($propertyInfo['bundles'][$bundleName]['properties'])) {
+            foreach ($propertyInfo['bundles'][$bundleName]['properties'] as $fieldName => $fieldInfo) {
+                if (!$this->hasField($fieldName) && ($field = $this->drupalArrayToField($fieldName, $fieldInfo))) {
+                    $this->addField($field);
+                }
+            }
+        }
+
         return parent::getFields();
     }
 
-    private function drupalArrayToField(array $fieldInfo)
+    private function drupalArrayToField($fieldName, array $fieldInfo)
+    {
+        // Not support read-only properties for now.
+        if (!isset($fieldInfo['setter callback'])) {
+            return;
+        }
+
+        $field = $this->createFieldInstance();
+        $field->setName($fieldName);
+        $field->setHumanName($fieldInfo['label']);
+        $field->setRequired(isset($fieldInfo['required']) ? $fieldInfo['required'] : false);
+        $field->setDrupalFieldInfo($fieldInfo);
+        return $field;
+    }
+
+    private function createFieldInstance()
     {
         $field = new DrupalField();
-        $field->setName($fieldInfo['field_name']);
-        $field->setHumanName($fieldInfo['label']);
-        $field->setEntityType($this);
         $field->setDerivable(false);
-        $field->setRequired(isset($fieldInfo['required']) ? $fieldInfo['required'] : false);
-        # $field->setFieldType($fieldType);
-        # $field->setFieldOptions($fieldOptions);
-        $field->setDrupalFieldInfo($fieldInfo);
+        $field->setEntityType($this);
         return $field;
     }
 
