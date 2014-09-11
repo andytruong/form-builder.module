@@ -71,13 +71,18 @@
             </div>
 
             <div id="formFields" class="form-item form-type-markup">
-                <label>Fields</label>
+                <label>Form fields</label>
                 <div class="form-item-list">
-                    <ul ui-on-Drop="onDrop($event,$data,women)">
+                    <ul ui-on-Drop="onDrop($event, $data, women)">
+                        <li class="empty" ng-show="isFieldsEmpty()">
+                            Empty.
+                        </li>
+
                         <li data-uuid="{{uuid}}" ng-repeat="(uuid, field) in entity.fields">
                             {{field.humanName}} <span class="entity-type-name">(field.entityTypeName)</span>
 
                             <div class="field-actions">
+                                <a href ng-click="fieldConfig(uuid)">Config</a>
                                 <a href ng-click="removeField(uuid)">Remove</a>
                             </div>
                         </li>

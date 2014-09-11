@@ -15,6 +15,13 @@ class Render
     /** @var string */
     public $template;
 
+    /** @var array */
+    protected $externalJS = [
+        '//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.0/angular.min.js',
+        '//cdn.rawgit.com/ganarajpr/angular-dragdrop/master/draganddrop.js',
+        # '//cdn.rawgit.com/angular-ui/bootstrap/master/src/dropdown/dropdown.js',
+    ];
+
     public function __construct($ctrl)
     {
         $this->ctrl = $ctrl;
@@ -23,26 +30,28 @@ class Render
 
     public function render()
     {
-        $js = array();
-        $js[0] = array('type' => 'external', 'data' => '//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.0/angular.min.js');
-        $js[1] = array('type' => 'external', 'data' => '//cdn.rawgit.com/ganarajpr/angular-dragdrop/master/draganddrop.js');
-        $js[3] = drupal_get_path('module', 'form_builder') . '/js/entity.editing.js';
-        $js[4] = array(
+        $jsSettings = array(
             'type' => 'setting',
             'data' => array('FormBuilder' => $this->getRenderInfo()),
         );
 
         return array(
-            '#prefix'   => !empty($_GET['debug']) ? kpr($js[4]['data']['FormBuilder'], true) : '',
+            '#prefix'   => !empty($_GET['debug']) ? kpr($jsSettings['data']['FormBuilder'], true) : '',
             '#markup'   => theme_render_template(
                 $this->template, array(
-                'data' => $js[4]['data']['FormBuilder']
+                'data' => $jsSettings['data']['FormBuilder']
             )),
             '#attached' => array(
                 'css' => array(
                     drupal_get_path('module', 'form_builder') . '/css/entity.editing.css'
                 ),
-                'js'  => $js
+                'js'  => array_merge(
+                    array_map(function($path) {
+                        return array('type' => 'external', 'data' => $path);
+                    }, $this->externalJS), array(
+                    $jsSettings,
+                    drupal_get_path('module', 'form_builder') . '/js/entity.editing.js'
+                ))
             )
         );
     }

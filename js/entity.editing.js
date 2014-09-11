@@ -7,6 +7,11 @@
                 $scope.available.addedFields = {};
                 $scope.entity = Drupal.settings.FormBuilder.entity;
 
+                $scope.isFieldsEmpty = function () {
+                    return angular.equals({}, $scope.entity.fields)
+                            && angular.equals({}, $scope.available.addingFields);
+                };
+
                 // Drag field from available fields to form fields.
                 $scope.onDrop = function ($event, fieldName) {
                     $scope.available.addingFields[fieldName] = $scope.available.fields[fieldName];
