@@ -8,6 +8,9 @@
                 $scope.available.addedFields = {};
                 $scope.entity = Drupal.settings.FormBuilder.entity;
 
+                if ($scope.entity.fields instanceof Array)
+                    $scope.entity.fields = {};
+
                 $scope.toggleEntityType = function (entityTypeName) {
                     // Remove fields
                     if (true === $scope.entity.entityTypes[entityTypeName]) {
