@@ -1,11 +1,29 @@
 (function (angular, $, Drupal) {
 
     angular.module('fob_entity_edit', ['ngDragDrop'])
-            .controller('HelloCtrl', function ($http, $scope) {
+            .controller('HelloCtrl', function ($http, $scope, $timeout) {
                 $scope.available = Drupal.settings.FormBuilder.available;
+                $scope.available.addingEntityTypeNames = {};
                 $scope.available.addingFields = {};
                 $scope.available.addedFields = {};
                 $scope.entity = Drupal.settings.FormBuilder.entity;
+
+                $scope.toggleEntityType = function (entityTypeName) {
+                    // Remove fields
+                    if (true === $scope.entity.entityTypes[entityTypeName]) {
+                        for (var i in $scope.available.fields)
+                            if (entityTypeName === $scope.available.fields[i].entityTypeName)
+                                delete($scope.available.fields[i]);
+
+                        for (var i in $scope.entity.fields)
+                            if (entityTypeName === $scope.entity.fields[i].entityTypeName)
+                                delete($scope.entity.fields[i]);
+                    }
+                    else {
+                        $scope.available.addingEntityTypeNames[entityTypeName] = true;
+                        console.log('Adding ' + entityTypeName);
+                    }
+                };
 
                 $scope.isAvailableFieldsEmpty = function () {
                     return angular.equals({}, $scope.available.fields);

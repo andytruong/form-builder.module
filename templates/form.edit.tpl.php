@@ -47,10 +47,14 @@
                             id="edit-entityType-{{machineName}}"
                             name="entityTypes[{{machineName}}]"
                             value="{{machineName}}"
+                            class="form-checkbox"
                             ng-model="entity.entityTypes[machineName]"
-                            class="form-checkbox" />
+                            ng-click="toggleEntityType(machineName)"
+                            ng-disabled="available.addingEntityTypeNames[machineName]" />
+
                         <label class="option" for="edit-entityType-{{machineName}}">
                             {{entityType.humanName}}
+                            <span class="adding" ng-if="available.addingEntityTypeNames[machineName]">adding…</span>
                         </label>
                     </div>
                 </div>
