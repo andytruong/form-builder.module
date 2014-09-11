@@ -20,7 +20,6 @@ class Render
     protected $externalJS = [
         '//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.0/angular.min.js',
         '//cdn.rawgit.com/ganarajpr/angular-dragdrop/master/draganddrop.js',
-        # '//cdn.rawgit.com/angular-ui/bootstrap/master/src/dropdown/dropdown.js',
     ];
 
     public function __construct($ctrl)

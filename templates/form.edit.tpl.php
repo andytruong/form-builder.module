@@ -84,18 +84,22 @@
             <div id="formFields" class="form-item form-type-markup">
                 <label>Form fields</label>
                 <div class="form-item-list">
-                    <ul ui-on-Drop="onDrop($event, $data, women)">
+                    <ul>
                         <li class="empty" ng-show="isFieldsEmpty()">
                             Empty.
                         </li>
 
-                        <li data-uuid="{{uuid}}" ng-repeat="(uuid, field) in entity.fields">
+                        <li class="field"
+                            ng-repeat="(uuid, field) in entity.fields"
+                            ui-on-Drop="fieldOnDrop($event, $data, uuid)"
+                            ui-draggable="true"
+                            drag="uuid">
                             <strong class="field-human-name">{{field.humanName}}</strong>
                             <span class="entity-type-name">({{field.entityTypeName}})</span>
 
                             <div class="field-actions">
                                 <a href ng-click="fieldConfig(uuid)">Config</a>
-                                <a href ng-click="removeField(uuid)">Remove</a>
+                                <a href ng-click="fieldRemove(uuid)">Remove</a>
                             </div>
                         </li>
                         <li class="adding" ng-repeat="field in available.addingFields">

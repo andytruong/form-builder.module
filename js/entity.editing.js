@@ -1,7 +1,72 @@
 (function (angular, $, Drupal) {
+    function toggleEntityType($http, $scope, entityTypeName) {
+        // Remove fields. @TODO: Confirm
+        if (true === $scope.entity.entityTypes[entityTypeName]) {
+            for (var i in $scope.available.fields)
+                if (entityTypeName === $scope.available.fields[i].entityTypeName)
+                    delete($scope.available.fields[i]);
+
+            for (var i in $scope.entity.fields)
+                if (entityTypeName === $scope.entity.fields[i].entityTypeName)
+                    delete($scope.entity.fields[i]);
+        }
+        else {
+            $scope.available.addingEntityTypeNames[entityTypeName] = true;
+
+            $http
+                    .post(window.location.pathname, {
+                        action: 'addEntityType',
+                        entityTypeName: entityTypeName,
+                        entity: $scope.entity
+                    })
+                    .success(function (data) {
+                        delete($scope.available.addingEntityTypeNames[entityTypeName]);
+                        for (var name in data.entityTypeFields)
+                            $scope.available.fields[name] = data.entityTypeFields[name];
+                    });
+        }
+    }
+
+    function fieldOnDrop($http, $scope, fieldName, uuid) {
+        $scope.available.addingFields[fieldName] = $scope.available.fields[fieldName];
+        delete($scope.available.fields[fieldName]);
+
+        $http
+                .post(window.location.pathname, {
+                    action: 'add-field',
+                    fieldName: fieldName,
+                    entity: $scope.entity
+                })
+                .success(function (data) {
+                    var fieldName = data.field.entityTypeName + '.' + data.field.name;
+                    $scope.entity.fields[data.fieldUuid] = data.field;
+                    $scope.available.addedFields[data.fieldUuid] = $scope.available.addingFields[fieldName];
+                    delete($scope.available.addingFields[fieldName]);
+                });
+    }
+
+    function fieldRemove($scope, fieldUuid) {
+        var field = $scope.entity.fields[fieldUuid];
+        var fieldName = field.entityTypeName + '.' + field.name;
+        $scope.available.fields[fieldName] = field;
+        delete($scope.entity.fields[fieldUuid]);
+    }
+
+    function formSubmit($http, $scope) {
+        $scope.saving = true;
+        $http
+                .post(window.location.pathname, {
+                    action: 'save',
+                    entity: $scope.entity
+                })
+                .success(function (data) {
+                    $scope.saving = false;
+                    console.log(data);
+                });
+    }
 
     angular.module('fob_entity_edit', ['ngDragDrop'])
-            .controller('HelloCtrl', function ($http, $scope, $timeout) {
+            .controller('HelloCtrl', function ($http, $scope) {
                 $scope.available = Drupal.settings.FormBuilder.available;
                 $scope.available.addingEntityTypeNames = {};
                 $scope.available.addingFields = {};
@@ -13,31 +78,7 @@
                     $scope.entity.fields = {};
 
                 $scope.toggleEntityType = function (entityTypeName) {
-                    // Remove fields. @TODO: Confirm
-                    if (true === $scope.entity.entityTypes[entityTypeName]) {
-                        for (var i in $scope.available.fields)
-                            if (entityTypeName === $scope.available.fields[i].entityTypeName)
-                                delete($scope.available.fields[i]);
-
-                        for (var i in $scope.entity.fields)
-                            if (entityTypeName === $scope.entity.fields[i].entityTypeName)
-                                delete($scope.entity.fields[i]);
-                    }
-                    else {
-                        $scope.available.addingEntityTypeNames[entityTypeName] = true;
-
-                        $http
-                                .post(window.location.pathname, {
-                                    action: 'addEntityType',
-                                    entityTypeName: entityTypeName,
-                                    entity: $scope.entity
-                                })
-                                .success(function (data) {
-                                    delete($scope.available.addingEntityTypeNames[entityTypeName]);
-                                    for (var name in data.entityTypeFields)
-                                        $scope.available.fields[name] = data.entityTypeFields[name];
-                                });
-                    }
+                    toggleEntityType($http, $scope, entityTypeName);
                 };
 
                 $scope.isAvailableFieldsEmpty = function () {
@@ -45,49 +86,22 @@
                 };
 
                 $scope.isFieldsEmpty = function () {
-                    return angular.equals({}, $scope.entity.fields)
-                            && angular.equals({}, $scope.available.addingFields);
+                    return angular.equals({}, $scope.entity.fields) && angular.equals({}, $scope.available.addingFields);
                 };
 
                 // Drag field from available fields to form fields.
-                $scope.onDrop = function ($event, fieldName) {
-                    $scope.available.addingFields[fieldName] = $scope.available.fields[fieldName];
-                    delete($scope.available.fields[fieldName]);
-
-                    $http
-                            .post(window.location.pathname, {
-                                action: 'add-field',
-                                fieldName: fieldName,
-                                entity: $scope.entity
-                            })
-                            .success(function (data) {
-                                var fieldName = data.field.entityTypeName + '.' + data.field.name;
-                                $scope.entity.fields[data.fieldUuid] = data.field;
-                                $scope.available.addedFields[data.fieldUuid] = $scope.available.addingFields[fieldName];
-                                delete($scope.available.addingFields[fieldName]);
-                            });
+                $scope.fieldOnDrop = function ($event, fieldName, uuid) {
+                    fieldOnDrop($http, $scope, fieldName, uuid);
                 };
 
                 // Remove a field from form fields
-                $scope.removeField = function (fieldUuid) {
-                    var field = $scope.entity.fields[fieldUuid];
-                    var fieldName = field.entityTypeName + '.' + field.name;
-                    $scope.available.fields[fieldName] = field;
-                    delete($scope.entity.fields[fieldUuid]);
+                $scope.fieldRemove = function (fieldUuid) {
+                    fieldRemove($scope, fieldUuid);
                 };
 
                 // On form submit
                 $scope.submit = function () {
-                    $scope.saving = true;
-                    $http
-                            .post(window.location.pathname, {
-                                action: 'save',
-                                entity: $scope.entity
-                            })
-                            .success(function (data) {
-                                $scope.saving = false;
-                                console.log(data);
-                            });
+                    formSubmit($http, $scope);
                 };
             });
 
