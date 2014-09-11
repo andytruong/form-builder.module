@@ -76,6 +76,10 @@
                     <ul ui-on-Drop="onDrop($event,$data,women)">
                         <li data-uuid="{{uuid}}" ng-repeat="(uuid, field) in entity.fields">
                             {{field.humanName}} <span class="entity-type-name">(field.entityTypeName)</span>
+
+                            <div class="field-actions">
+                                <a href ng-click="removeField(uuid)">Remove</a>
+                            </div>
                         </li>
                         <li class="adding" ng-repeat="field in available.addingFields">
                             Adding <strong>{{field.humanName}}</strong>…

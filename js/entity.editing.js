@@ -7,6 +7,7 @@
                 $scope.available.addedFields = {};
                 $scope.entity = Drupal.settings.FormBuilder.entity;
 
+                // Drag field from available fields to form fields.
                 $scope.onDrop = function ($event, fieldName) {
                     $scope.available.addingFields[fieldName] = $scope.available.fields[fieldName];
                     delete($scope.available.fields[fieldName]);
@@ -18,11 +19,22 @@
                                 entity: $scope.entity
                             })
                             .success(function (data) {
+                                var fieldName = data.field.entityTypeName + '.' + data.field.name;
                                 $scope.entity.fields[data.fieldUuid] = data.field;
-                                delete($scope.available.addingFields[data.field.entityTypeName + '.' + data.field.fieldName]);
+                                $scope.available.addedFields[data.fieldUuid] = $scope.available.addingFields[fieldName];
+                                delete($scope.available.addingFields[fieldName]);
                             });
                 };
 
+                // Remove a field from form fields
+                $scope.removeField = function (fieldUuid) {
+                    var field = $scope.entity.fields[fieldUuid];
+                    var fieldName = field.entityTypeName + '.' + field.name;
+                    $scope.available.fields[fieldName] = field;
+                    delete($scope.entity.fields[fieldUuid]);
+                };
+
+                // On form submit
                 $scope.submit = function () {
                     $scope.saving = true;
                     $http
