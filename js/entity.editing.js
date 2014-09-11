@@ -8,6 +8,7 @@
                 $scope.available.addedFields = {};
                 $scope.entity = Drupal.settings.FormBuilder.entity;
 
+                // if empty, $scope.entity.fields is array!
                 if ($scope.entity.fields instanceof Array)
                     $scope.entity.fields = {};
 
