@@ -12,7 +12,7 @@
                     $scope.entity.fields = {};
 
                 $scope.toggleEntityType = function (entityTypeName) {
-                    // Remove fields
+                    // Remove fields. @TODO: Confirm
                     if (true === $scope.entity.entityTypes[entityTypeName]) {
                         for (var i in $scope.available.fields)
                             if (entityTypeName === $scope.available.fields[i].entityTypeName)
