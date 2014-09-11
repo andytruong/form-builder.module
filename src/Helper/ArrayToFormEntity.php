@@ -48,7 +48,12 @@ class ArrayToFormEntity
 
         // Convert entity types
         if (!empty($inArray['entityTypes'])) {
-            $inArray['entity_types'] = array_keys($inArray['entityTypes']);
+            $inArray['entity_types'] = [];
+            foreach ($inArray['entityTypes'] as $entityTypeName => $selected) {
+                if ($selected) {
+                    $inArray['entity_types'][] = $entityTypeName;
+                }
+            }
             unset($inArray['entityTypes']);
         }
 
