@@ -71,7 +71,11 @@
                             ng-repeat="(name, field) in available.fields"
                             ui-draggable="true"
                             drag="name">
-                            {{field.humanName}} <span class="entity-type-name">({{field.entityTypeName}})</span>
+                            <strong class="field-human-name">{{field.humanName}}</strong>
+                            <span class="entity-type-name">({{field.entityTypeName}})</span>
+                            <div class="description" ng-if="field.description">
+                                {{field.description}}
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -86,7 +90,8 @@
                         </li>
 
                         <li data-uuid="{{uuid}}" ng-repeat="(uuid, field) in entity.fields">
-                            {{field.humanName}} <span class="entity-type-name">(field.entityTypeName)</span>
+                            <strong class="field-human-name">{{field.humanName}}</strong>
+                            <span class="entity-type-name">({{field.entityTypeName}})</span>
 
                             <div class="field-actions">
                                 <a href ng-click="fieldConfig(uuid)">Config</a>
