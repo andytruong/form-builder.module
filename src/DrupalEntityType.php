@@ -71,14 +71,17 @@ class DrupalEntityType extends EntityTypeBase
 
     private function drupalArrayToField($fieldName, array $fieldInfo)
     {
-        // Not support read-only properties for now.
-        if (!isset($fieldInfo['setter callback'])) {
+        // Not support read-only and token (node.type) properties for now.
+        if (!isset($fieldInfo['setter callback']) || $fieldInfo['type'] === 'token') {
             return;
         }
 
         $field = $this->createFieldInstance();
         $field->setName($fieldName);
         $field->setHumanName($fieldInfo['label']);
+        if (!empty($fieldInfo['description'])) {
+            $field->setDescription($fieldInfo['description']);
+        }
         $field->setRequired(isset($fieldInfo['required']) ? $fieldInfo['required'] : false);
         $field->setDrupalFieldInfo($fieldInfo);
         return $field;

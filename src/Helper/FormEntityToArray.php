@@ -26,6 +26,7 @@ class FormEntityToArray
                     'name'           => $field->getName(),
                     'humanName'      => $field->getHumanName(),
                     'entityTypeName' => $field->getEntityType()->getName(),
+                    'description'    => $field->getDescription(),
                 ];
             }
         }

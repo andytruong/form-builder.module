@@ -14,8 +14,8 @@ class FormEntityController extends EntityAPIController
     {
         $entities = parent::load($ids, $conditions);
         $entityFixer = new FormEntityFixer();
-        foreach ($entities as &$entity) {
-            $entityFixer->fix($entity);
+        foreach ($entities as &$form) {
+            $entityFixer->fix($form);
         }
         return $entities;
     }
