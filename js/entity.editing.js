@@ -24,7 +24,18 @@
                     }
                     else {
                         $scope.available.addingEntityTypeNames[entityTypeName] = true;
-                        console.log('Adding ' + entityTypeName);
+
+                        $http
+                                .post(window.location.pathname, {
+                                    action: 'addEntityType',
+                                    entityTypeName: entityTypeName,
+                                    entity: $scope.entity
+                                })
+                                .success(function (data) {
+                                    delete($scope.available.addingEntityTypeNames[entityTypeName]);
+                                    for (var name in data.entityTypeFields)
+                                        $scope.available.fields[name] = data.entityTypeFields[name];
+                                });
                     }
                 };
 

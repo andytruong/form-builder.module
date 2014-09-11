@@ -4,6 +4,7 @@ namespace Drupal\form_builder\Controller\EntityEditController;
 
 use AndyTruong\Serializer\Serializer;
 use Drupal\form_builder\Controller\EntityEditController;
+use Drupal\form_builder\Helper\FormEntityToArray;
 use GO1\FormCenter\Field\FieldInterface;
 
 class Render
@@ -66,31 +67,15 @@ class Render
 
     private function getAvailableInfo()
     {
-        $serializer = new Serializer();
-        $allEntityTypes = array_map(function($type) use ($serializer) {
-            return $serializer->toArray($type);
-        }, form_builder_manager()->getEntityTypes());
-
-        $addedEntityTypeNames = array_map(function($type) {
-            return $type->getName();
-        }, $this->ctrl->entity->getEntityTypes());
-
-        $fields = array();
-        foreach (form_builder_manager()->getFields($addedEntityTypeNames) as $entityTypeName => $entityFields) {
-            foreach ($entityFields as $fieldName => $field) {
-                /* @var $field FieldInterface */
-                $fields["{$entityTypeName}.{$fieldName}"] = [
-                    'name'           => $field->getName(),
-                    'humanName'      => $field->getHumanName(),
-                    'entityTypeName' => $field->getEntityType()->getName(),
-                ];
-            }
-        }
-
+        $convertor = new FormEntityToArray();
         return array(
             'languages'   => language_list('enabled')[1],
-            'entityTypes' => $allEntityTypes,
-            'fields'      => $fields,
+            'entityTypes' => $convertor->convertEntityTypes(form_builder_manager()->getEntityTypes()),
+            'fields'      => $convertor->convertFields(array_map(
+                    function($type) {
+                        return $type->getName();
+                    }, $this->ctrl->entity->getEntityTypes()
+            )),
         );
     }
 

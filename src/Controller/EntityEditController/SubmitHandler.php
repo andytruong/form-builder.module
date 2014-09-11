@@ -4,6 +4,7 @@ namespace Drupal\form_builder\Controller\EntityEditController;
 
 use Drupal\form_builder\Controller\EntityEditController;
 use Drupal\form_builder\Helper\ArrayToFormEntity;
+use Drupal\form_builder\Helper\FormEntityToArray;
 
 class SubmitHandler
 {
@@ -49,6 +50,14 @@ class SubmitHandler
                 'removing' => [],
             ],
         ];
+    }
+
+    protected function handleAddEntityType(array $request)
+    {
+        return array(
+            'status'           => 'OK',
+            'entityTypeFields' => (new FormEntityToArray())->convertFields([$request['entityTypeName']]),
+        );
     }
 
     protected function handleAddField(array $reqeuest)
