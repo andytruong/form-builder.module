@@ -27,22 +27,33 @@
         }
     }
 
-    function fieldOnDrop($http, $scope, fieldName, uuid) {
-        $scope.available.addingFields[fieldName] = $scope.available.fields[fieldName];
-        delete($scope.available.fields[fieldName]);
+    function fieldOnDrop($http, $scope, fieldName, currentFieldUuid) {
+        var addField = function () {
+            $scope.available.addingFields[fieldName] = $scope.available.fields[fieldName];
+            delete($scope.available.fields[fieldName]);
 
-        $http
-                .post(window.location.pathname, {
-                    action: 'add-field',
-                    fieldName: fieldName,
-                    entity: $scope.entity
-                })
-                .success(function (data) {
-                    var fieldName = data.field.entityTypeName + '.' + data.field.name;
-                    $scope.entity.fields[data.fieldUuid] = data.field;
-                    $scope.available.addedFields[data.fieldUuid] = $scope.available.addingFields[fieldName];
-                    delete($scope.available.addingFields[fieldName]);
-                });
+            $http
+                    .post(window.location.pathname, {
+                        action: 'add-field',
+                        fieldName: fieldName,
+                        entity: $scope.entity
+                    })
+                    .success(function (data) {
+                        var fieldName = data.field.entityTypeName + '.' + data.field.name;
+                        $scope.entity.fields[data.fieldUuid] = data.field;
+                        $scope.available.addedFields[data.fieldUuid] = $scope.available.addingFields[fieldName];
+                        delete($scope.available.addingFields[fieldName]);
+                    });
+        };
+
+        var changeWeight = function () { // move field after currentField
+            var fieldUuid = fieldName;
+            var weight = $scope.entity.fields[currentFieldUuid].weight;
+            $scope.entity.fields[fieldUuid].weight = weight + 1;
+        };
+
+        // when fieldName is an uuid value, change weight of field instead of adding field
+        fieldName.match(/^.+-.+-.+-.+$/) ? changeWeight() : addField();
     }
 
     function fieldRemove($scope, fieldUuid) {
@@ -77,6 +88,15 @@
                 if ($scope.entity.fields instanceof Array)
                     $scope.entity.fields = {};
 
+                $scope.uiFormFields = [];
+                $scope.$watchCollection('entity.fields', function (items) {
+                    $scope.uiFormFields.length = 0;
+                    angular.forEach(items, function (value, key) {
+                        value.uuid = key;
+                        $scope.uiFormFields.push(value);
+                    });
+                });
+
                 $scope.toggleEntityType = function (entityTypeName) {
                     toggleEntityType($http, $scope, entityTypeName);
                 };
@@ -90,8 +110,8 @@
                 };
 
                 // Drag field from available fields to form fields.
-                $scope.fieldOnDrop = function ($event, fieldName, uuid) {
-                    fieldOnDrop($http, $scope, fieldName, uuid);
+                $scope.fieldOnDrop = function ($event, fieldName, curentFieldUuid) {
+                    fieldOnDrop($http, $scope, fieldName, curentFieldUuid);
                 };
 
                 // Remove a field from form fields

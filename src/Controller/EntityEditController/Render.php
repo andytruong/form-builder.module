@@ -96,7 +96,8 @@ class Render
             $array['fields'][$uuid] = [
                 'entityTypeName' => $field->getEntityType()->getName(),
                 'name'           => $field->getName(),
-                'humanName'      => $field->getHumanName()
+                'humanName'      => $field->getHumanName(),
+                'weight'         => rand(0, 200),
             ];
         }
 

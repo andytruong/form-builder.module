@@ -83,6 +83,7 @@
 
             <div id="formFields" class="form-item form-type-markup">
                 <label>Form fields</label>
+
                 <div class="form-item-list">
                     <ul>
                         <li class="empty" ng-show="isFieldsEmpty()">
@@ -90,16 +91,17 @@
                         </li>
 
                         <li class="field"
-                            ng-repeat="(uuid, field) in entity.fields"
-                            ui-on-Drop="fieldOnDrop($event, $data, uuid)"
+                            ng-repeat="field in uiFormFields| orderBy:'weight'"
+                            ui-on-Drop="fieldOnDrop($event, $data, field.uuid)"
                             ui-draggable="true"
-                            drag="uuid">
+                            drag="field.uuid">
                             <strong class="field-human-name">{{field.humanName}}</strong>
                             <span class="entity-type-name">({{field.entityTypeName}})</span>
 
                             <div class="field-actions">
                                 <a href ng-click="fieldConfig(uuid)">Config</a>
                                 <a href ng-click="fieldRemove(uuid)">Remove</a>
+                                <a href>[DEBUG] Weight: {{field.weight}}</a>
                             </div>
                         </li>
                         <li class="adding" ng-repeat="field in available.addingFields">
