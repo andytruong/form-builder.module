@@ -57,13 +57,10 @@ class ArrayToFormEntity
             unset($inArray['entityTypes']);
         }
 
-        // Convert layout option -> field weights
-        if (!empty($inArray['fields'])) {
-            $pageUuid = 'page-one'; // @TODO: Remove hardcode, a form can have multiple pages
-            $inArray['layout_options'] = [$pageUuid => []];
-            foreach ($inArray['fields'] as $fieldUuid => $fieldArray) {
-                $inArray['layout_options'][$pageUuid]['fields'][$fieldUuid]['weight'] = $fieldArray['weight'];
-            }
+        // Convert layout option
+        if (!empty($inArray['layoutOptions'])) {
+            $inArray['layout_options'] = $inArray['layoutOptions'];
+            unset($inArray['layoutOptions']);
         }
 
         // Convert fields

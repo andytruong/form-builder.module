@@ -54,12 +54,13 @@ class FormEntityToArray
                 'entityTypeName' => $field->getEntityType()->getName(),
                 'name'           => $field->getName(),
                 'humanName'      => $field->getHumanName(),
-                'weight'         => $form->getLayoutOptions()->getFieldWeight($fieldUuid),
             ];
         }
 
         foreach ($form->getLayoutOptions()->getPages() as $pageUuid => $pageInfo) {
+            unset($array['layoutOptions']['uuid_generator']);
             $array['layoutOptions'][$pageUuid] = $pageInfo;
+            $array['layoutOptions'][$pageUuid]['title'] = empty($array['layoutOptions'][$pageUuid]['title']) ? $pageUuid : $array['layoutOptions'][$pageUuid]['title'];
             foreach ($array['layoutOptions'][$pageUuid]['fields'] as $fieldUuid => $fieldOptions) {
                 /* @var $fieldOptions FieldOptions */
                 $array['layoutOptions'][$pageUuid]['fields'][$fieldUuid] = (new Serializer())->toArray($fieldOptions);

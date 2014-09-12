@@ -8,7 +8,10 @@
                     <?php include 'form.edit.entity-types.tpl.php'; ?>
                     <?php include 'form.edit.fields-select.tpl.php'; ?>
                 </div>
-                <?php include 'form.edit.fields.tpl.php'; ?>
+
+                <div id="formFields" class="form-item form-type-markup">
+                    <?php include 'form.edit.fields.tpl.php'; ?>
+                </div>
             </div>
 
             <div class="break"></div>

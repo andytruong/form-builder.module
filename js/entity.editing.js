@@ -5,14 +5,12 @@
             for (var i in $scope.available.fields)
                 if (entityTypeName === $scope.available.fields[i].entityTypeName)
                     delete($scope.available.fields[i]);
-
             for (var i in $scope.entity.fields)
                 if (entityTypeName === $scope.entity.fields[i].entityTypeName)
                     delete($scope.entity.fields[i]);
         }
         else {
             $scope.available.addingEntityTypeNames[entityTypeName] = true;
-
             $http
                     .post(window.location.pathname, {
                         action: 'addEntityType',
@@ -27,11 +25,11 @@
         }
     }
 
-    function fieldOnDrop($http, $scope, $timeout, fieldName, currentFieldUuid) {
+    function fieldOnDrop($http, $scope, $timeout, fieldName, baseFieldUuid, pageUuid) {
         var addField = function () {
-            $scope.available.addingFields[fieldName] = $scope.available.fields[fieldName];
+            $scope.available.addingFields[pageUuid] = $scope.available.addingFields[pageUuid] || {};
+            $scope.available.addingFields[pageUuid][fieldName] = $scope.available.fields[fieldName];
             delete($scope.available.fields[fieldName]);
-
             $http
                     .post(window.location.pathname, {
                         action: 'add-field',
@@ -40,30 +38,36 @@
                     })
                     .success(function (data) {
                         var fieldName = data.field.entityTypeName + '.' + data.field.name;
+                        var weight = 1 + $scope.entity.layoutOptions[pageUuid].fields[baseFieldUuid].weight;
                         $scope.entity.fields[data.fieldUuid] = data.field;
                         $scope.available.addedFields[data.fieldUuid] = $scope.available.addingFields[fieldName];
-                        delete($scope.available.addingFields[fieldName]);
+                        $scope.entity.layoutOptions[pageUuid].fields[data.fieldUuid] = {weight: weight, domTagName: 'div', domClasses: []};
+                        delete($scope.available.addingFields[pageUuid][fieldName]);
                     });
         };
-
         var changeWeight = function () { // move field after currentField
             var fieldUuid = fieldName;
-            var weight = $scope.entity.fields[currentFieldUuid].weight;
-            $scope.entity.fields[fieldUuid].weight = weight + 1;
+            var baseFieldKey, fieldKey;
+            for (var key in $scope.pageFields[pageUuid])
+                if (fieldUuid === $scope.pageFields[pageUuid][key].uuid) {
+                    fieldKey = key;
+                    break;
+                }
 
-            $timeout(function () {
-                $scope.uiFormFields.sort(function (a, b) {
-                    return a.weight - b.weight;
-                });
+            for (var key in $scope.pageFields[pageUuid])
+                if (baseFieldUuid === $scope.pageFields[pageUuid][key].uuid) {
+                    baseFieldKey = key;
+                    break;
+                }
 
-                angular.forEach($scope.uiFormFields, function (field, i) {
-                    $scope.uiFormFields[i].weight
-                            = $scope.entity.fields[field.uuid].weight
-                            = i * 2;
-                });
-            }, 100);
+            $scope.pageFields[pageUuid][fieldKey].weight = 1 + $scope.pageFields[pageUuid][baseFieldKey].weight;
+            // Change field weights for next move
+            $scope.pageFields[pageUuid].sort(function (a, b) {
+                return a.weight - b.weight;
+            });
+            for (var i in $scope.pageFields[pageUuid])
+                $scope.pageFields[pageUuid][i].weight = i * 2;
         };
-
         // when fieldName is an uuid value, change weight of field instead of adding field
         fieldName.match(/^.+-.+-.+-.+$/) ? changeWeight() : addField();
     }
@@ -96,60 +100,54 @@
                 $scope.available.addedFields = {};
                 $scope.entity = Drupal.settings.FormBuilder.entity;
                 $scope.slugDoAuto = true;
-
                 $scope.slugAuto = function () {
                     if (!$scope.slugDoAuto)
                         return;
-
                     $scope.entity.slug = $scope.entity.title
                             .toLowerCase()
                             .replace(new RegExp('[^a-z0-9_]+', 'g'), '-')
                             .substr(0, 255);
                 };
-
                 $scope.slugDisableAuto = function () {
                     $scope.slugDoAuto = false;
                 };
-
                 // if empty, $scope.entity.fields is array!
                 if ($scope.entity.fields instanceof Array)
                     $scope.entity.fields = {};
-
-                $scope.uiFormFields = [];
-                $scope.$watchCollection('entity.fields', function (items) {
-                    $scope.uiFormFields.length = 0;
-                    angular.forEach(items, function (value, key) {
-                        value.uuid = key;
-                        $scope.uiFormFields.push(value);
+                // Layout options -> fields
+                $scope.pageFields = {};
+                $scope.$watch('entity.layoutOptions', function (layoutOptions) {
+                    $scope.pageFields = {};
+                    angular.forEach(layoutOptions, function (pageInfo, pageUuid) {
+                        $scope.pageFields[pageUuid] = [];
+                        angular.forEach(pageInfo.fields, function (fieldInfo, fieldUuid) {
+                            fieldInfo.uuid = fieldUuid;
+                            $scope.pageFields[pageUuid].push(fieldInfo);
+                        });
                     });
-                });
+                }, true);
+                // !-- Layout options -> fields
 
                 $scope.toggleEntityType = function (entityTypeName) {
                     toggleEntityType($http, $scope, entityTypeName);
                 };
-
                 $scope.isAvailableFieldsEmpty = function () {
                     return angular.equals({}, $scope.available.fields);
                 };
-
                 $scope.isFieldsEmpty = function () {
                     return angular.equals({}, $scope.entity.fields) && angular.equals({}, $scope.available.addingFields);
                 };
-
                 // Drag field from available fields to form fields.
-                $scope.fieldOnDrop = function ($event, fieldName, curentFieldUuid) {
-                    fieldOnDrop($http, $scope, $timeout, fieldName, curentFieldUuid);
+                $scope.fieldOnDrop = function ($event, fieldName, curentFieldUuid, pageUuid) {
+                    fieldOnDrop($http, $scope, $timeout, fieldName, curentFieldUuid, pageUuid);
                 };
-
                 // Remove a field from form fields
                 $scope.fieldRemove = function (fieldUuid) {
                     fieldRemove($scope, fieldUuid);
                 };
-
                 // On form submit
                 $scope.submit = function () {
                     formSubmit($http, $scope);
                 };
             });
-
 })(angular, jQuery, Drupal);

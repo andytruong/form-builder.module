@@ -1,28 +1,46 @@
-<div id="formFields" class="form-item form-type-markup">
-    <label>Form fields</label>
+<label>Form fields</label>
 
-    <div class="item-list">
-        <ul>
-            <li class="empty" ng-show="isFieldsEmpty()">
-                Empty.
-            </li>
+<div class="item-list">
+    <ul>
+        <li class="empty" ng-show="isFieldsEmpty()">
+            Empty.
+        </li>
 
-            <li class="field"
-                ng-repeat="field in uiFormFields| orderBy:'weight'"
-                ui-on-Drop="fieldOnDrop($event, $data, field.uuid)"
-                ui-draggable="true"
-                drag="field.uuid">
-                <strong class="field-human-name">{{field.humanName}}</strong>
-                <span class="entity-type-name">({{field.entityTypeName}})</span>
+        <li ng-repeat="(pageUuid, pageInfo) in entity.layoutOptions">
+            <h2>{{pageInfo.title}}</h2>
+            <div class="description">{{pageInfo.description}}</div>
+            <ul>
+                <li     class="field"
+                        ng-repeat="fieldInfo in pageFields[pageUuid]|orderBy:'weight'"
+                        ui-on-Drop="fieldOnDrop($event, $data, fieldInfo.uuid, pageUuid)"
+                        ui-draggable="true"
+                        drag="fieldInfo.uuid">
+                    <strong class="field-human-name">{{entity.fields[fieldInfo.uuid].humanName}}</strong>
+                    <span class="entity-type-name">({{entity.fields[fieldInfo.uuid].entityTypeName}})</span>
+                    <div class="field-actions">
+                        <a href ng-click="fieldConfig(field.uuid)">Config</a>
+                        <a href ng-click="fieldRemove(field.uuid)">Remove</a>
+                        <a href>weight: {{fieldInfo.weight}}</a>
+                    </div>
+                </li>
 
-                <div class="field-actions">
-                    <a href ng-click="fieldConfig(field.uuid)">Config</a>
-                    <a href ng-click="fieldRemove(field.uuid)">Remove</a>
-                </div>
-            </li>
-            <li class="adding" ng-repeat="field in available.addingFields">
-                Adding <strong>{{field.humanName}}</strong>…
-            </li>
-        </ul>
-    </div>
+                <li class="adding" ng-repeat="field in available.addingFields[pageUuid]">
+                    Adding <strong>{{field.humanName}}</strong>…
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+
+<div class="form-item form-type-textfield form-item-new-page-title">
+    <input type="text"
+           id="edit-new-page-title"
+           name="title"
+           size="60"
+           maxlength="255"
+           class="form-text"
+           placeholder="Page name…"
+           ng-model="newPageTitle" />
+    <button ng-click="newPageClick()">Add new page</button>
 </div>
