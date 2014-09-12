@@ -89,7 +89,7 @@
     }
 
     angular.module('fob_entity_edit', ['ngDragDrop'])
-            .controller('HelloCtrl', function ($http, $scope, $timeout) {
+            .controller('FormBuilderForm', function ($http, $scope, $timeout) {
                 $scope.available = Drupal.settings.FormBuilder.available;
                 $scope.available.addingEntityTypeNames = {};
                 $scope.available.addingFields = {};

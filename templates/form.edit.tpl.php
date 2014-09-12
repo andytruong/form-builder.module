@@ -1,5 +1,5 @@
 <div ng-app="fob_entity_edit">
-    <div ng-controller="HelloCtrl">
+    <div ng-controller="FormBuilderForm">
         <form>
             <input type="hidden" ng-model="entity.fid" />
             <input type="hidden" ng-model="entity.status" />
