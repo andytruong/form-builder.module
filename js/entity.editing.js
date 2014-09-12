@@ -27,7 +27,7 @@
         }
     }
 
-    function fieldOnDrop($http, $scope, fieldName, currentFieldUuid) {
+    function fieldOnDrop($http, $scope, $timeout, fieldName, currentFieldUuid) {
         var addField = function () {
             $scope.available.addingFields[fieldName] = $scope.available.fields[fieldName];
             delete($scope.available.fields[fieldName]);
@@ -50,6 +50,18 @@
             var fieldUuid = fieldName;
             var weight = $scope.entity.fields[currentFieldUuid].weight;
             $scope.entity.fields[fieldUuid].weight = weight + 1;
+
+            $timeout(function () {
+                $scope.uiFormFields.sort(function (a, b) {
+                    return a.weight - b.weight;
+                });
+
+                angular.forEach($scope.uiFormFields, function (field, i) {
+                    $scope.uiFormFields[i].weight
+                            = $scope.entity.fields[field.uuid].weight
+                            = i * 2;
+                });
+            }, 100);
         };
 
         // when fieldName is an uuid value, change weight of field instead of adding field
@@ -77,7 +89,7 @@
     }
 
     angular.module('fob_entity_edit', ['ngDragDrop'])
-            .controller('HelloCtrl', function ($http, $scope) {
+            .controller('HelloCtrl', function ($http, $scope, $timeout) {
                 $scope.available = Drupal.settings.FormBuilder.available;
                 $scope.available.addingEntityTypeNames = {};
                 $scope.available.addingFields = {};
@@ -111,7 +123,7 @@
 
                 // Drag field from available fields to form fields.
                 $scope.fieldOnDrop = function ($event, fieldName, curentFieldUuid) {
-                    fieldOnDrop($http, $scope, fieldName, curentFieldUuid);
+                    fieldOnDrop($http, $scope, $timeout, fieldName, curentFieldUuid);
                 };
 
                 // Remove a field from form fields

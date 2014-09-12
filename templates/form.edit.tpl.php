@@ -62,7 +62,7 @@
 
             <div id="availableFields" class="form-item form-type-markup">
                 <label for="entityTypes">Available Fields</label>
-                <div class="form-item-list">
+                <div class="item-list">
                     <ul>
                         <li class="empty" ng-show="isAvailableFieldsEmpty()">
                             There is no available fields.
@@ -84,7 +84,7 @@
             <div id="formFields" class="form-item form-type-markup">
                 <label>Form fields</label>
 
-                <div class="form-item-list">
+                <div class="item-list">
                     <ul>
                         <li class="empty" ng-show="isFieldsEmpty()">
                             Empty.
@@ -101,7 +101,6 @@
                             <div class="field-actions">
                                 <a href ng-click="fieldConfig(uuid)">Config</a>
                                 <a href ng-click="fieldRemove(uuid)">Remove</a>
-                                <a href>[DEBUG] Weight: {{field.weight}}</a>
                             </div>
                         </li>
                         <li class="adding" ng-repeat="field in available.addingFields">

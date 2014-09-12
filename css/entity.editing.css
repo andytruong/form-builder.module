@@ -1,3 +1,9 @@
+#availableFields .item-list ul,
+#formFields .item-list ul {
+    margin: 0;
+    padding: 0;
+}
+
 #availableFields li,
 #formFields li.field {
     cursor: move;
