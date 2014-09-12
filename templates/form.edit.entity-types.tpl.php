@@ -9,7 +9,7 @@
                 value="{{machineName}}"
                 class="form-checkbox"
                 ng-model="entity.entityTypes[machineName]"
-                ng-click="toggleEntityType(machineName)"
+                ng-click="entityTypeToggle(machineName)"
                 ng-disabled="available.addingEntityTypeNames[machineName]" />
 
             <label class="option" for="edit-entityType-{{machineName}}">

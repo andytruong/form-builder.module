@@ -1,4 +1,4 @@
-<div ng-app="fob_entity_edit">
+<div ng-app="FormBuilderApp">
     <div ng-controller="FormBuilderForm">
         <form>
             <?php include 'form.edit.title.tpl.php'; ?>
@@ -40,9 +40,9 @@
             </div>
 
             <div class="form-actions form-wrapper" id="edit-actions">
-                <button id="edit-submit" class="form-submit" ng-click="submit()">
-                    <span ng-if="!saving">Save</span>
-                    <span ng-if="saving">Saving…</span>
+                <button id="edit-submit" class="form-submit" ng-click="formSubmit()">
+                    <span ng-if="!formSaving">Save</span>
+                    <span ng-if="formSaving">Saving…</span>
                 </button>
             </div>
         </form>

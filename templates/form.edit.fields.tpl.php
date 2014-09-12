@@ -6,32 +6,11 @@
             <h2>{{pageInfo.title}}</h2>
             <div class="description">{{pageInfo.description}}</div>
             <ul>
-                <li class="draggable empty"
-                    ui-on-Drop="fieldOnDrop($event, $data, '', pageUuid)"
-                    ng-show="isFieldsEmpty(pageUuid)">
-                    No field.
-                </li>
-                <li     class="draggable field"
-                        ng-repeat="fieldInfo in pageFields[pageUuid]|orderBy:'weight'"
-                        ui-on-Drop="fieldOnDrop($event, $data, fieldInfo.uuid, pageUuid)"
-                        ui-draggable="true"
-                        drag="fieldInfo.uuid">
-                    <strong class="field-human-name">{{entity.fields[fieldInfo.uuid].humanName}}</strong>
-                    <span class="entity-type-name">({{entity.fields[fieldInfo.uuid].entityTypeName}})</span>
-                    <div class="field-actions">
-                        <a href ng-click="fieldConfig(pageUuid, fieldInfo.uuid)">Config</a>
-                        <a href ng-click="fieldRemove(pageUuid, fieldInfo.uuid)">Remove</a>
-                    </div>
-                </li>
-
-                <li class="adding" ng-repeat="field in available.addingFields[pageUuid]">
-                    Adding <strong>{{field.humanName}}</strong>…
-                </li>
+                <?php include 'form.edit.fields.item.tpl.php'; ?>
             </ul>
         </li>
     </ul>
 </div>
-
 
 <div class="form-item form-type-textfield form-item-new-page-title">
     <input type="text"
