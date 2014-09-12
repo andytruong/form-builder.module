@@ -102,8 +102,8 @@
                                 <span class="entity-type-name">({{field.entityTypeName}})</span>
 
                                 <div class="field-actions">
-                                    <a href ng-click="fieldConfig(uuid)">Config</a>
-                                    <a href ng-click="fieldRemove(uuid)">Remove</a>
+                                    <a href ng-click="fieldConfig(field.uuid)">Config</a>
+                                    <a href ng-click="fieldRemove(field.uuid)">Remove</a>
                                 </div>
                             </li>
                             <li class="adding" ng-repeat="field in available.addingFields">
