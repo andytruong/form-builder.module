@@ -2,10 +2,8 @@
 
 namespace Drupal\form_builder\Controller\EntityEditController;
 
-use AndyTruong\Serializer\Serializer;
 use Drupal\form_builder\Controller\EntityEditController;
 use Drupal\form_builder\Helper\FormEntityToArray;
-use GO1\FormCenter\Field\FieldInterface;
 
 class Render
 {
@@ -80,28 +78,7 @@ class Render
 
     private function getEntityInfo()
     {
-        $array = (new Serializer())->toArray($this->ctrl->entity);
-
-        $array['status'] = (bool) $array['status'];
-
-        // AngularJS friendly
-        $array['entityTypes'] = array_keys($array['entityTypes']);
-        foreach ($array['entityTypes'] as $i => $name) {
-            unset($array['entityTypes'][$i]);
-            $array['entityTypes'][$name] = true;
-        }
-
-        foreach ($array['fields'] as $fieldUuid => $field) {
-            /* @var $field FieldInterface */
-            $array['fields'][$fieldUuid] = [
-                'entityTypeName' => $field->getEntityType()->getName(),
-                'name'           => $field->getName(),
-                'humanName'      => $field->getHumanName(),
-                'weight'         => $this->ctrl->entity->getLayoutOptions()->getFieldWeight($fieldUuid),
-            ];
-        }
-
-        return $array;
+        return (new FormEntityToArray())->convertEntity($this->ctrl->entity);
     }
 
 }
