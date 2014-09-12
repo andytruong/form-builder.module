@@ -15,6 +15,84 @@
                        ng-model="entity.title" />
             </div>
 
+            <div id="formBuilderFields">
+                <div id="availableResources">
+                    <div id="availableEntityTypes" class="form-item form-type-checkboxes form-item-entityTypes">
+                        <label for="entityTypes">Entity types</label>
+                        <div id="edit-entityTypes" class="form-checkboxes">
+                            <div class="form-item form-type-checkbox" ng-repeat="(machineName, entityType) in available.entityTypes">
+                                <input
+                                    type="checkbox"
+                                    id="edit-entityType-{{machineName}}"
+                                    name="entityTypes[{{machineName}}]"
+                                    value="{{machineName}}"
+                                    class="form-checkbox"
+                                    ng-model="entity.entityTypes[machineName]"
+                                    ng-click="toggleEntityType(machineName)"
+                                    ng-disabled="available.addingEntityTypeNames[machineName]" />
+
+                                <label class="option" for="edit-entityType-{{machineName}}">
+                                    {{entityType.humanName}}
+                                    <span class="adding" ng-if="available.addingEntityTypeNames[machineName]">adding…</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="availableFields" class="form-item form-type-markup">
+                        <label for="entityTypes">Available Fields</label>
+                        <div class="item-list">
+                            <ul>
+                                <li class="empty" ng-show="isAvailableFieldsEmpty()">
+                                    There is no available fields.
+                                </li>
+                                <li data-name="{{name}}"
+                                    ng-repeat="(name, field) in available.fields"
+                                    ui-draggable="true"
+                                    drag="name">
+                                    <strong class="field-human-name">{{field.humanName}}</strong>
+                                    <span class="entity-type-name">({{field.entityTypeName}})</span>
+                                    <div class="description" ng-if="field.description">
+                                        {{field.description}}
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="formFields" class="form-item form-type-markup">
+                    <label>Form fields</label>
+
+                    <div class="item-list">
+                        <ul>
+                            <li class="empty" ng-show="isFieldsEmpty()">
+                                Empty.
+                            </li>
+
+                            <li class="field"
+                                ng-repeat="field in uiFormFields| orderBy:'weight'"
+                                ui-on-Drop="fieldOnDrop($event, $data, field.uuid)"
+                                ui-draggable="true"
+                                drag="field.uuid">
+                                <strong class="field-human-name">{{field.humanName}}</strong>
+                                <span class="entity-type-name">({{field.entityTypeName}})</span>
+
+                                <div class="field-actions">
+                                    <a href ng-click="fieldConfig(uuid)">Config</a>
+                                    <a href ng-click="fieldRemove(uuid)">Remove</a>
+                                </div>
+                            </li>
+                            <li class="adding" ng-repeat="field in available.addingFields">
+                                Adding <strong>{{field.humanName}}</strong>…
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="break"></div>
+
             <div class="form-item form-type-checkbox form-item-status">
                 <input type="checkbox"
                        id="edit-status"
@@ -35,78 +113,6 @@
                            ng-model="entity.language"
                            class="form-radio">
                     <label class="option" for="edit-language-{{item.language}}">{{item.name}}</label>
-                </div>
-            </div>
-
-            <div class="form-item form-type-checkboxes form-item-entityTypes">
-                <label for="entityTypes">Entity types</label>
-                <div id="edit-entityTypes" class="form-checkboxes">
-                    <div class="form-item form-type-checkbox" ng-repeat="(machineName, entityType) in available.entityTypes">
-                        <input
-                            type="checkbox"
-                            id="edit-entityType-{{machineName}}"
-                            name="entityTypes[{{machineName}}]"
-                            value="{{machineName}}"
-                            class="form-checkbox"
-                            ng-model="entity.entityTypes[machineName]"
-                            ng-click="toggleEntityType(machineName)"
-                            ng-disabled="available.addingEntityTypeNames[machineName]" />
-
-                        <label class="option" for="edit-entityType-{{machineName}}">
-                            {{entityType.humanName}}
-                            <span class="adding" ng-if="available.addingEntityTypeNames[machineName]">adding…</span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <div id="availableFields" class="form-item form-type-markup">
-                <label for="entityTypes">Available Fields</label>
-                <div class="item-list">
-                    <ul>
-                        <li class="empty" ng-show="isAvailableFieldsEmpty()">
-                            There is no available fields.
-                        </li>
-                        <li data-name="{{name}}"
-                            ng-repeat="(name, field) in available.fields"
-                            ui-draggable="true"
-                            drag="name">
-                            <strong class="field-human-name">{{field.humanName}}</strong>
-                            <span class="entity-type-name">({{field.entityTypeName}})</span>
-                            <div class="description" ng-if="field.description">
-                                {{field.description}}
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <div id="formFields" class="form-item form-type-markup">
-                <label>Form fields</label>
-
-                <div class="item-list">
-                    <ul>
-                        <li class="empty" ng-show="isFieldsEmpty()">
-                            Empty.
-                        </li>
-
-                        <li class="field"
-                            ng-repeat="field in uiFormFields| orderBy:'weight'"
-                            ui-on-Drop="fieldOnDrop($event, $data, field.uuid)"
-                            ui-draggable="true"
-                            drag="field.uuid">
-                            <strong class="field-human-name">{{field.humanName}}</strong>
-                            <span class="entity-type-name">({{field.entityTypeName}})</span>
-
-                            <div class="field-actions">
-                                <a href ng-click="fieldConfig(uuid)">Config</a>
-                                <a href ng-click="fieldRemove(uuid)">Remove</a>
-                            </div>
-                        </li>
-                        <li class="adding" ng-repeat="field in available.addingFields">
-                            Adding <strong>{{field.humanName}}</strong>…
-                        </li>
-                    </ul>
                 </div>
             </div>
 
