@@ -35,7 +35,7 @@ class ArrayToFormEntity
     public function onUnserializeBefore(Event $event)
     {
         $inArray = $event->getInArray();
-        unset($inArray['entityTypes'], $inArray['fields'], $inArray['listeners'], $inArray['uuid_generator']);
+        unset($inArray['entityTypes'], $inArray['fields'], $inArray['layoutOptions'], $inArray['listeners'], $inArray['uuid_generator']);
         $event->setInArray($inArray);
     }
 
@@ -55,6 +55,15 @@ class ArrayToFormEntity
                 }
             }
             unset($inArray['entityTypes']);
+        }
+
+        // Convert layout option -> field weights
+        if (!empty($inArray['fields'])) {
+            $pageUuid = 'page-one'; // @TODO: Remove hardcode, a form can have multiple pages
+            $inArray['layout_options'] = [$pageUuid => []];
+            foreach ($inArray['fields'] as $fieldUuid => $fieldArray) {
+                $inArray['layout_options'][$pageUuid]['fields'][$fieldUuid]['weight'] = $fieldArray['weight'];
+            }
         }
 
         // Convert fields

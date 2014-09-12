@@ -3,6 +3,7 @@
 namespace Drupal\form_builder\Helper;
 
 use Drupal\form_builder\FormEntity;
+use GO1\FormCenter\Form\Layout\FormLayoutOptions;
 
 class FormEntityFixer
 {
@@ -19,6 +20,7 @@ class FormEntityFixer
         }
 
         $this->fixEntityTypes($form);
+        $this->fixFormLayoutOptions($form);
         $this->fixFormFields($form);
     }
 
@@ -32,17 +34,39 @@ class FormEntityFixer
         unset($form->entity_types);
     }
 
+    private function fixFormLayoutOptions(FormEntity $form)
+    {
+        if (empty($form->layout_options)) {
+            return;
+        }
+
+        $form->setLayoutOption($layoutOptions = form_builder_manager()->getFormLayoutOptions());
+        foreach ($form->layout_options as $pageUuid => $pageInfo) {
+            $layoutOptions->addPage($pageUuid);
+
+            if (empty($pageInfo['fields'])) {
+                continue;
+            }
+
+            foreach ($pageInfo['fields'] as $fieldUuid => $fieldInfo) {
+                $layoutOptions->addField($pageUuid, $fieldUuid, $fieldInfo['weight']);
+            }
+        }
+    }
+
     private function fixFormFields(FormEntity $form)
     {
-        if (!empty($form->form_fields)) {
-            foreach ($form->form_fields as $entityTypeName => $fieldNames) {
-                foreach ($fieldNames as $fieldName => $fieldUuid) {
-                    $field = form_builder_manager()->getField($entityTypeName, $fieldName);
-                    $form->addField($entityTypeName, $field, $fieldUuid);
-                }
-            }
-            unset($form->form_fields);
+        if (empty($form->form_fields)) {
+            return;
         }
+
+        foreach ($form->form_fields as $entityTypeName => $fieldNames) {
+            foreach ($fieldNames as $fieldName => $fieldUuid) {
+                $field = form_builder_manager()->getField($entityTypeName, $fieldName);
+                $form->addField($entityTypeName, $field, $fieldUuid);
+            }
+        }
+        unset($form->form_fields);
     }
 
 }

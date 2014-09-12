@@ -91,13 +91,13 @@ class Render
             $array['entityTypes'][$name] = true;
         }
 
-        foreach ($array['fields'] as $uuid => $field) {
+        foreach ($array['fields'] as $fieldUuid => $field) {
             /* @var $field FieldInterface */
-            $array['fields'][$uuid] = [
+            $array['fields'][$fieldUuid] = [
                 'entityTypeName' => $field->getEntityType()->getName(),
                 'name'           => $field->getName(),
                 'humanName'      => $field->getHumanName(),
-                'weight'         => rand(0, 200),
+                'weight'         => $this->ctrl->entity->getLayoutOptions()->getFieldWeight($fieldUuid),
             ];
         }
 

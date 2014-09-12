@@ -3,6 +3,7 @@
 namespace Drupal\form_builder\Helper;
 
 use Drupal\form_builder\FormEntity;
+use GO1\FormCenter\Field\FieldOptions;
 
 class FormEntityReversedFixer
 {
@@ -11,6 +12,7 @@ class FormEntityReversedFixer
     {
         $this->fixEntityTypes($form);
         $this->fixFormFields($form);
+        $this->fixFormLayoutOptions($form);
     }
 
     private function fixEntityTypes(FormEntity $form)
@@ -29,6 +31,26 @@ class FormEntityReversedFixer
             $form->form_fields[$field->getEntityType()->getName()][$field->getName()] = $fieldUuid;
         }
         $form->form_fields = json_encode($form->form_fields);
+    }
+
+    private function fixFormLayoutOptions(FormEntity $form)
+    {
+        if (!$layoutOptions = $form->getLayoutOptions()) {
+            $form->layout_options = '{}';
+            return;
+        }
+
+        $form->layout_options = [];
+        foreach ($layoutOptions->getPages() as $pageUuid => $pageInfo) {
+            if (!empty($pageInfo['fields'])) {
+                foreach ($pageInfo['fields'] as $fieldUuid => $fieldInfo) {
+                    /* @var $fieldInfo FieldOptions */
+                    $form->layout_options[$pageUuid]['fields'][$fieldUuid]['weight'] = $fieldInfo->getWeight();
+                }
+            }
+        }
+
+        $form->layout_options = drupal_json_encode($form->layout_options);
     }
 
 }
