@@ -30,6 +30,7 @@
             $scope.available.addingFields[pageUuid] = $scope.available.addingFields[pageUuid] || {};
             $scope.available.addingFields[pageUuid][fieldName] = $scope.available.fields[fieldName];
             delete($scope.available.fields[fieldName]);
+
             $http
                     .post(window.location.pathname, {
                         action: 'add-field',
@@ -38,7 +39,8 @@
                     })
                     .success(function (data) {
                         var fieldName = data.field.entityTypeName + '.' + data.field.name;
-                        var weight = 1 + $scope.entity.layoutOptions[pageUuid].fields[baseFieldUuid].weight;
+                        var weight = baseFieldUuid ? 1 + $scope.entity.layoutOptions[pageUuid].fields[baseFieldUuid].weight : 0;
+
                         $scope.entity.fields[data.fieldUuid] = data.field;
                         $scope.available.addedFields[data.fieldUuid] = $scope.available.addingFields[fieldName];
                         $scope.entity.layoutOptions[pageUuid].fields[data.fieldUuid] = {weight: weight, domTagName: 'div', domClasses: []};
@@ -128,14 +130,36 @@
                 }, true);
                 // !-- Layout options -> fields
 
+                // New page
+                $scope.newPageTitle = '';
+                $scope.newPageAdding = false;
+                $scope.newPageClick = function () {
+                    $scope.newPageAdding = true;
+                    $http
+                            .post(window.location.pathname, {
+                                action: 'addPage',
+                                entity: $scope.entity
+                            })
+                            .success(function (data) {
+                                $scope.newPageAdding = false;
+                                $scope.entity.layoutOptions[data.pageUuid] = {
+                                    title: $scope.newPageTitle,
+                                    description: '',
+                                    weight: 1,
+                                    fields: {}
+                                };
+                                $scope.newPageTitle = '';
+                            });
+                };
+
                 $scope.toggleEntityType = function (entityTypeName) {
                     toggleEntityType($http, $scope, entityTypeName);
                 };
                 $scope.isAvailableFieldsEmpty = function () {
                     return angular.equals({}, $scope.available.fields);
                 };
-                $scope.isFieldsEmpty = function () {
-                    return angular.equals({}, $scope.entity.fields) && angular.equals({}, $scope.available.addingFields);
+                $scope.isFieldsEmpty = function (pageUuid) {
+                    return 0 === $scope.pageFields[pageUuid].length;
                 };
                 // Drag field from available fields to form fields.
                 $scope.fieldOnDrop = function ($event, fieldName, curentFieldUuid, pageUuid) {

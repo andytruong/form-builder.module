@@ -3,7 +3,6 @@
 namespace Drupal\form_builder\Helper;
 
 use Drupal\form_builder\FormEntity;
-use GO1\FormCenter\Form\Layout\FormLayoutOptions;
 
 class FormEntityFixer
 {
@@ -42,7 +41,7 @@ class FormEntityFixer
 
         $form->setLayoutOption($layoutOptions = form_builder_manager()->getFormLayoutOptions());
         foreach ($form->layout_options as $pageUuid => $pageInfo) {
-            $layoutOptions->addPage($pageUuid);
+            $layoutOptions->addPage($pageUuid, isset($pageInfo['title']) ? $pageInfo['title'] : '', isset($pageInfo['description']) ? $pageInfo['description'] : '', isset($pageInfo['help']) ? $pageInfo['help'] : '');
 
             if (empty($pageInfo['fields'])) {
                 continue;

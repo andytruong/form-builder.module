@@ -38,7 +38,7 @@
     border: 1px #777 dashed;
 }
 
-#formFields li.field.on-drag-hover {
+#formFields li.on-drag-hover {
     padding-bottom: 9px;
     border-bottom: 3px #0074BD solid;
 }

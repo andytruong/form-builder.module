@@ -60,6 +60,15 @@ class SubmitHandler
         ];
     }
 
+    protected function handleAddPage(array $request)
+    {
+        $form = (new ArrayToFormEntity($request['entity']))->convert();
+        return [
+            'status'   => 'OK',
+            'pageUuid' => $form->getLayoutOptions()->addPage(),
+        ];
+    }
+
     protected function handleAddField(array $reqeuest)
     {
         $tmp = explode('.', $reqeuest['fieldName']);

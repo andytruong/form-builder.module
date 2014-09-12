@@ -2,15 +2,16 @@
 
 <div class="item-list">
     <ul>
-        <li class="empty" ng-show="isFieldsEmpty()">
-            Empty.
-        </li>
-
         <li ng-repeat="(pageUuid, pageInfo) in entity.layoutOptions">
             <h2>{{pageInfo.title}}</h2>
             <div class="description">{{pageInfo.description}}</div>
             <ul>
-                <li     class="field"
+                <li class="draggable empty"
+                    ui-on-Drop="fieldOnDrop($event, $data, '', pageUuid)"
+                    ng-show="isFieldsEmpty(pageUuid)">
+                    No field.
+                </li>
+                <li     class="draggable field"
                         ng-repeat="fieldInfo in pageFields[pageUuid]|orderBy:'weight'"
                         ui-on-Drop="fieldOnDrop($event, $data, fieldInfo.uuid, pageUuid)"
                         ui-draggable="true"
@@ -42,5 +43,7 @@
            class="form-text"
            placeholder="Page name…"
            ng-model="newPageTitle" />
-    <button ng-click="newPageClick()">Add new page</button>
+    <button ng-click="newPageClick()">
+        Add<span ng-if="newPageAdding">ing…</span>
+    </button>
 </div>
