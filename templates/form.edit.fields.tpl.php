@@ -21,7 +21,6 @@
                     <div class="field-actions">
                         <a href ng-click="fieldConfig(field.uuid)">Config</a>
                         <a href ng-click="fieldRemove(field.uuid)">Remove</a>
-                        <a href>weight: {{fieldInfo.weight}}</a>
                     </div>
                 </li>
 
