@@ -19,8 +19,8 @@
                     <strong class="field-human-name">{{entity.fields[fieldInfo.uuid].humanName}}</strong>
                     <span class="entity-type-name">({{entity.fields[fieldInfo.uuid].entityTypeName}})</span>
                     <div class="field-actions">
-                        <a href ng-click="fieldConfig(field.uuid)">Config</a>
-                        <a href ng-click="fieldRemove(field.uuid)">Remove</a>
+                        <a href ng-click="fieldConfig(pageUuid, fieldInfo.uuid)">Config</a>
+                        <a href ng-click="fieldRemove(pageUuid, fieldInfo.uuid)">Remove</a>
                     </div>
                 </li>
 

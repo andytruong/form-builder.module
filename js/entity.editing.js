@@ -74,11 +74,12 @@
         fieldName.match(/^.+-.+-.+-.+$/) ? changeWeight() : addField();
     }
 
-    function fieldRemove($scope, fieldUuid) {
+    function fieldRemove($scope, pageUuid, fieldUuid) {
         var field = $scope.entity.fields[fieldUuid];
         var fieldName = field.entityTypeName + '.' + field.name;
         $scope.available.fields[fieldName] = field;
         delete($scope.entity.fields[fieldUuid]);
+        delete($scope.entity.layoutOptions[pageUuid]['fields'][fieldUuid]);
     }
 
     function formSubmit($http, $scope) {
@@ -90,7 +91,6 @@
                 })
                 .success(function (data) {
                     $scope.saving = false;
-                    console.log(data);
                 });
     }
 
@@ -166,8 +166,8 @@
                     fieldOnDrop($http, $scope, $timeout, fieldName, curentFieldUuid, pageUuid);
                 };
                 // Remove a field from form fields
-                $scope.fieldRemove = function (fieldUuid) {
-                    fieldRemove($scope, fieldUuid);
+                $scope.fieldRemove = function (pageUuid, fieldUuid) {
+                    fieldRemove($scope, pageUuid, fieldUuid);
                 };
                 // On form submit
                 $scope.submit = function () {
