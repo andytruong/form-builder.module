@@ -34,7 +34,7 @@ class DrupalEntityStorageHandler extends EntityStorageHandlerBase
      * @param EntityInterface $entity
      * @param array $cmds
      */
-    public function patch(EntityInterface $entity, array $cmds = array())
+    public function patch(EntityInterface $entity, array $cmds = [])
     {
 
     }

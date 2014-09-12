@@ -30,44 +30,44 @@ class Render
 
     public function render()
     {
-        $jsSettings = array(
+        $jsSettings = [
             'type' => 'setting',
-            'data' => array('FormBuilder' => $this->getRenderInfo()),
-        );
+            'data' => ['FormBuilder' => $this->getRenderInfo()],
+        ];
 
-        return array(
+        return [
             '#prefix'   => !empty($_GET['debug']) ? kpr($jsSettings['data']['FormBuilder'], true) : '',
             '#markup'   => theme_render_template(
-                $this->template, array(
+                $this->template, [
                 'data' => $jsSettings['data']['FormBuilder']
-            )),
-            '#attached' => array(
-                'css' => array(
+            ]),
+            '#attached' => [
+                'css' => [
                     drupal_get_path('module', 'form_builder') . '/css/entity.editing.css'
-                ),
+                ],
                 'js'  => array_merge(
                     array_map(function($path) {
-                        return array('type' => 'external', 'data' => $path);
-                    }, $this->externalJS), array(
+                        return ['type' => 'external', 'data' => $path];
+                    }, $this->externalJS), [
                     $jsSettings,
                     drupal_get_path('module', 'form_builder') . '/js/entity.editing.js'
-                ))
-            )
-        );
+                ])
+            ]
+        ];
     }
 
     private function getRenderInfo()
     {
-        return array(
+        return [
             'available' => $this->getAvailableInfo(),
             'entity'    => $this->getEntityInfo(),
-        );
+        ];
     }
 
     private function getAvailableInfo()
     {
         $convertor = new FormEntityToArray();
-        return array(
+        return [
             'languages'   => language_list('enabled')[1],
             'entityTypes' => $convertor->convertEntityTypes(form_builder_manager()->getEntityTypes()),
             'fields'      => $convertor->convertFields(array_map(
@@ -75,7 +75,7 @@ class Render
                         return $type->getName();
                     }, $this->ctrl->entity->getEntityTypes()
             )),
-        );
+        ];
     }
 
     private function getEntityInfo()

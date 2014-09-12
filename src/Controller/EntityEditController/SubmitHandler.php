@@ -26,12 +26,12 @@ class SubmitHandler
     public function handle(array $request)
     {
         if (isset($request['action'])) {
-            $method = 'handle' . at_camelize(str_replace(array('-', ' '), '_', $request['action']));
+            $method = 'handle' . at_camelize(str_replace(['-', ' '], '_', $request['action']));
             unset($request['action']);
             $return = $this->{$method}($request);
         }
         elseif (!isset($request['action'])) {
-            $return = array('status' => 'FAIL', 'error' => 'Missing action');
+            $return = ['status' => 'FAIL', 'error' => 'Missing action'];
         }
 
         drupal_add_http_header('Content-Type', 'application/json; charset=utf-8');
@@ -54,10 +54,10 @@ class SubmitHandler
 
     protected function handleAddEntityType(array $request)
     {
-        return array(
+        return [
             'status'           => 'OK',
             'entityTypeFields' => (new FormEntityToArray())->convertFields([$request['entityTypeName']]),
-        );
+        ];
     }
 
     protected function handleAddField(array $reqeuest)

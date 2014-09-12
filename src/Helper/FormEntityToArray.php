@@ -18,7 +18,7 @@ class FormEntityToArray
 
     public function convertFields($entityTypeNames)
     {
-        $fields = array();
+        $fields = [];
         foreach (form_builder_manager()->getFields($entityTypeNames) as $entityTypeName => $entityFields) {
             foreach ($entityFields as $fieldName => $field) {
                 /* @var $field FieldInterface */

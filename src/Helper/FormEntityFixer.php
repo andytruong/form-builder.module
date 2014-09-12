@@ -12,7 +12,7 @@ class FormEntityFixer
         // Must have uuidGenerator
         $form->setUuidGenerator(form_builder_manager()->getUuidGenerator());
 
-        foreach (array('entity_types', 'form_fields', 'layout_options', 'form_listeners') as $key) {
+        foreach (['entity_types', 'form_fields', 'layout_options', 'form_listeners'] as $key) {
             if (!empty($form->{$key}) && is_string($form->{$key})) {
                 $form->{$key} = json_decode($form->{$key}, true);
             }
@@ -24,7 +24,7 @@ class FormEntityFixer
 
     private function fixEntityTypes(FormEntity $form)
     {
-        $form->entity_types = empty($form->entity_types) ? array() : $form->entity_types;
+        $form->entity_types = empty($form->entity_types) ? [] : $form->entity_types;
         foreach ($form->entity_types as $entityTypeName) {
             $entityType = form_builder_manager()->getEntityType($entityTypeName);
             $form->addEntityType($entityType);

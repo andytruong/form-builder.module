@@ -5,10 +5,10 @@
  */
 function form_builder_permission()
 {
-    $permissions['administer forms'] = array(
+    $permissions['administer forms'] = [
         'title'           => t('Administer forms'),
         'restrict access' => false,
-    );
+    ];
     return $permissions;
 }
 
@@ -17,9 +17,9 @@ function form_builder_permission()
  */
 function form_builder_entity_info()
 {
-    $info = array();
+    $info = [];
 
-    $info['form_builder_form'] = array(
+    $info['form_builder_form'] = [
         'label'            => t('Form'),
         'plural label'     => t('Forms'),
         'entity class'     => 'Drupal\form_builder\FormEntity',
@@ -29,31 +29,31 @@ function form_builder_entity_info()
         'static cache'     => true,
         'fieldable'        => false,
         'entity class'     => 'Drupal\form_builder\FormEntity',
-        'entity keys'      => array(
+        'entity keys'      => [
             'id'       => 'fid',
             'label'    => 'title',
             'language' => 'language',
-        ),
-        'bundles'          => array(
-            'form_builder_form' => array(
+        ],
+        'bundles'          => [
+            'form_builder_form' => [
                 'label' => t('Form'),
-                'admin' => array(
+                'admin' => [
                     'path'             => 'admin/structure/fob-form',
-                    'access arguments' => array('administer forms'),
-                ),
-            ),
-        ),
-        'view modes'       => array(
-            'default' => array(
+                    'access arguments' => ['administer forms'],
+                ],
+            ],
+        ],
+        'view modes'       => [
+            'default' => [
                 'label'           => t('Default'),
                 'custom settings' => false,
-            ),
-        ),
-        'admin ui'         => array(
+            ],
+        ],
+        'admin ui'         => [
             'path'             => 'admin/structure/fob-form',
             'controller class' => 'Drupal\form_builder\Controller\FormUIController',
-        ),
-    );
+        ],
+    ];
 
     return $info;
 }
@@ -63,10 +63,10 @@ function form_builder_entity_info()
  */
 function form_builder_entity_property_info()
 {
-    $info = array('fob_form' => array('properties' => array()));
+    $info = ['fob_form' => ['properties' => []]];
     $pties = &$info['fob_form']['properties'];
 
-    $pties['language'] = array(
+    $pties['language'] = [
         'label'             => t("Language"),
         'type'              => 'token',
         'description'       => t("The language the node is written in."),
@@ -74,9 +74,9 @@ function form_builder_entity_property_info()
         'options list'      => 'entity_metadata_language_list',
         'schema field'      => 'language',
         'setter permission' => 'administer forms',
-    );
+    ];
 
-    $pties['author'] = array(
+    $pties['author'] = [
         'label'             => t("Author"),
         'type'              => 'user',
         'description'       => t("The author of the form."),
@@ -85,7 +85,7 @@ function form_builder_entity_property_info()
         'setter permission' => 'administer forms',
         'required'          => true,
         'schema field'      => 'uid',
-    );
+    ];
 
     return $info;
 }

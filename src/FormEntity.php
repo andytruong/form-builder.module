@@ -27,7 +27,7 @@ class FormEntity extends Entity implements FormInterface
     /** @var string */
     public $language;
 
-    public function __construct(array $values = array())
+    public function __construct(array $values = [])
     {
         parent::__construct($values, 'form_builder_form');
     }

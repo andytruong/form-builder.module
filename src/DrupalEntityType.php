@@ -48,7 +48,7 @@ class DrupalEntityType extends EntityTypeBase
             return parent::getFields();
         }
 
-        $this->fields = array();
+        $this->fields = [];
         list(, $entityTypeName, $bundleName) = explode('.', $this->getName());
 
         $propertyInfo = entity_get_property_info($entityTypeName);

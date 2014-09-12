@@ -10,7 +10,7 @@ use EntityAPIController;
 class FormEntityController extends EntityAPIController
 {
 
-    public function load($ids = array(), $conditions = array())
+    public function load($ids = [], $conditions = [])
     {
         $entities = parent::load($ids, $conditions);
         $entityFixer = new FormEntityFixer();

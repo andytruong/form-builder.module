@@ -28,7 +28,7 @@ class Manager extends ManagerBase
 
     private function discoverEntityTypes()
     {
-        $entityTypes = array();
+        $entityTypes = [];
         foreach (entity_get_info() as $entityName => $entityInfo) {
             if ('form_builder_form' === $entityName) {
                 continue;
@@ -79,7 +79,7 @@ class Manager extends ManagerBase
         $module = $fType['module'];
         $hook = "{$module}_field_schema";
         module_load_install($module);
-        return $hook($field = array('type' => $fieldTypeName));
+        return $hook($field = ['type' => $fieldTypeName]);
     }
 
 }

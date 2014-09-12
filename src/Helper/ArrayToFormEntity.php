@@ -25,10 +25,10 @@ class ArrayToFormEntity
         $unserializer = new Unserializer();
         $unserializer
             ->getDispatcher()
-            ->addListener('unserialize.array.before', array($this, 'onUnserializeBefore'));
+            ->addListener('unserialize.array.before', [$this, 'onUnserializeBefore']);
         $unserializer
             ->getDispatcher()
-            ->addListener('unserialize.array.after', array($this, 'onUnserializeAfter'));
+            ->addListener('unserialize.array.after', [$this, 'onUnserializeAfter']);
         return $unserializer->fromArray($this->inArray, 'Drupal\form_builder\FormEntity');
     }
 
@@ -59,14 +59,14 @@ class ArrayToFormEntity
 
         // Convert fields
         if (!empty($inArray['fields'])) {
-            $inArray['form_fields'] = array();
+            $inArray['form_fields'] = [];
             foreach ($inArray['fields'] as $fieldUuid => $fieldArray) {
                 $inArray['form_fields'][$fieldArray['entityTypeName']][$fieldArray['name']] = $fieldUuid;
             }
             unset($inArray['fields']);
         }
 
-        foreach (array('entity_types', 'form_fields', 'layout_options', 'form_listeners') as $key) {
+        foreach (['entity_types', 'form_fields', 'layout_options', 'form_listeners'] as $key) {
             if (!empty($inArray[$key])) {
                 $form->{$key} = $inArray[$key];
             }
