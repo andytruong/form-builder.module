@@ -59,6 +59,13 @@ function form_builder_schema()
                 'default'     => '',
                 'description' => "User's default language.",
             ],
+            'slug'           => [
+                'type'        => 'varchar',
+                'length'      => 255,
+                'not null'    => true,
+                'default'     => '',
+                'description' => "Form slug",
+            ],
             'entity_types'   => [
                 'description' => 'JSON encoded of supported entity type',
                 'type'        => 'text',

@@ -27,6 +27,9 @@ class FormEntity extends Entity implements FormInterface
     /** @var string */
     public $language;
 
+    /** @var string * */
+    public $slug;
+
     public function __construct(array $values = [])
     {
         parent::__construct($values, 'form_builder_form');
@@ -70,6 +73,16 @@ class FormEntity extends Entity implements FormInterface
     function setLanguage($language)
     {
         $this->language = $language;
+    }
+
+    function getSlug()
+    {
+        return $this->slug;
+    }
+
+    function setSlug($slug)
+    {
+        $this->slug = $slug;
     }
 
 }

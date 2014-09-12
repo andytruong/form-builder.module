@@ -95,6 +95,21 @@
                 $scope.available.addingFields = {};
                 $scope.available.addedFields = {};
                 $scope.entity = Drupal.settings.FormBuilder.entity;
+                $scope.slugDoAuto = true;
+
+                $scope.slugAuto = function () {
+                    if (!$scope.slugDoAuto)
+                        return;
+
+                    $scope.entity.slug = $scope.entity.title
+                            .toLowerCase()
+                            .replace(new RegExp('[^a-z0-9_]+', 'g'), '-')
+                            .substr(0, 255);
+                };
+
+                $scope.slugDisableAuto = function () {
+                    $scope.slugDoAuto = false;
+                };
 
                 // if empty, $scope.entity.fields is array!
                 if ($scope.entity.fields instanceof Array)
