@@ -10,7 +10,7 @@
                 </div>
 
                 <div id="formFields" class="form-item form-type-markup">
-                    <?php include 'form.edit.fields.tpl.php'; ?>
+                    <?php include 'form.edit.pages.tpl.php'; ?>
                 </div>
             </div>
 
