@@ -3,13 +3,23 @@
 <div class="item-list">
     <ul>
         <li ng-repeat="(pageUuid, pageInfo) in entity.layoutOptions">
-            <h2>{{pageInfo.title}}</h2>
+
+            <div class="form-item form-type-textfield">
+                <input type="text" ng-model="pageInfo.title" class="form-text" />
+            </div>
+
+            <div class="form-item form-type-textarea form-item-description">
+                <div class="form-textarea-wrapper">
+                    <textarea ng-model="pageInfo.description"
+                              placeholder="Description…"
+                              class="text-full form-textarea required"></textarea>
+                </div>
+            </div>
 
             <div class="page-actions">
                 <a href ng-click="pageRemove(pageUuid)">Remove</a>
             </div>
 
-            <div class="description">{{pageInfo.description}}</div>
             <ul>
                 <?php include 'form.edit.fields.item.tpl.php'; ?>
             </ul>
