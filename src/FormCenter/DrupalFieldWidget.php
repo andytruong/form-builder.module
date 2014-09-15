@@ -44,6 +44,7 @@ class DrupalFieldWidget extends FieldWidgetBase
                 $form['und'][$delta]['#parents'] = [];
 
                 $form['und'][$delta][$key] = [
+                    '#name'    => $field->getEntityType()->getName() . '[' . $field->getName() . ']' . "[und][$delta][$key]",
                     '#type'    => $propertyInfo['type'],
                     '#parents' => [],
                     '#title'   => $propertyInfo['label'],
@@ -69,6 +70,7 @@ class DrupalFieldWidget extends FieldWidgetBase
     protected function renderDrupalProperty(FieldInterface $field, FieldOptions $fieldOptions)
     {
         $e = [
+            '#name'     => $field->getEntityType()->getName() . '[' . $field->getName() . ']',
             '#type'     => 'textfield',
             '#parents'  => [],
             '#required' => !empty($this->drupalFieldInfo['required']),
