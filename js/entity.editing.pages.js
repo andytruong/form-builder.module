@@ -29,10 +29,15 @@
         // Remove page
         // ---------------------
         helper.pageRemove = function (pageUuid) {
-            var $scope = this;
-            for (var i in $scope.pageFields[pageUuid])
-                $scope.fieldRemove(pageUuid, $scope.pageFields[pageUuid][i].uuid);
-            delete($scope.entity.layoutOptions[pageUuid]);
+            if (!confirm("Are you sure to delete page?"))
+                return;
+
+            // Remove fields
+            for (var i in this.pageFields[pageUuid])
+                this.fieldRemove(pageUuid, this.pageFields[pageUuid][i].uuid);
+
+            // Remove page
+            delete(this.entity.layoutOptions[pageUuid]);
         };
 
         return helper;
