@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\form_builder;
+namespace Drupal\form_builder\FormCenter;
 
 use AndyTruong\Uuid\Uuid;
 use GO1\FormCenter\Manager\Manager as ManagerBase;

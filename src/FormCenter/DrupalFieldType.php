@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\form_builder;
+namespace Drupal\form_builder\FormCenter;
 
 use GO1\FormCenter\Field\FieldValueItemInterface;
 use GO1\FormCenter\Field\Type\FieldTypeBase;

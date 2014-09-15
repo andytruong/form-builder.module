@@ -1,6 +1,7 @@
 <?php
 
-use Drupal\form_builder\Manager;
+use Drupal\form_builder\FormEntity;
+use \Drupal\form_builder\FormCenter\Manager;
 
 require_once dirname(__FILE__) . '/form_builder.hooks.php';
 
@@ -32,4 +33,15 @@ function form_builder_entity_access()
         return true;
     }
     return call_user_func_array('entity_access', func_get_args());
+}
+
+/**
+ * Wrapper for entity_load_single.
+ *
+ * @param int $fid
+ * @return FormEntity
+ */
+function form_builder_load($fid)
+{
+    return entity_load_single('form_builder_form', $fid);
 }

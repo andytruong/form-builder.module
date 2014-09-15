@@ -1,7 +1,8 @@
 <?php
 
-namespace Drupal\form_builder;
+namespace Drupal\form_builder\FormCenter;
 
+use Drupal\form_builder\FormCenter\DrupalField;
 use GO1\FormCenter\Entity\Type\EntityTypeBase;
 
 class DrupalEntityType extends EntityTypeBase

@@ -2,6 +2,7 @@
 
 namespace Drupal\form_builder\Helper;
 
+use Drupal\form_builder\FormCenter\DrupalFormLayout;
 use Drupal\form_builder\FormEntity;
 
 class FormEntityFixer
@@ -19,6 +20,7 @@ class FormEntityFixer
         }
 
         $this->fixEntityTypes($form);
+        $this->fixFormLayout($form);
         $this->fixFormLayoutOptions($form);
         $this->fixFormFields($form);
     }
@@ -31,6 +33,11 @@ class FormEntityFixer
             $form->addEntityType($entityType);
         }
         unset($form->entity_types);
+    }
+
+    private function fixFormLayout(FormEntity $form)
+    {
+        $form->setLayout(new DrupalFormLayout());
     }
 
     private function fixFormLayoutOptions(FormEntity $form)

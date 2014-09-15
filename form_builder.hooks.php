@@ -13,6 +13,22 @@ function form_builder_permission()
 }
 
 /**
+ * Implements hook_menu()
+ */
+function form_builder_menu()
+{
+    $items['form/%form_builder'] = [
+        'title callback'   => 'entity_label',
+        'title arguments'  => ['form_builder_form', 1],
+        'access callback'  => 'form_builder_entity_access',
+        'access arguments' => ['view', 'form_builder_form', 1],
+        'page callback'    => 'Drupal\\form_builder\\Controller\\EntityViewController::pageCallback',
+        'page arguments'   => [1],
+    ];
+    return $items;
+}
+
+/**
  * Implements hook_entity_info().
  */
 function form_builder_entity_info()
