@@ -1,8 +1,9 @@
 <?php
 
-namespace Drupal\form_builder;
+namespace Drupal\form_builder\FormCenter;
 
 use GO1\FormCenter\Field\FieldBase;
+use GO1\FormCenter\Field\FieldOptions;
 
 class DrupalField extends FieldBase
 {
@@ -18,6 +19,12 @@ class DrupalField extends FieldBase
     {
         $this->drupalFieldInfo = $drupalFieldInfo;
         return $this;
+    }
+
+    public function render(FieldOptions $fieldOptions)
+    {
+        // $this->getFieldWidget()->render($this, $fieldOptions);
+        return '[WIP] drupal field';
     }
 
 }

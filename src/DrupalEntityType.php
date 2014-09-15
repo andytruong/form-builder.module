@@ -2,6 +2,7 @@
 
 namespace Drupal\form_builder;
 
+use Drupal\form_builder\FormCenter\DrupalField;
 use GO1\FormCenter\Entity\Type\EntityTypeBase;
 
 class DrupalEntityType extends EntityTypeBase
