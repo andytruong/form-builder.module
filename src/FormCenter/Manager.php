@@ -1,8 +1,10 @@
 <?php
 
-namespace Drupal\form_builder;
+namespace Drupal\form_builder\FormCenter;
 
 use AndyTruong\Uuid\Uuid;
+use Drupal\form_builder\DrupalEntityType;
+use Drupal\form_builder\DrupalFieldType;
 use GO1\FormCenter\Manager\Manager as ManagerBase;
 
 class Manager extends ManagerBase
