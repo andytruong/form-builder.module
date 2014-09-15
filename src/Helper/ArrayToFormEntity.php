@@ -35,7 +35,7 @@ class ArrayToFormEntity
     public function onUnserializeBefore(Event $event)
     {
         $inArray = $event->getInArray();
-        unset($inArray['entityTypes'], $inArray['fields'], $inArray['layoutOptions'], $inArray['listeners'], $inArray['uuid_generator']);
+        unset($inArray['entityTypes'], $inArray['fields'], $inArray['layoutOptions'], $inArray['listeners'], $inArray['uuid_generator'], $inArray['layout']);
         $event->setInArray($inArray);
     }
 
