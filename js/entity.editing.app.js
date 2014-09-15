@@ -1,5 +1,5 @@
 (function (angular, Drupal) {
-    var module = angular.module('FormBuilderApp', ['ngDragDrop', 'FormBuilderFieldHelper', 'FormBuilderEntityTypeHelper', 'FormBuilderFormHelper']);
+    var module = angular.module('FormBuilderApp', ['ngDragDrop', 'FormBuilderPageHelper', 'FormBuilderFieldHelper', 'FormBuilderEntityTypeHelper', 'FormBuilderFormHelper']);
 
     module.factory('$initState', function () {
         var initState = {
@@ -18,9 +18,10 @@
         return initState;
     });
 
-    module.factory('$helpers', function ($initState, $fieldHelper, $entityTypeHelper, $formHelper) {
+    module.factory('$helpers', function ($initState, $pageHelper, $fieldHelper, $entityTypeHelper, $formHelper) {
         var helpers = $initState;
 
+        angular.extend(helpers, $pageHelper);
         angular.extend(helpers, $fieldHelper);
         angular.extend(helpers, $entityTypeHelper);
         angular.extend(helpers, $formHelper);

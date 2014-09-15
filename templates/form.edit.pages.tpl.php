@@ -4,6 +4,11 @@
     <ul>
         <li ng-repeat="(pageUuid, pageInfo) in entity.layoutOptions">
             <h2>{{pageInfo.title}}</h2>
+
+            <div class="page-actions">
+                <a href ng-click="pageRemove(pageUuid)">Remove</a>
+            </div>
+
             <div class="description">{{pageInfo.description}}</div>
             <ul>
                 <?php include 'form.edit.fields.item.tpl.php'; ?>
@@ -21,7 +26,7 @@
            class="form-text"
            placeholder="Page name…"
            ng-model="newPageTitle" />
-    <button ng-click="newPageClick()">
+    <button ng-click="pageNew()">
         Add<span ng-if="newPageAdding">ing…</span>
     </button>
 </div>
