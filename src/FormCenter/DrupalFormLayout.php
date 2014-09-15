@@ -46,4 +46,9 @@ class DrupalFormLayout extends FormLayoutHTML
         return drupal_render($e);
     }
 
+    public function getAction(FormInterface $form)
+    {
+        return url("form/" . $form->fid);
+    }
+
 }
