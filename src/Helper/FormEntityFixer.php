@@ -2,8 +2,8 @@
 
 namespace Drupal\form_builder\Helper;
 
+use Drupal\form_builder\FormCenter\DrupalFormLayout;
 use Drupal\form_builder\FormEntity;
-use GO1\FormCenter\Form\Layout\FormLayoutHTML;
 
 class FormEntityFixer
 {
@@ -37,9 +37,7 @@ class FormEntityFixer
 
     private function fixFormLayout(FormEntity $form)
     {
-        $layout = new FormLayoutHTML();
-        $layout->setTemplateEngine(form_builder_manager()->getTemplateEngine());
-        $form->setLayout($layout);
+        $form->setLayout(new DrupalFormLayout());
     }
 
     private function fixFormLayoutOptions(FormEntity $form)

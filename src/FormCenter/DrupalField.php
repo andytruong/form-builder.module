@@ -24,7 +24,7 @@ class DrupalField extends FieldBase
     function getFieldWidget()
     {
         if (null === $this->fieldWidget) {
-            $fieldWidget = new DrupalFieldWidget();
+            $fieldWidget = new DrupalFieldWidget($this->getDrupalFieldInfo());
             $fieldWidget->setTemplateEngine(form_builder_manager()->getTemplateEngine());
             parent::setFieldWidget($fieldWidget);
         }
