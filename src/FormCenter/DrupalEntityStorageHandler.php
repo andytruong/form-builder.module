@@ -1,9 +1,9 @@
 <?php
 
-namespace Drupal\form_builder;
+namespace Drupal\form_builder\FormCenter;
 
-use GO1\FormCenter\Entity\EntityInterface;
 use GO1\FormCenter\Entity\Storage\EntityStorageHandlerBase;
+use Symfony\Component\Validator\Tests\Fixtures\EntityInterface;
 
 class DrupalEntityStorageHandler extends EntityStorageHandlerBase
 {
