@@ -21,10 +21,19 @@ class DrupalField extends FieldBase
         return $this;
     }
 
+    function getFieldWidget()
+    {
+        if (null === $this->fieldWidget) {
+            $fieldWidget = new DrupalFieldWidget();
+            $fieldWidget->setTemplateEngine(form_builder_manager()->getTemplateEngine());
+            parent::setFieldWidget($fieldWidget);
+        }
+        return parent::getFieldWidget();
+    }
+
     public function render(FieldOptions $fieldOptions)
     {
-        // $this->getFieldWidget()->render($this, $fieldOptions);
-        return '[WIP] drupal field';
+        return $this->getFieldWidget()->render($this, $fieldOptions);
     }
 
 }

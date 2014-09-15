@@ -2,8 +2,8 @@
 
 namespace Drupal\form_builder\FormCenter;
 
+use GO1\FormCenter\Entity\EntityInterface;
 use GO1\FormCenter\Entity\Storage\EntityStorageHandlerBase;
-use Symfony\Component\Validator\Tests\Fixtures\EntityInterface;
 
 class DrupalEntityStorageHandler extends EntityStorageHandlerBase
 {
@@ -16,12 +16,12 @@ class DrupalEntityStorageHandler extends EntityStorageHandlerBase
 
     public function create(EntityInterface $entity)
     {
-
+        ;
     }
 
     public function delete(EntityInterface $entity)
     {
-
+        ;
     }
 
     public function deleteById($entityTypeName, $id)
@@ -34,9 +34,9 @@ class DrupalEntityStorageHandler extends EntityStorageHandlerBase
      * @param EntityInterface $entity
      * @param array $cmds
      */
-    public function patch(EntityInterface $entity, array $cmds = [])
+    public function patch(EntityInterface $entity, array $cmds = array())
     {
-
+        ;
     }
 
     /**
@@ -45,7 +45,7 @@ class DrupalEntityStorageHandler extends EntityStorageHandlerBase
      */
     public function update(EntityInterface $entity)
     {
-
+        ;
     }
 
 }
