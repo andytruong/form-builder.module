@@ -42,6 +42,13 @@ class FormEntityReversedFixer
 
         $form->layout_options = [];
         foreach ($layoutOptions->getPages() as $pageUuid => $pageInfo) {
+            $form->layout_options[$pageUuid] = [
+                'title'       => $pageInfo['title'],
+                'description' => $pageInfo['description'],
+                'help'        => $pageInfo['help'],
+                'weight'      => $pageInfo['weight'],
+            ];
+
             if (!empty($pageInfo['fields'])) {
                 foreach ($pageInfo['fields'] as $fieldUuid => $fieldInfo) {
                     /* @var $fieldInfo FieldOptions */
