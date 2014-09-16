@@ -15,6 +15,17 @@ class Manager extends ManagerBase
         $this->setUuidGenerator(Uuid::getGenerator());
     }
 
+    public function getEntityStorageHandlers()
+    {
+        $this->entityStorageHandlers = parent::getEntityStorageHandlers();
+
+        if (!isset($this->ran[__FUNCTION__]) && $this->ran[__FUNCTION__] = true) {
+            $this->entityStorageHandlers['drupal'] = new DrupalEntityStorageHandler();
+        }
+
+        return $this->entityStorageHandlers;
+    }
+
     public function getEntityTypes()
     {
         $this->entityTypes = parent::getEntityTypes();
