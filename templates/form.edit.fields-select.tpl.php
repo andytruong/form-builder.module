@@ -6,13 +6,13 @@
                 <h3>{{entityTypeInfo.humanName}}</h3>
                 <ul class="entity-fields">
                     <li data-name="{{fieldName}}"
-                        ng-repeat="(fieldName, field) in entityTypeInfo.fields"
+                        ng-repeat="(fieldName, fieldInfo) in entityTypeInfo.fields"
                         ui-draggable="true"
-                        drag="name">
-                        <strong class="field-human-name">{{field.humanName}}</strong>
-                        <span class="entity-type-name">({{field.entityTypeName}})</span>
-                        <div class="description" ng-if="field.description">
-                            {{field.description}}
+                        drag="fieldInfo">
+                        <strong class="field-human-name">{{fieldInfo.humanName}}</strong>
+                        <span class="entity-type-name">({{fieldInfo.entityTypeName}})</span>
+                        <div class="description" ng-if="fieldInfo.description">
+                            {{fieldInfo.description}}
                         </div>
                     </li>
 

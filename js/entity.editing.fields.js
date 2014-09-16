@@ -23,13 +23,14 @@
         // ---------------------
         // Field: Drag field from available fields to form fields.
         // ---------------------
-        helper.fieldOnDrop = function ($event, fieldName, baseFieldUuid, pageUuid) {
+        helper.fieldOnDrop = function ($event, field, baseFieldUuid, pageUuid) {
             var $scope = this;
+            var fieldName = field.entityTypeName + '.' + field.name;
             var addField = function () {
                 $scope.available.addingFields[pageUuid] = $scope.available.addingFields[pageUuid] || {};
-                $scope.available.addingFields[pageUuid][fieldName] = $scope.available.fields[fieldName];
-                delete($scope.available.fields[fieldName]);
-
+                $scope.available.addingFields[pageUuid][fieldName] = field;
+                delete($scope.available.entityTypes[field.entityTypeName].fields[field.name]);
+                
                 $http
                         .post(window.location.pathname, {
                             action: 'add-field',
