@@ -34,9 +34,10 @@ class DrupalFormLayout extends FormLayoutHTML
         $e = [
             '#parents' => [],
             'submit'   => [
+                '#name'    => 'form-action',
                 '#type'    => 'submit',
                 '#parents' => [],
-                '#value'   => t('Save'),
+                '#value'   => t('Submit'),
             ],
         ];
 
