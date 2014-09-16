@@ -2,8 +2,10 @@
 
 namespace Drupal\form_builder\FormCenter;
 
+use Drupal\form_builder\Helper\FormCenterEntityToDrupalEntity;
 use GO1\FormCenter\Entity\EntityInterface;
 use GO1\FormCenter\Entity\Storage\EntityStorageHandlerInterface;
+use GoCatalyze\SyncCenter\Extensions\Drupal\DrupalEntity;
 
 class DrupalEntityStorageHandler implements EntityStorageHandlerInterface
 {
@@ -18,12 +20,17 @@ class DrupalEntityStorageHandler implements EntityStorageHandlerInterface
 
     public function support($entityTypeName)
     {
-        return strpos($entityTypeName, 'drupal.');
+        return 0 === strpos($entityTypeName, 'drupal.');
     }
 
+    /**
+     * @param DrupalEntity $entity
+     */
     public function create(EntityInterface $entity)
     {
-        ;
+        $drupalEntityWrapper = (new FormCenterEntityToDrupalEntity())->convert($entity);
+        $drupalEntityWrapper->save();
+        return $drupalEntityWrapper->getIdentifier();
     }
 
     public function delete(EntityInterface $entity)

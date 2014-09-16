@@ -63,11 +63,12 @@ class Submit
 
     private function saveFormSubmission(FormSubmissionInterface $submission)
     {
-
         foreach ($submission->getEntities() as $entityTypeName => $entity) {
             $storageHandler = form_builder_manager()->getEntityStorageHandler($entityTypeName);
             $storageHandler->create($entity);
         }
+
+        drupal_goto("form/{$this->form->fid}");
     }
 
     private function goToNextPage(FormSubmissionInterface $submission)
