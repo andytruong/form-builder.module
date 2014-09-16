@@ -3,16 +3,23 @@
 namespace Drupal\form_builder\FormCenter;
 
 use GO1\FormCenter\Entity\EntityInterface;
-use GO1\FormCenter\Entity\Storage\EntityStorageHandlerBase;
+use GO1\FormCenter\Entity\Storage\EntityStorageHandlerInterface;
 
-class DrupalEntityStorageHandler extends EntityStorageHandlerBase
+class DrupalEntityStorageHandler implements EntityStorageHandlerInterface
 {
 
-    /** @var string */
-    protected $name = 'drupal';
+    use \AndyTruong\Common\Traits\NameAwareTrait;
 
-    /** @var string */
-    protected $humanName = 'Drupal storage handler';
+    public function __construct()
+    {
+        $this->setName('drupal');
+        $this->setHumanName('Drupal storage handler');
+    }
+
+    public function support($entityTypeName)
+    {
+        return strpos($entityTypeName, 'drupal.');
+    }
 
     public function create(EntityInterface $entity)
     {
