@@ -5,8 +5,8 @@
 
         helper.fieldRemove = function (pageUuid, fieldUuid) {
             var field = this.entity.fields[fieldUuid];
-            var fieldName = field.entityTypeName + '.' + field.name;
-            this.available.fields[fieldName] = field;
+            this.available.entityTypes[field.entityTypeName].fields[field.name] = field;
+
             delete(this.entity.fields[fieldUuid]);
             delete(this.entity.layoutOptions[pageUuid]['fields'][fieldUuid]);
         };
@@ -30,7 +30,7 @@
                 $scope.available.addingFields[pageUuid] = $scope.available.addingFields[pageUuid] || {};
                 $scope.available.addingFields[pageUuid][fieldName] = field;
                 delete($scope.available.entityTypes[field.entityTypeName].fields[field.name]);
-                
+
                 $http
                         .post(window.location.pathname, {
                             action: 'add-field',
