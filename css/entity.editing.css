@@ -14,13 +14,13 @@
 }
 /* -- JUST-FOR-DEV */
 
-#availableFields .item-list ul,
+#availableFields ul,
 #formFields .item-list ul {
     margin: 0;
     padding: 0;
 }
 
-#availableFields li,
+#availableFields ul.entity-fields li,
 #formFields li.field {
     cursor: move;
 }
@@ -32,7 +32,7 @@
     margin: 2px 0;
 }
 
-#availableFields:hover li,
+#availableFields:hover ul.entity-fields li,
 #formFields:hover li.field {
     padding: 11px;
     border: 1px #777 dashed;

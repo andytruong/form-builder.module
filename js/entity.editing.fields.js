@@ -1,4 +1,5 @@
 (function (angular) {
+
     angular.module('FormBuilderFieldHelper', []).factory('$fieldHelper', function ($http) {
         var helper = {};
 
@@ -10,8 +11,9 @@
             delete(this.entity.layoutOptions[pageUuid]['fields'][fieldUuid]);
         };
 
-        helper.isAvailableFieldsEmpty = function () {
-            return angular.equals({}, this.available.fields);
+        helper.isAvailableFieldsEmpty = function (entityTypeName) {
+            this.available.entityTypes[entityTypeName].fields = this.available.entityTypes[entityTypeName].fields || {};
+            return angular.equals({}, this.available.entityTypes[entityTypeName].fields);
         };
 
         helper.isFieldsEmpty = function (pageUuid) {

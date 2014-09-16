@@ -1,4 +1,5 @@
-(function (angular, Drupal) {
+(function (angular) {
+
     angular.module('FormBuilderEntityTypeHelper', []).factory('$entityTypeHelper', function ($http) {
         helper = {};
 
@@ -35,4 +36,5 @@
 
         return helper;
     });
-})(angular, Drupal);
+
+})(angular);
