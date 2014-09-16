@@ -1,4 +1,5 @@
-(function (angular, Drupal) {
+(function (angular) {
+
     angular.module('FormBuilderEntityTypeHelper', []).factory('$entityTypeHelper', function ($http) {
         helper = {};
 
@@ -28,11 +29,12 @@
                         .success(function (data) {
                             delete($scope.available.addingEntityTypeNames[entityTypeName]);
                             for (var name in data.entityTypeFields)
-                                $scope.available.fields[name] = data.entityTypeFields[name];
+                                $scope.available.fields[entityTypeName][name] = data.entityTypeFields[name];
                         });
             }
         };
 
         return helper;
     });
-})(angular, Drupal);
+
+})(angular);

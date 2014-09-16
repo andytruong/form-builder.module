@@ -1,17 +1,19 @@
 (function (angular) {
+
     angular.module('FormBuilderFieldHelper', []).factory('$fieldHelper', function ($http) {
         var helper = {};
 
         helper.fieldRemove = function (pageUuid, fieldUuid) {
             var field = this.entity.fields[fieldUuid];
-            var fieldName = field.entityTypeName + '.' + field.name;
-            this.available.fields[fieldName] = field;
+            this.available.entityTypes[field.entityTypeName].fields[field.name] = field;
+
             delete(this.entity.fields[fieldUuid]);
             delete(this.entity.layoutOptions[pageUuid]['fields'][fieldUuid]);
         };
 
-        helper.isAvailableFieldsEmpty = function () {
-            return angular.equals({}, this.available.fields);
+        helper.isAvailableFieldsEmpty = function (entityTypeName) {
+            this.available.entityTypes[entityTypeName].fields = this.available.entityTypes[entityTypeName].fields || {};
+            return angular.equals({}, this.available.entityTypes[entityTypeName].fields);
         };
 
         helper.isFieldsEmpty = function (pageUuid) {
@@ -21,12 +23,13 @@
         // ---------------------
         // Field: Drag field from available fields to form fields.
         // ---------------------
-        helper.fieldOnDrop = function ($event, fieldName, baseFieldUuid, pageUuid) {
+        helper.fieldOnDrop = function ($event, field, baseFieldUuid, pageUuid) {
             var $scope = this;
+            var fieldName = field.entityTypeName + '.' + field.name;
             var addField = function () {
                 $scope.available.addingFields[pageUuid] = $scope.available.addingFields[pageUuid] || {};
-                $scope.available.addingFields[pageUuid][fieldName] = $scope.available.fields[fieldName];
-                delete($scope.available.fields[fieldName]);
+                $scope.available.addingFields[pageUuid][fieldName] = field;
+                delete($scope.available.entityTypes[field.entityTypeName].fields[field.name]);
 
                 $http
                         .post(window.location.pathname, {

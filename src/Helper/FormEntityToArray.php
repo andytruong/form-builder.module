@@ -12,9 +12,22 @@ class FormEntityToArray
 
     public function convertEntityTypes($entityTypes)
     {
+        $convertor = $this;
         $serializer = new Serializer();
-        return array_map(function($EntityType) use ($serializer) {
-            return $serializer->toArray($EntityType);
+        return array_map(function($EntityType) use ($convertor, $serializer) {
+            $return = $serializer->toArray($EntityType);
+            if (!empty($return['fields'])) {
+                foreach ($return['fields'] as $fieldName => $field) {
+                    /* @var $field FieldInterface */
+                    $return['fields'][$fieldName] = [
+                        'name'           => $field->getName(),
+                        'humanName'      => $field->getHumanName(),
+                        'entityTypeName' => $field->getEntityType()->getName(),
+                        'description'    => $field->getDescription(),
+                    ];
+                }
+            }
+            return $return;
         }, $entityTypes);
     }
 
