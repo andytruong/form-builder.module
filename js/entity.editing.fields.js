@@ -29,10 +29,20 @@
                     ? field.entityTypeName + '.' + field.name
                     : field;
 
-            // when fieldName is an uuid value, change weight of field instead of adding field
-            fieldName.match(/^.+-.+-.+-.+$/) // uuid format
-                    ? helper.fieldOnDropChangeWeight($scope, pageUuid, baseFieldUuid, fieldName) // change weight
-                    : helper.fieldOnDropAddField($scope, pageUuid, baseFieldUuid, fieldName, field);
+            // add field
+            if (!fieldName.match(/^.+-.+-.+-.+$/))
+                return helper.fieldOnDropAddField($scope, pageUuid, baseFieldUuid, fieldName, field);
+
+            // use change a field to other page
+            $scope.changePage = true;
+            angular.forEach($scope.pageFields[pageUuid], function (pageField) {
+                if (pageField.uuid === fieldName)
+                    $scope.changePage = false;
+            });
+
+            $scope.changePage
+                    ? helper.fieldOnDropChangePage($scope, pageUuid, baseFieldUuid, fieldName)
+                    : helper.fieldOnDropChangeWeight($scope, pageUuid, baseFieldUuid, fieldName);
         };
 
         // ---------------------
@@ -85,6 +95,13 @@
             });
             for (var i in $scope.pageFields[pageUuid])
                 $scope.pageFields[pageUuid][i].weight = i * 2;
+        };
+
+        // ---------------------
+        // Field: User move a field to other page
+        // ---------------------
+        helper.fieldOnDropChangePage = function ($scope, pageUuid, baseFieldUuid, fieldUuid) {
+            console.log([pageUuid, baseFieldUuid, fieldUuid]);
         };
 
         return helper;
