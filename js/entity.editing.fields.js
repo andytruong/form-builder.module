@@ -25,53 +25,60 @@
         // ---------------------
         helper.fieldOnDrop = function ($event, field, baseFieldUuid, pageUuid) {
             var $scope = this;
-            var fieldName = field.entityTypeName + '.' + field.name;
-            var addField = function () {
-                $scope.available.addingFields[pageUuid] = $scope.available.addingFields[pageUuid] || {};
-                $scope.available.addingFields[pageUuid][fieldName] = field;
-                delete($scope.available.entityTypes[field.entityTypeName].fields[field.name]);
+            var fieldName = 'object' === typeof field
+                    ? field.entityTypeName + '.' + field.name
+                    : field;
 
-                $http
-                        .post(window.location.pathname, {
-                            action: 'add-field',
-                            fieldName: fieldName,
-                            entity: $scope.entity
-                        })
-                        .success(function (data) {
-                            var fieldName = data.field.entityTypeName + '.' + data.field.name;
-                            var weight = baseFieldUuid ? 1 + $scope.entity.layoutOptions[pageUuid].fields[baseFieldUuid].weight : 0;
-
-                            $scope.entity.fields[data.fieldUuid] = data.field;
-                            $scope.available.addedFields[data.fieldUuid] = $scope.available.addingFields[fieldName];
-                            $scope.entity.layoutOptions[pageUuid].fields[data.fieldUuid] = {weight: weight, domTagName: 'div', domClasses: []};
-                            delete($scope.available.addingFields[pageUuid][fieldName]);
-                        });
-            };
-            var changeWeight = function () { // move field after currentField
-                var fieldUuid = fieldName;
-                var baseFieldKey, fieldKey;
-                for (var key in $scope.pageFields[pageUuid])
-                    if (fieldUuid === $scope.pageFields[pageUuid][key].uuid) {
-                        fieldKey = key;
-                        break;
-                    }
-
-                for (var key in $scope.pageFields[pageUuid])
-                    if (baseFieldUuid === $scope.pageFields[pageUuid][key].uuid) {
-                        baseFieldKey = key;
-                        break;
-                    }
-
-                $scope.pageFields[pageUuid][fieldKey].weight = 1 + $scope.pageFields[pageUuid][baseFieldKey].weight;
-                // Change field weights for next move
-                $scope.pageFields[pageUuid].sort(function (a, b) {
-                    return a.weight - b.weight;
-                });
-                for (var i in $scope.pageFields[pageUuid])
-                    $scope.pageFields[pageUuid][i].weight = i * 2;
-            };
             // when fieldName is an uuid value, change weight of field instead of adding field
-            fieldName.match(/^.+-.+-.+-.+$/) ? changeWeight() : addField();
+            fieldName.match(/^.+-.+-.+-.+$/) // uuid format
+                    ? helper.fieldOnDropChangeWeight($scope, pageUuid, baseFieldUuid, fieldName) // change weight
+                    : helper.fieldOnDropAddField($scope, pageUuid, baseFieldUuid, fieldName, field);
+        };
+
+        helper.fieldOnDropAddField = function ($scope, pageUuid, baseFieldUuid, fieldName, field) {
+            $scope.available.addingFields[pageUuid] = $scope.available.addingFields[pageUuid] || {};
+            $scope.available.addingFields[pageUuid][fieldName] = field;
+            delete($scope.available.entityTypes[field.entityTypeName].fields[field.name]);
+
+            $http
+                    .post(window.location.pathname, {
+                        action: 'add-field',
+                        fieldName: fieldName,
+                        entity: $scope.entity
+                    })
+                    .success(function (data) {
+                        var fieldName = data.field.entityTypeName + '.' + data.field.name;
+                        var weight = baseFieldUuid ? 1 + $scope.entity.layoutOptions[pageUuid].fields[baseFieldUuid].weight : 0;
+
+                        $scope.entity.fields[data.fieldUuid] = data.field;
+                        $scope.available.addedFields[data.fieldUuid] = $scope.available.addingFields[fieldName];
+                        $scope.entity.layoutOptions[pageUuid].fields[data.fieldUuid] = {weight: weight, domTagName: 'div', domClasses: []};
+                        delete($scope.available.addingFields[pageUuid][fieldName]);
+                    });
+        };
+
+        helper.fieldOnDropChangeWeight = function ($scope, pageUuid, baseFieldUuid, fieldUuid) {
+            var baseFieldKey, fieldKey;
+
+            for (var key in $scope.pageFields[pageUuid])
+                if (fieldUuid === $scope.pageFields[pageUuid][key].uuid) {
+                    fieldKey = key;
+                    break;
+                }
+
+            for (var key in $scope.pageFields[pageUuid])
+                if (baseFieldUuid === $scope.pageFields[pageUuid][key].uuid) {
+                    baseFieldKey = key;
+                    break;
+                }
+
+            $scope.pageFields[pageUuid][fieldKey].weight = 1 + $scope.pageFields[pageUuid][baseFieldKey].weight;
+            // Change field weights for next move
+            $scope.pageFields[pageUuid].sort(function (a, b) {
+                return a.weight - b.weight;
+            });
+            for (var i in $scope.pageFields[pageUuid])
+                $scope.pageFields[pageUuid][i].weight = i * 2;
         };
 
         return helper;
