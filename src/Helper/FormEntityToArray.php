@@ -16,14 +16,16 @@ class FormEntityToArray
         $serializer = new Serializer();
         return array_map(function($EntityType) use ($convertor, $serializer) {
             $return = $serializer->toArray($EntityType);
-            foreach ($return['fields'] as $fieldName => $field) {
-                /* @var $field FieldInterface */
-                $return['fields'][$fieldName] = [
-                    'name'           => $field->getName(),
-                    'humanName'      => $field->getHumanName(),
-                    'entityTypeName' => $field->getEntityType()->getName(),
-                    'description'    => $field->getDescription(),
-                ];
+            if (!empty($return['fields'])) {
+                foreach ($return['fields'] as $fieldName => $field) {
+                    /* @var $field FieldInterface */
+                    $return['fields'][$fieldName] = [
+                        'name'           => $field->getName(),
+                        'humanName'      => $field->getHumanName(),
+                        'entityTypeName' => $field->getEntityType()->getName(),
+                        'description'    => $field->getDescription(),
+                    ];
+                }
             }
             return $return;
         }, $entityTypes);
