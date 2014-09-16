@@ -63,12 +63,11 @@ class Submit
 
     private function saveFormSubmission(FormSubmissionInterface $submission)
     {
-        foreach ($submission->getEntities() as $entityTypeName => $entity) {
-            kpr($entityTypeName);
-            kpr($entity);
-        }
 
-        exit;
+        foreach ($submission->getEntities() as $entityTypeName => $entity) {
+            $storageHandler = form_builder_manager()->getEntityStorageHandler($entityTypeName);
+            $storageHandler->create($entity);
+        }
     }
 
     private function goToNextPage(FormSubmissionInterface $submission)
