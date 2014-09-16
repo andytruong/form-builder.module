@@ -72,11 +72,6 @@ class Render
         return [
             'languages'   => language_list('enabled')[1],
             'entityTypes' => $convertor->convertEntityTypes(form_builder_manager()->getEntityTypes()),
-            'fields'      => $convertor->convertFields(array_map(
-                    function($type) {
-                        return $type->getName();
-                    }, $this->ctrl->entity->getEntityTypes()
-            )),
         ];
     }
 
