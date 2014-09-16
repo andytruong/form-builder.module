@@ -21,7 +21,7 @@
         };
 
         // ---------------------
-        // Field: Drag field from available fields to form fields.
+        // Field: Field dragging
         // ---------------------
         helper.fieldOnDrop = function ($event, field, baseFieldUuid, pageUuid) {
             var $scope = this;
@@ -35,6 +35,9 @@
                     : helper.fieldOnDropAddField($scope, pageUuid, baseFieldUuid, fieldName, field);
         };
 
+        // ---------------------
+        // Field: Adding new field — user drag from available fields to page
+        // ---------------------
         helper.fieldOnDropAddField = function ($scope, pageUuid, baseFieldUuid, fieldName, field) {
             $scope.available.addingFields[pageUuid] = $scope.available.addingFields[pageUuid] || {};
             $scope.available.addingFields[pageUuid][fieldName] = field;
@@ -57,6 +60,9 @@
                     });
         };
 
+        // ---------------------
+        // Field: Change position of field inside a page.
+        // ---------------------
         helper.fieldOnDropChangeWeight = function ($scope, pageUuid, baseFieldUuid, fieldUuid) {
             var baseFieldKey, fieldKey;
 
