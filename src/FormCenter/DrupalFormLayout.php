@@ -16,6 +16,11 @@ class DrupalFormLayout extends FormLayoutHTML
         $this->setTemplateEngine(form_builder_manager()->getTemplateEngine());
     }
 
+    public function getAction(FormInterface $form)
+    {
+        return url("form/" . $form->fid);
+    }
+
     /**
      * @param FormEntity $form
      * @param string|int $pageNumber
@@ -35,27 +40,26 @@ class DrupalFormLayout extends FormLayoutHTML
 //        return theme('item_list', ['items' => $items, 'attributes' => ['class' => 'form-pager']]);
     }
 
-    public function getFormButons(FormInterface $form, $pageNumber)
+    public function getFormButons(FormInterface $form, $pageNumber = 1)
     {
-        $e = [
-            '#parents' => [],
-            'submit'   => [
-                '#name'    => 'form-action',
-                '#type'    => 'submit',
-                '#parents' => [],
-                '#value'   => t('Submit'),
-            ],
-        ];
+        $element['#parents'] = [];
+
+        if ($form->getLayoutOptions()->isLastPage($pageNumber)) {
+            $element['submit'] = ['#name' => 'form-action', '#type' => 'submit', '#parents' => [], '#value' => t('Submit')];
+        }
+
+        if ($form->getLayoutOptions()->getPreviousPage($pageNumber)) {
+            $element['back'] = ['#name' => 'form-action', '#type' => 'submit', '#parents' => [], '#value' => t('Back')];
+        }
+
+        if ($form->getLayoutOptions()->getNextPage($pageNumber)) {
+            $element['next'] = ['#name' => 'form-action', '#type' => 'submit', '#parents' => [], '#value' => t('Next')];
+        }
 
         $form_state = ['values' => []];
-        form_builder('form_builder_element', $e, $form_state);
+        form_builder('form_builder_element', $element, $form_state);
 
-        return drupal_render($e);
-    }
-
-    public function getAction(FormInterface $form)
-    {
-        return url("form/" . $form->fid);
+        return drupal_render($element);
     }
 
 }
