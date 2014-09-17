@@ -3,6 +3,7 @@
 namespace Drupal\form_builder\FormCenter;
 
 use Drupal\form_builder\FormEntity;
+use Drupal\form_builder\Helper\FormTokenHelper;
 use GO1\FormCenter\Form\FormInterface;
 use GO1\FormCenter\Form\Layout\FormLayoutHTML;
 
@@ -16,8 +17,13 @@ class DrupalFormLayout extends FormLayoutHTML
         $this->setTemplateEngine(form_builder_manager()->getTemplateEngine());
     }
 
+    public function getToken(FormInterface $form, $pageNumber)
+    {
+        return (new FormTokenHelper())->generate($form, $pageNumber);
+    }
+
     /**
-     * @param \Drupal\form_builder\FormEntity $form
+     * @param FormEntity $form
      * @param int $pageNumber
      */
     public function getAction(FormInterface $form, $pageNumber = 1)
