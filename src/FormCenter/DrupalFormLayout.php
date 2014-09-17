@@ -2,6 +2,7 @@
 
 namespace Drupal\form_builder\FormCenter;
 
+use Drupal\form_builder\FormEntity;
 use GO1\FormCenter\Form\FormInterface;
 use GO1\FormCenter\Form\Layout\FormLayoutHTML;
 
@@ -15,12 +16,17 @@ class DrupalFormLayout extends FormLayoutHTML
         $this->setTemplateEngine(form_builder_manager()->getTemplateEngine());
     }
 
+    /**
+     * @param FormEntity $form
+     * @param string|int $pageNumber
+     * @return string
+     */
     public function getPager(FormInterface $form, $pageNumber)
     {
         $items = [];
         foreach ($form->getLayoutOptions()->getPages() as $pageUuid => $pageInfo) {
             $item['id'] = 'page-' . $pageUuid;
-            $item['data'] = l($pageInfo['title'], "form/{$form->fid}/{$pageUuid}");
+            $item['data'] = l($pageInfo['title'], $form->getPath($pageNumber));
             if (!empty($pageInfo['description'])) {
                 $item['data'] .= '<div class="description">' . $pageInfo['description'] . '</div>';
             }
