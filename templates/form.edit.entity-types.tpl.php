@@ -1,7 +1,8 @@
 <div id="availableEntityTypes" class="form-item form-type-checkboxes form-item-entityTypes">
     <label for="entityTypes">Entity types</label>
     <div id="edit-entityTypes" class="form-checkboxes">
-        <div class="form-item form-type-checkbox" ng-repeat="(machineName, entityType) in available.entityTypes">
+        <div class="form-item form-type-checkbox"
+             ng-repeat="(machineName, entityType) in available.entityTypes">
             <input
                 type="checkbox"
                 id="edit-entityType-{{machineName}}"

@@ -4,9 +4,6 @@
         var helper = {};
 
         helper.fieldRemove = function (pageUuid, fieldUuid) {
-            var field = this.entity.fields[fieldUuid];
-            this.available.entityTypes[field.entityTypeName].fields[field.name] = field;
-
             delete(this.entity.fields[fieldUuid]);
             delete(this.entity.layoutOptions[pageUuid]['fields'][fieldUuid]);
         };
@@ -51,7 +48,6 @@
         helper.fieldOnDropAddField = function ($scope, pageUuid, baseFieldUuid, fieldName, field) {
             $scope.available.addingFields[pageUuid] = $scope.available.addingFields[pageUuid] || {};
             $scope.available.addingFields[pageUuid][fieldName] = field;
-            delete($scope.available.entityTypes[field.entityTypeName].fields[field.name]);
 
             $http
                     .post(window.location.pathname, {
