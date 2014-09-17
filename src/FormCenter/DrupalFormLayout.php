@@ -23,16 +23,16 @@ class DrupalFormLayout extends FormLayoutHTML
      */
     public function getPager(FormInterface $form, $pageNumber)
     {
-        $items = [];
-        foreach ($form->getLayoutOptions()->getPages() as $pageUuid => $pageInfo) {
-            $item['id'] = 'page-' . $pageUuid;
-            $item['data'] = l($pageInfo['title'], $form->getPath($pageNumber));
-            if (!empty($pageInfo['description'])) {
-                $item['data'] .= '<div class="description">' . $pageInfo['description'] . '</div>';
-            }
-            $items[] = $item;
-        }
-        return theme('item_list', ['items' => $items, 'attributes' => ['class' => 'form-pager']]);
+//        $items = [];
+//        foreach ($form->getLayoutOptions()->getPages() as $pageUuid => $pageInfo) {
+//            $item['id'] = 'page-' . $pageUuid;
+//            $item['data'] = l($pageInfo['title'], $form->getPath($pageNumber));
+//            if (!empty($pageInfo['description'])) {
+//                $item['data'] .= '<div class="description">' . $pageInfo['description'] . '</div>';
+//            }
+//            $items[] = $item;
+//        }
+//        return theme('item_list', ['items' => $items, 'attributes' => ['class' => 'form-pager']]);
     }
 
     public function getFormButons(FormInterface $form, $pageNumber)
