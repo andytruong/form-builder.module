@@ -63,8 +63,11 @@
                         var fieldName = data.field.entityTypeName + '.' + data.field.name;
                         var weight = baseFieldUuid ? 1 + $scope.entity.layoutOptions[pageUuid].fields[baseFieldUuid].weight : 0;
 
+                        field.uuid = data.fieldUuid;
+
                         $scope.entity.fields[data.fieldUuid] = data.field;
                         $scope.available.addedFields[data.fieldUuid] = $scope.available.addingFields[fieldName];
+                        $scope.pageFields[pageUuid].push(field);
                         $scope.entity.layoutOptions[pageUuid].fields[data.fieldUuid] = {weight: weight, domTagName: 'div', domClasses: []};
                         delete($scope.available.addingFields[pageUuid][fieldName]);
                     });
@@ -77,16 +80,12 @@
             var baseFieldKey, fieldKey;
 
             for (var key in $scope.pageFields[pageUuid])
-                if (fieldUuid === $scope.pageFields[pageUuid][key].uuid) {
+                if (fieldUuid === $scope.pageFields[pageUuid][key].uuid)
                     fieldKey = key;
-                    break;
-                }
 
             for (var key in $scope.pageFields[pageUuid])
-                if (baseFieldUuid === $scope.pageFields[pageUuid][key].uuid) {
+                if (baseFieldUuid === $scope.pageFields[pageUuid][key].uuid)
                     baseFieldKey = key;
-                    break;
-                }
 
             $scope.pageFields[pageUuid][fieldKey].weight = 1 + $scope.pageFields[pageUuid][baseFieldKey].weight;
             // Change field weights for next move
