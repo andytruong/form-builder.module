@@ -25,52 +25,59 @@ class Submit
         $token = (string) $request['form-token'];
         $pageNumber = (string) $request['form-page'];
         $action = (string) $request['form-action'];
-        $submission = form_builder_manager()->createFormSubmission($this->form);
         unset($request['form-token'], $request['form-page'], $request['form-action']);
 
-        if (!$this->validateToken($token)) {
-            throw new RuntimeException('Invalid token');
-        }
-
-        switch ($action) {
-            case 'next':
-                return $this->handleNext($submission, $request, $pageNumber);
-
-            case 'back':
-                return $this->handleBack($submission, $request, $pageNumber);
-
-            case 'submit':
-                return $this->handleSubmit($submission, $request, $pageNumber);
-
-            default:
-                throw new UnexpectedValueException('Wrong form action.');
+        // wrapper flow
+        if ($this->validateToken($token) && $submission = $this->createFormSubmission($request)) {
+            switch ($action) {
+                case 'next':
+                    return $this->handleNext($submission, $pageNumber);
+                case 'back':
+                    return $this->handleBack($submission, $pageNumber);
+                case 'submit':
+                    return $this->handleSubmit($submission, $pageNumber);
+                default:
+                    throw new UnexpectedValueException('Wrong form action.');
+            }
         }
     }
 
-    private function validateToken($token)
+    private function createFormSubmission(array $request)
     {
-        return $token === $token; // @TODO: do later
-    }
-
-    private function handleNext(FormSubmissionInterface $submission, array $request, $pageNumber)
-    {
-        
-    }
-
-    private function handleBack(FormSubmissionInterface $submission, array $request, $pageNumber)
-    {
-
-    }
-
-    private function handleSubmit(FormSubmissionInterface $submission, array $request, $pageNumber)
-    {
+        $submission = form_builder_manager()->createFormSubmission($this->form);
         $convertor = new ArrayToFormCenterEntity();
         foreach ($this->form->getEntityTypes() as $entityTypeName => $entityType) {
             $entityRequest = $request[str_replace('.', '_', $entityType->getName())];
             $entity = $convertor->convert($entityType, $entityRequest);
             $submission->setEntity($entityTypeName, $entity);
         }
+        return $submission;
+    }
 
+    private function validateToken($token)
+    {
+        if ($token !== $token) { // @TODO: do later
+            throw new RuntimeException('Invalid token');
+        }
+        return true;
+    }
+
+    private function handleNext(FormSubmissionInterface $submission, $pageNumber)
+    {
+        $nextPageNumber = $this->form->getLayoutOptions()->getNextPage($pageNumber);
+        $path = $this->form->getPath($nextPageNumber);
+        drupal_goto($path);
+    }
+
+    private function handleBack(FormSubmissionInterface $submission, $pageNumber)
+    {
+        $previousPageNumber = $this->form->getLayoutOptions()->getPreviousPage($pageNumber);
+        $path = $this->form->getPath($previousPageNumber);
+        drupal_goto($path);
+    }
+
+    private function handleSubmit(FormSubmissionInterface $submission, $pageNumber)
+    {
         // @TODO: Remove debug code
         if (true || $this->form->getLayoutOptions()->isLastPage($pageNumber)) {
             foreach ($submission->getEntities() as $entityTypeName => $entity) {

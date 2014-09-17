@@ -16,9 +16,13 @@ class DrupalFormLayout extends FormLayoutHTML
         $this->setTemplateEngine(form_builder_manager()->getTemplateEngine());
     }
 
-    public function getAction(FormInterface $form)
+    /**
+     * @param \Drupal\form_builder\FormEntity $form
+     * @param int $pageNumber
+     */
+    public function getAction(FormInterface $form, $pageNumber = 1)
     {
-        return url("form/" . $form->fid);
+        return url($form->getPath($pageNumber));
     }
 
     /**
