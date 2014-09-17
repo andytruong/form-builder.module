@@ -48,7 +48,11 @@ class FormEntityFixer
 
         $form->setLayoutOption($layoutOptions = form_builder_manager()->getFormLayoutOptions());
         foreach ($form->layout_options as $pageUuid => $pageInfo) {
-            $layoutOptions->addPage($pageUuid, isset($pageInfo['title']) ? $pageInfo['title'] : '', isset($pageInfo['description']) ? $pageInfo['description'] : '', isset($pageInfo['help']) ? $pageInfo['help'] : '');
+            $title = isset($pageInfo['title']) ? $pageInfo['title'] : '';
+            $description = isset($pageInfo['description']) ? $pageInfo['description'] : '';
+            $help = isset($pageInfo['help']) ? $pageInfo['help'] : '';
+            $weight = isset($pageInfo['weight']) ? $pageInfo['weight'] : null;
+            $layoutOptions->addPage($pageUuid, $title, $description, $help, $weight);
 
             if (empty($pageInfo['fields'])) {
                 continue;

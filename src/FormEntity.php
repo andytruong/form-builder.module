@@ -85,4 +85,9 @@ class FormEntity extends Entity implements FormInterface
         $this->slug = $slug;
     }
 
+    public function getPath($pageNumber)
+    {
+        return "form/{$this->fid}/{$this->getSlug()}/{$pageNumber}";
+    }
+
 }

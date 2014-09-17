@@ -3,6 +3,7 @@
 namespace Drupal\form_builder\Controller;
 
 use DatabaseTransaction;
+use Drupal\form_builder\FormEntity;
 use Drupal\form_builder\Helper\FormEntityFixer;
 use Drupal\form_builder\Helper\FormEntityReversedFixer;
 use EntityAPIController;
@@ -15,6 +16,7 @@ class FormEntityController extends EntityAPIController
         $entities = parent::load($ids, $conditions);
         $entityFixer = new FormEntityFixer();
         foreach ($entities as &$form) {
+            /* @var $form FormEntity */
             $entityFixer->fix($form);
         }
         return $entities;
