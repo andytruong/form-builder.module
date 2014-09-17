@@ -45,15 +45,27 @@ class DrupalFormLayout extends FormLayoutHTML
         $element['#parents'] = [];
 
         if ($form->getLayoutOptions()->isLastPage($pageNumber)) {
-            $element['submit'] = ['#name' => 'form-action', '#type' => 'submit', '#parents' => [], '#value' => t('Submit')];
+            $element['submit'] = [
+                '#prefix' => '<button name="form-action" value="submit">',
+                '#suffix' => '</button>',
+                '#markup' => t('Submit')
+            ];
         }
 
         if ($form->getLayoutOptions()->getPreviousPage($pageNumber)) {
-            $element['back'] = ['#name' => 'form-action', '#type' => 'submit', '#parents' => [], '#value' => t('Back')];
+            $element['back'] = [
+                '#prefix' => '<button name="form-action" value="back">',
+                '#suffix' => '</button>',
+                '#markup' => t('Back')
+            ];
         }
 
         if ($form->getLayoutOptions()->getNextPage($pageNumber)) {
-            $element['next'] = ['#name' => 'form-action', '#type' => 'submit', '#parents' => [], '#value' => t('Next')];
+            $element['next'] = [
+                '#prefix' => '<button name="form-action" value="next">',
+                '#suffix' => '</button>',
+                '#markup' => t('Next')
+            ];
         }
 
         $form_state = ['values' => []];
