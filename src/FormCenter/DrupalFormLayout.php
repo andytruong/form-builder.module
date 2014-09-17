@@ -17,7 +17,7 @@ class DrupalFormLayout extends FormLayoutHTML
         $this->setTemplateEngine(form_builder_manager()->getTemplateEngine());
     }
 
-    public function getToken(FormInterface $form, $pageNumber)
+    public function getToken(FormInterface $form, $pageNumber = 1)
     {
         return (new FormTokenHelper())->generate($form, $pageNumber);
     }

@@ -28,4 +28,10 @@ class FormTokenHelper
         return $this->encrypt("{$sessId}.{$form->fid}.{$pageNumber}");
     }
 
+    public function getDrupalCacheId($encrypted)
+    {
+        list($sessId, $formId, ) = explode('.', $this->decrypt($encrypted));
+        return 'formBuilder:' . $sessId . ':' . $formId;
+    }
+
 }
