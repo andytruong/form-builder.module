@@ -22,6 +22,7 @@ class Submit
 
     public function handle(array $request)
     {
+        // setup variables
         $token = (string) $request['form-token'];
         $page = (string) $request['form-page'];
         $action = (string) $request['form-action'];
