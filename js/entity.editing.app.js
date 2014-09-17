@@ -15,6 +15,10 @@
             addedFields: {}
         });
 
+        for (var pageUuid in initState.entity.layoutOptions)
+            if (initState.entity.layoutOptions[pageUuid].fields instanceof Array)
+                initState.entity.layoutOptions[pageUuid].fields = {};
+
         return initState;
     });
 

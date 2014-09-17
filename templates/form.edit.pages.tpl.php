@@ -3,7 +3,6 @@
 <div class="item-list">
     <ul>
         <li ng-repeat="(pageUuid, pageInfo) in entity.layoutOptions">
-
             <div class="form-item form-type-textfield">
                 <input type="text" ng-model="pageInfo.title" class="form-text" />
             </div>

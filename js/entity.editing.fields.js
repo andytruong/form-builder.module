@@ -99,8 +99,23 @@
         // ---------------------
         // Field: User move a field to other page
         // ---------------------
-        helper.fieldOnDropChangePage = function ($scope, pageUuid, baseFieldUuid, fieldUuid) {
-            console.log([pageUuid, baseFieldUuid, fieldUuid]);
+        helper.fieldOnDropChangePage = function ($scope, toPageUuid, baseFieldUuid, fieldUuid) {
+            var fromPageUuid;
+            for (var uuidPage in $scope.entity.layoutOptions)
+                for (var uuidField in $scope.entity.layoutOptions[uuidPage].fields)
+                    if (fieldUuid === uuidField)
+                        fromPageUuid = uuidPage;
+
+            // get field's config
+            var fieldConfig = angular.copy($scope.entity.layoutOptions[fromPageUuid].fields[fieldUuid]);
+
+            // remove field's config from old page
+            delete($scope.entity.layoutOptions[fromPageUuid].fields[fieldUuid]);
+
+            // copy config to new page
+            $scope.entity.layoutOptions[toPageUuid].fields[fieldUuid] = fieldConfig;
+
+            return $scope;
         };
 
         return helper;
