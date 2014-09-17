@@ -46,60 +46,31 @@ class Submit
         return $token === $token; // @TODO: do later
     }
 
-    private function handleSubmit(FormSubmissionInterface $submission, array $request, $page)
+    private function handleSubmit(FormSubmissionInterface $submission, array $request, $pageNumber)
     {
+        $convertor = new ArrayToFormCenterEntity();
         foreach ($this->form->getEntityTypes() as $entityTypeName => $entityType) {
             $entityRequest = $request[str_replace('.', '_', $entityType->getName())];
-            $entity = $this->arrayToEntity($entityType, $entityRequest);
+            $entity = $convertor->convert($entityType, $entityRequest);
             $submission->setEntity($entityTypeName, $entity);
         }
 
         // @TODO: Remove debug code
-        if (true || $this->form->getLayoutOptions()->isLastPage($page)) {
-            return $this->saveFormSubmission($submission);
+        if (true || $this->form->getLayoutOptions()->isLastPage($pageNumber)) {
+            foreach ($submission->getEntities() as $entityTypeName => $entity) {
+                $storageHandler = form_builder_manager()->getEntityStorageHandler($entityTypeName);
+                $storageHandler->create($entity);
+            }
+            drupal_goto("form/{$this->form->fid}");
         }
 
         return $this->goToNextPage($submission);
-    }
-
-    private function saveFormSubmission(FormSubmissionInterface $submission)
-    {
-        foreach ($submission->getEntities() as $entityTypeName => $entity) {
-            $storageHandler = form_builder_manager()->getEntityStorageHandler($entityTypeName);
-            $storageHandler->create($entity);
-        }
-
-        drupal_goto("form/{$this->form->fid}");
     }
 
     private function goToNextPage(FormSubmissionInterface $submission)
     {
         kpr($submission);
         exit;
-    }
-
-    private function arrayToEntity(EntityTypeInterface $entityType, $array)
-    {
-        $entity = new EntityBase();
-        $entity->setEntityType($entityType);
-
-        foreach ($array as $fieldName => $fieldValue) {
-            if (!$entityType->getField($fieldName)) {
-                $msg = '!fieldName is not a valid field of !typeName';
-                throw new RuntimeException(strtr($msg, ['!fieldName', '!typeName'], [$fieldName, $entityType->getName()]));
-            }
-
-            if (!is_array($fieldValue) || !isset($fieldValue['und'][0])) {
-                $entity->setFieldValueItem($fieldName, new FieldValueItem(['value' => $fieldValue]));
-            }
-            else {
-                foreach ($fieldValue['und'] as $delta => $fieldValueItem) {
-                    $entity->setFieldValueItem($fieldName, new FieldValueItem($fieldValueItem), $delta);
-                }
-            }
-        }
-
-        return $entity;
     }
 
 }
