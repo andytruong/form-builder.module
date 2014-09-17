@@ -41,7 +41,6 @@
             $scope.entity.fields = {};
 
         // Layout options -> fields
-        // this $watch does not always work, see FormBuilderFieldHelper.$fieldHelper.fieldOnDropAddField
         $scope.pageFields = {};
         $scope.$watch('entity.layoutOptions', function (layoutOptions) {
             $scope.pageFields = {};

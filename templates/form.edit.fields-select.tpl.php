@@ -8,6 +8,7 @@
                 <ul class="entity-fields">
                     <li data-name="{{fieldName}}"
                         ng-repeat="(fieldName, fieldInfo) in entityTypeInfo.fields"
+                        ng-if="!isFieldAdded(entityTypeName, fieldName)"
                         ui-draggable="true"
                         drag="fieldInfo">
                         <strong class="field-human-name">{{fieldInfo.humanName}}</strong>
