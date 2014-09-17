@@ -2,7 +2,8 @@
     <label for="entityTypes">Available Fields</label>
     <div class="item-list">
         <ul>
-            <li ng-repeat="(entityTypeName, entityTypeInfo) in available.entityTypes">
+            <li ng-repeat="(entityTypeName, entityTypeInfo) in available.entityTypes"
+                ng-if="entity.entityTypes[entityTypeName]">
                 <h3>{{entityTypeInfo.humanName}}</h3>
                 <ul class="entity-fields">
                     <li data-name="{{fieldName}}"
