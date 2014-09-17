@@ -3,11 +3,10 @@
 namespace Drupal\form_builder\Controller\EntityViewController;
 
 use Drupal\form_builder\FormEntity;
-use GO1\FormCenter\Entity\EntityBase;
-use GO1\FormCenter\Entity\Type\EntityTypeInterface;
-use GO1\FormCenter\Field\FieldValueItem;
+use Drupal\form_builder\Helper\ArrayToFormCenterEntity;
 use GO1\FormCenter\Form\Submission\FormSubmissionInterface;
 use RuntimeException;
+use UnexpectedValueException;
 
 class Submit
 {
@@ -24,26 +23,43 @@ class Submit
     {
         // setup variables
         $token = (string) $request['form-token'];
-        $page = (string) $request['form-page'];
+        $pageNumber = (string) $request['form-page'];
         $action = (string) $request['form-action'];
+        $submission = form_builder_manager()->createFormSubmission($this->form);
         unset($request['form-token'], $request['form-page'], $request['form-action']);
 
         if (!$this->validateToken($token)) {
             throw new RuntimeException('Invalid token');
         }
 
-        $submission = form_builder_manager()->createFormSubmission($this->form);
-
         switch ($action) {
+            case 'next':
+                return $this->handleNext($submission, $request, $pageNumber);
+
+            case 'back':
+                return $this->handleBack($submission, $request, $pageNumber);
+
             case 'submit':
+                return $this->handleSubmit($submission, $request, $pageNumber);
+
             default:
-                return $this->handleSubmit($submission, $request, $page);
+                throw new UnexpectedValueException('Wrong form action.');
         }
     }
 
     private function validateToken($token)
     {
         return $token === $token; // @TODO: do later
+    }
+
+    private function handleNext(FormSubmissionInterface $submission, array $request, $pageNumber)
+    {
+        
+    }
+
+    private function handleBack(FormSubmissionInterface $submission, array $request, $pageNumber)
+    {
+
     }
 
     private function handleSubmit(FormSubmissionInterface $submission, array $request, $pageNumber)
