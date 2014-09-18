@@ -10,8 +10,9 @@ class FormEntityFixer
 
     public function fix(FormEntity $form)
     {
-        // Must have uuidGenerator
+        // Must have uuidGenerator, layoutOptions
         $form->setUuidGenerator(form_builder_manager()->getUuidGenerator());
+        $form->setLayoutOption(form_builder_manager()->getFormLayoutOptions());
 
         foreach (['entity_types', 'form_fields', 'layout_options', 'form_listeners'] as $key) {
             if (!empty($form->{$key}) && is_string($form->{$key})) {
