@@ -25,12 +25,13 @@ class FormTokenHelper
     public function generate(FormEntity $form, $pageNumber = 1)
     {
         $sessId = session_id();
-        return $this->encrypt("{$sessId}.{$form->fid}.{$pageNumber}");
+        $timestamp = time();
+        return $this->encrypt("{$sessId}.{$form->fid}.{$pageNumber}.{$timestamp}");
     }
 
     public function getDrupalCacheId($encrypted)
     {
-        list($sessId, $formId, ) = explode('.', $this->decrypt($encrypted));
+        list($sessId, $formId, $pageNumber, $timestamp) = explode('.', $this->decrypt($encrypted));
         return 'formBuilder:' . $sessId . ':' . $formId;
     }
 
