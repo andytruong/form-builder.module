@@ -4,6 +4,7 @@ namespace Drupal\form_builder\Helper;
 
 use Drupal\form_builder\FormCenter\DrupalField;
 use EntityDrupalWrapper;
+use EntityMetadataWrapperException;
 use EntityStructureWrapper;
 use GO1\FormCenter\Entity\EntityInterface;
 use GO1\FormCenter\Field\FieldValueItemInterface;
@@ -53,6 +54,7 @@ class FormCenterEntityToDrupalEntity
             $drupalEntityWrapper->{$fieldName}->set($itemValue);
         }
         else {
+            // @TODO: invalid value maybe entered, how to handle it nicely? — EntityMetadataWrapperException
             $drupalEntityWrapper->{$fieldName}->set($fieldValueItem['value']);
         }
     }

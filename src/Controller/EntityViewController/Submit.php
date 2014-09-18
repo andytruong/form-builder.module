@@ -32,11 +32,11 @@ class Submit
         if ($this->validateToken($token) && $submission = $this->createFormSubmission($request, $token)) {
             switch ($action) {
                 case 'next':
-                    return $this->handleNext($submission, $pageNumber);
+                    return $this->handleNext($submission, $pageNumber, $token);
                 case 'back':
-                    return $this->handleBack($submission, $pageNumber);
+                    return $this->handleBack($submission, $pageNumber, $token);
                 case 'submit':
-                    return $this->handleSubmit($submission, $pageNumber);
+                    return $this->handleSubmit($submission, $pageNumber, $token);
                 default:
                     throw new UnexpectedValueException('Wrong form action.');
             }
@@ -49,7 +49,17 @@ class Submit
 
         // Check cached data, merge them with new request
         if ($cache = cache_get($cacheId)) {
-            $_request = json_decode($cache->data, true);
+            $newRequest = $request;
+
+            if ($cachedRequest = json_decode($cache->data, true)) {
+                $request = $cachedRequest;
+
+                foreach ($newRequest as $entityTypeName => $entityValues) {
+                    foreach ($entityValues as $fieldName => $fieldValueItems) {
+                        $request[$entityTypeName][$fieldName] = $fieldValueItems;
+                    }
+                }
+            }
         }
 
         // Cache latest request
@@ -87,14 +97,18 @@ class Submit
         drupal_goto($path);
     }
 
-    private function handleSubmit(FormSubmissionInterface $submission, $pageNumber)
+    private function handleSubmit(FormSubmissionInterface $submission, $pageNumber, $token)
     {
-        // @TODO: Remove debug code
-        if (true || $this->form->getLayoutOptions()->isLastPage($pageNumber)) {
+        if ($this->form->getLayoutOptions()->isLastPage($pageNumber)) {
             foreach ($submission->getEntities() as $entityTypeName => $entity) {
                 $storageHandler = form_builder_manager()->getEntityStorageHandler($entityTypeName);
                 $storageHandler->create($entity);
             }
+
+            if ($cacheId = (new FormTokenHelper())->getDrupalCacheId($token)) {
+                cache_clear_all($cacheId, 'cache');
+            }
+
             drupal_goto("form/{$this->form->fid}");
         }
 
