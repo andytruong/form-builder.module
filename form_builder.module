@@ -1,7 +1,7 @@
 <?php
 
+use Drupal\form_builder\FormCenter\Manager;
 use Drupal\form_builder\FormEntity;
-use \Drupal\form_builder\FormCenter\Manager;
 
 require_once dirname(__FILE__) . '/form_builder.hooks.php';
 
