@@ -4,6 +4,7 @@ namespace Drupal\form_builder\Controller\EntityViewController;
 
 use Drupal\form_builder\FormEntity;
 use Drupal\form_builder\Helper\ArrayToFormCenterEntity;
+use Drupal\form_builder\Helper\FormTokenHelper;
 use GO1\FormCenter\Form\Submission\FormSubmissionInterface;
 use RuntimeException;
 use UnexpectedValueException;
@@ -28,7 +29,7 @@ class Submit
         unset($request['form-token'], $request['form-page'], $request['form-action']);
 
         // wrapper flow
-        if ($this->validateToken($token) && $submission = $this->createFormSubmission($request)) {
+        if ($this->validateToken($token) && $submission = $this->createFormSubmission($request, $token)) {
             switch ($action) {
                 case 'next':
                     return $this->handleNext($submission, $pageNumber);
@@ -42,8 +43,18 @@ class Submit
         }
     }
 
-    private function createFormSubmission(array $request)
+    private function createFormSubmission(array $request, $token)
     {
+        $cacheId = (new FormTokenHelper())->getDrupalCacheId($token);
+
+        // Check cached data, merge them with new request
+        if ($cache = cache_get($cacheId)) {
+            $_request = json_decode($cache->data, true);
+        }
+
+        // Cache latest request
+        cache_set($cacheId, json_encode($request), 'cache', strtotime('+ 6 hours'));
+
         $submission = form_builder_manager()->createFormSubmission($this->form);
         $convertor = new ArrayToFormCenterEntity();
         foreach ($this->form->getEntityTypes() as $entityTypeName => $entityType) {

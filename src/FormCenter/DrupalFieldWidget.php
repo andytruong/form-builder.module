@@ -4,6 +4,7 @@ namespace Drupal\form_builder\FormCenter;
 
 use GO1\FormCenter\Field\FieldInterface;
 use GO1\FormCenter\Field\FieldOptions;
+use GO1\FormCenter\Field\FieldValueItemInterface;
 use GO1\FormCenter\Field\Widget\FieldWidgetBase;
 
 class DrupalFieldWidget extends FieldWidgetBase
@@ -18,15 +19,21 @@ class DrupalFieldWidget extends FieldWidgetBase
         $this->drupalFieldInfo = $drupalFieldInfo;
     }
 
-    protected function renderFieldTypes(FieldInterface $field, FieldOptions $fieldOptions)
+    /**
+     * @param FieldInterface $field
+     * @param FieldOptions $fieldOptions
+     * @param FieldValueItemInterface[] $fieldValueItems
+     * @return string
+     */
+    protected function renderFieldTypes(FieldInterface $field, FieldOptions $fieldOptions, array $fieldValueItems = [])
     {
         if (!empty($this->drupalFieldInfo['field'])) {
-            return $this->renderDrupalField($field, $fieldOptions);
+            return $this->renderDrupalField($field, $fieldOptions, $fieldValueItems);
         }
-        return $this->renderDrupalProperty($field, $fieldOptions);
+        return $this->renderDrupalProperty($field, $fieldOptions, $fieldValueItems);
     }
 
-    protected function renderDrupalField(FieldInterface $field, FieldOptions $fieldOptions)
+    protected function renderDrupalField(FieldInterface $field, FieldOptions $fieldOptions, array $fieldValueItems = [])
     {
         $form = [
             '#type'    => $this->drupalFieldInfo['type'],
@@ -44,10 +51,11 @@ class DrupalFieldWidget extends FieldWidgetBase
                 $form['und'][$delta]['#parents'] = [];
 
                 $form['und'][$delta][$key] = [
-                    '#name'    => $field->getEntityType()->getName() . '[' . $field->getName() . ']' . "[und][$delta][$key]",
-                    '#type'    => $propertyInfo['type'],
-                    '#parents' => [],
-                    '#title'   => $propertyInfo['label'],
+                    '#name'          => $field->getEntityType()->getName() . '[' . $field->getName() . ']' . "[und][$delta][$key]",
+                    '#type'          => $propertyInfo['type'],
+                    '#parents'       => [],
+                    '#title'         => $propertyInfo['label'],
+                    '#default_value' => isset($fieldValueItems[$delta][$key]) ? $fieldValueItems[$delta][$key] : null,
                 ];
 
                 if ('text' === $propertyInfo['type']) {
@@ -67,14 +75,20 @@ class DrupalFieldWidget extends FieldWidgetBase
         return drupal_render($form);
     }
 
-    protected function renderDrupalProperty(FieldInterface $field, FieldOptions $fieldOptions)
+    /**
+     * @param FieldInterface $field
+     * @param FieldOptions $fieldOptions
+     * @param FieldValueItemInterface[] $fieldValueItems
+     */
+    protected function renderDrupalProperty(FieldInterface $field, FieldOptions $fieldOptions, array $fieldValueItems = [])
     {
         $e = [
-            '#name'     => $field->getEntityType()->getName() . '[' . $field->getName() . ']',
-            '#type'     => 'textfield',
-            '#parents'  => [],
-            '#required' => !empty($this->drupalFieldInfo['required']),
-            '#title'    => $this->drupalFieldInfo['label'],
+            '#name'          => $field->getEntityType()->getName() . '[' . $field->getName() . ']',
+            '#type'          => 'textfield',
+            '#parents'       => [],
+            '#required'      => !empty($this->drupalFieldInfo['required']),
+            '#title'         => $this->drupalFieldInfo['label'],
+            '#default_value' => isset($fieldValueItems[0]) ? $fieldValueItems[0]['value'] : '',
         ];
         if (isset($this->drupalFieldInfo['type'])) {
             if ('boolean' === $this->drupalFieldInfo['type']) {
