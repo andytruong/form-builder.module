@@ -31,9 +31,9 @@ class DrupalField extends FieldBase
         return parent::getFieldWidget();
     }
 
-    public function render(FieldOptions $fieldOptions)
+    public function render(FieldOptions $fieldOptions, array $fieldValueItems = [])
     {
-        return $this->getFieldWidget()->render($this, $fieldOptions);
+        return $this->getFieldWidget()->render($this, $fieldOptions, $fieldValueItems);
     }
 
 }
