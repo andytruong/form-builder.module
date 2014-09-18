@@ -4,7 +4,6 @@ namespace Drupal\form_builder\Helper;
 
 use Drupal\form_builder\FormCenter\DrupalField;
 use EntityDrupalWrapper;
-use EntityMetadataWrapperException;
 use EntityStructureWrapper;
 use GO1\FormCenter\Entity\EntityInterface;
 use GO1\FormCenter\Field\FieldValueItemInterface;
