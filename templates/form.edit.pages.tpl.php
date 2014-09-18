@@ -4,7 +4,13 @@
     <ul>
         <li ng-repeat="(pageUuid, pageInfo) in entity.layoutOptions">
             <div class="form-item form-type-textfield">
+                <label>Page name</label>
                 <input type="text" ng-model="pageInfo.title" class="form-text" />
+            </div>
+
+            <div class="form-item form-type-textfield">
+                <label>Weight</label>
+                <input type="text" ng-model="pageInfo.weight" class="form-text" />
             </div>
 
             <div class="form-item form-type-textarea form-item-description">
@@ -16,7 +22,7 @@
             </div>
 
             <div class="page-actions">
-                <a href ng-click="pageRemove(pageUuid)">Remove</a>
+                <a href ng-click="pageRemove(pageUuid)">Remove page</a>
             </div>
 
             <ul>
