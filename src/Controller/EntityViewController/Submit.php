@@ -65,6 +65,8 @@ class Submit
         // Cache latest request
         cache_set($cacheId, json_encode($request), 'cache', strtotime('+ 6 hours'));
 
+        dsm($request);
+
         $submission = form_builder_manager()->createFormSubmission($this->form);
         $convertor = new ArrayToFormCenterEntity();
         foreach ($this->form->getEntityTypes() as $entityTypeName => $entityType) {
