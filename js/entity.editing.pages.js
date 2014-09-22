@@ -15,7 +15,7 @@
                     })
                     .success(function (data) {
                         $scope.newPageAdding = false;
-                        $scope.entity.layoutOptions[data.pageUuid] = {
+                        $scope.entity.layoutOptions.pages[data.pageUuid] = {
                             title: $scope.newPageTitle,
                             description: '',
                             weight: 1,

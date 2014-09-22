@@ -5,7 +5,7 @@
 
         helper.fieldRemove = function (pageUuid, fieldUuid) {
             delete(this.entity.fields[fieldUuid]);
-            delete(this.entity.layoutOptions[pageUuid]['fields'][fieldUuid]);
+            delete(this.entity.layoutOptions.pages[pageUuid]['fields'][fieldUuid]);
         };
 
         helper.isAvailableFieldsEmpty = function (entityTypeName) {
@@ -57,14 +57,14 @@
                     })
                     .success(function (data) {
                         var fieldName = data.field.entityTypeName + '.' + data.field.name;
-                        var weight = baseFieldUuid ? 1 + $scope.entity.layoutOptions[pageUuid].fields[baseFieldUuid].weight : 0;
+                        var weight = baseFieldUuid ? 1 + $scope.entity.layoutOptions.pages[pageUuid].fields[baseFieldUuid].weight : 0;
 
                         field.uuid = data.fieldUuid;
 
                         $scope.entity.fields[data.fieldUuid] = data.field;
                         $scope.available.addedFields[data.fieldUuid] = $scope.available.addingFields[fieldName];
                         $scope.pageFields[pageUuid].push(field);
-                        $scope.entity.layoutOptions[pageUuid].fields[data.fieldUuid] = {weight: weight, domTagName: 'div', domClasses: []};
+                        $scope.entity.layoutOptions.pages[pageUuid].fields[data.fieldUuid] = {weight: weight, domTagName: 'div', domClasses: []};
                         delete($scope.available.addingFields[pageUuid][fieldName]);
                     });
         };
@@ -97,19 +97,19 @@
         // ---------------------
         helper.fieldOnDropChangePage = function ($scope, toPageUuid, baseFieldUuid, fieldUuid) {
             var fromPageUuid;
-            for (var uuidPage in $scope.entity.layoutOptions)
-                for (var uuidField in $scope.entity.layoutOptions[uuidPage].fields)
+            for (var uuidPage in $scope.entity.layoutOptions.pages)
+                for (var uuidField in $scope.entity.layoutOptions.pages[uuidPage].fields)
                     if (fieldUuid === uuidField)
                         fromPageUuid = uuidPage;
 
             // get field's config
-            var fieldConfig = angular.copy($scope.entity.layoutOptions[fromPageUuid].fields[fieldUuid]);
+            var fieldConfig = angular.copy($scope.entity.layoutOptions.pages[fromPageUuid].fields[fieldUuid]);
 
             // remove field's config from old page
-            delete($scope.entity.layoutOptions[fromPageUuid].fields[fieldUuid]);
+            delete($scope.entity.layoutOptions.pages[fromPageUuid].fields[fieldUuid]);
 
             // copy config to new page
-            $scope.entity.layoutOptions[toPageUuid].fields[fieldUuid] = fieldConfig;
+            $scope.entity.layoutOptions.pages[toPageUuid].fields[fieldUuid] = fieldConfig;
 
             return $scope;
         };

@@ -3,6 +3,8 @@
         <form>
             <?php include 'form.edit.title.tpl.php'; ?>
 
+            <div class="break"></div>
+
             <div id="formBuilderFields">
                 <div id="availableResources">
                     <?php include 'form.edit.entity-types.tpl.php'; ?>

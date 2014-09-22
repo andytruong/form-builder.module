@@ -15,9 +15,12 @@
             addedFields: {}
         });
 
-        for (var pageUuid in initState.entity.layoutOptions)
-            if (initState.entity.layoutOptions[pageUuid].fields instanceof Array)
-                initState.entity.layoutOptions[pageUuid].fields = {};
+        if (initState.entity.layoutOptions.pages instanceof Array)
+            initState.entity.layoutOptions.pages = {};
+
+        for (var pageUuid in initState.entity.layoutOptions.pages)
+            if (initState.entity.layoutOptions.pages[pageUuid].fields instanceof Array)
+                initState.entity.layoutOptions.pages[pageUuid].fields = {};
 
         return initState;
     });
@@ -42,9 +45,9 @@
 
         // Layout options -> fields
         $scope.pageFields = {};
-        $scope.$watch('entity.layoutOptions', function (layoutOptions) {
+        $scope.$watch('entity.layoutOptions.pages', function (pages) {
             $scope.pageFields = {};
-            angular.forEach(layoutOptions, function (pageInfo, pageUuid) {
+            angular.forEach(pages, function (pageInfo, pageUuid) {
                 $scope.pageFields[pageUuid] = [];
                 angular.forEach(pageInfo.fields, function (fieldInfo, fieldUuid) {
                     fieldInfo.uuid = fieldUuid;

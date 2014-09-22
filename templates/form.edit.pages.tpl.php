@@ -2,7 +2,7 @@
 
 <div class="item-list">
     <ul>
-        <li ng-repeat="(pageUuid, pageInfo) in entity.layoutOptions">
+        <li ng-repeat="(pageUuid, pageInfo) in entity.layoutOptions.pages">
             <div class="form-item form-type-textfield">
                 <label>Page name</label>
                 <input type="text" ng-model="pageInfo.title" class="form-text" />
