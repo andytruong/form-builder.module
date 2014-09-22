@@ -3,7 +3,7 @@
 namespace Drupal\form_builder\Controller\EntityViewController;
 
 use Drupal\form_builder\FormEntity;
-use Drupal\form_builder\Helper\ArrayToFormCenterEntity;
+use Drupal\form_builder\Helper\FormSubmissionHelper;
 use Drupal\form_builder\Helper\FormTokenHelper;
 use GO1\FormCenter\Form\Submission\FormSubmissionInterface;
 use RuntimeException;
@@ -28,51 +28,24 @@ class Submit
         $action = (string) $request['form-action'];
         unset($request['form-token'], $request['form-page'], $request['form-action']);
 
-        // wrapper flow
-        if ($this->validateToken($token) && $submission = $this->createFormSubmission($request, $token)) {
-            switch ($action) {
-                case 'next':
-                    return $this->handleNext($submission, $pageNumber, $token);
-                case 'back':
-                    return $this->handleBack($submission, $pageNumber, $token);
-                case 'submit':
-                    return $this->handleSubmit($submission, $pageNumber, $token);
-                default:
-                    throw new UnexpectedValueException('Wrong form action.');
-            }
-        }
-    }
-
-    private function createFormSubmission(array $request, $token)
-    {
-        $cacheId = (new FormTokenHelper())->getDrupalCacheId($token);
-
-        // Check cached data, merge them with new request
-        if ($cache = cache_get($cacheId)) {
-            $newRequest = $request;
-
-            if ($cachedRequest = json_decode($cache->data, true)) {
-                $request = $cachedRequest;
-
-                foreach ($newRequest as $entityTypeName => $entityValues) {
-                    foreach ($entityValues as $fieldName => $fieldValueItems) {
-                        $request[$entityTypeName][$fieldName] = $fieldValueItems;
-                    }
-                }
-            }
+        if (!$this->validateToken($token)) {
+            throw new RuntimeException('Invalid token.');
         }
 
-        // Cache latest request
-        cache_set($cacheId, json_encode($request), 'cache', strtotime('+ 6 hours'));
-
-        $submission = form_builder_manager()->createFormSubmission($this->form);
-        $convertor = new ArrayToFormCenterEntity();
-        foreach ($this->form->getEntityTypes() as $entityTypeName => $entityType) {
-            $entityRequest = $request[str_replace('.', '_', $entityType->getName())];
-            $entity = $convertor->convert($entityType, $entityRequest);
-            $submission->setEntity($entityTypeName, $entity);
+        if (!$submission = (new FormSubmissionHelper())->convertFromRequest($request, $token)) {
+            throw new RuntimeException('Invalid form submission.');
         }
-        return $submission;
+
+        switch ($action) {
+            case 'next':
+                return $this->handleNext($submission, $pageNumber, $token);
+            case 'back':
+                return $this->handleBack($submission, $pageNumber, $token);
+            case 'submit':
+                return $this->handleSubmit($submission, $pageNumber, $token);
+            default:
+                throw new UnexpectedValueException('Wrong form action.');
+        }
     }
 
     private function validateToken($token)
