@@ -16,6 +16,18 @@ class DrupalEntityType extends EntityTypeBase
     /** @var array */
     private $drupalBundleInfo;
 
+    public function getDrupalEntityTypeName()
+    {
+        list(, $name, ) = explode('.', $this->getName());
+        return $name;
+    }
+
+    public function getDrupalBundleName()
+    {
+        list(,, $name) = explode('.', $this->getName());
+        return $name;
+    }
+
     protected function getDefaultStorageHandler()
     {
         return new DrupalEntityStorageHandler();

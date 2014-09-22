@@ -4,6 +4,7 @@ namespace Drupal\form_builder\FormCenter;
 
 use GO1\FormCenter\Field\FieldInterface;
 use GO1\FormCenter\Field\FieldOptions;
+use GO1\FormCenter\Field\FieldValueItem;
 use GO1\FormCenter\Field\FieldValueItemInterface;
 use GO1\FormCenter\Field\Widget\FieldWidgetBase;
 
@@ -33,44 +34,70 @@ class DrupalFieldWidget extends FieldWidgetBase
         return $this->renderDrupalProperty($field, $fieldOptions, $fieldValueItems);
     }
 
+    /**
+     * @param FieldInterface $field
+     * @param FieldOptions $fieldOptions
+     * @param FieldValueItemInterface[] $fieldValueItems
+     * @return type
+     */
     protected function renderDrupalField(FieldInterface $field, FieldOptions $fieldOptions, array $fieldValueItems = [])
     {
-        $form = [
-            '#type'    => $this->drupalFieldInfo['type'],
-            '#title'   => $this->drupalFieldInfo['label'],
-            '#parents' => [],
-            'und'      => [
-                '#theme'       => 'field_multiple_value_form',
-                '#cardinality' => $field->getNumberOfValues(),
-                '#after_build' => ['field_form_element_after_build'],
+        $eTName = $field->getEntityType()->getName();
+        $dETName = $field->getEntityType()->getDrupalEntityTypeName();
+        $dBundleName = $field->getEntityType()->getDrupalBundleName();
+        $dFName = $field->getName();
+        $dField = field_info_field($dFName);
+        $dFieldInstance = field_info_instance($dETName, $dFName, $dBundleName);
+        $dLang = 'und';
+        $dItems = array_map(function(FieldValueItem $item) {
+            return $item->toArray();
+        }, $fieldValueItems);
+
+        $dForm = ['#parents' => [$dFName, 'und']];
+        $dFormState = [];
+
+        $form[$dFName] = [
+            '#type'       => 'container',
+            '#parents'    => [$dFName, 'und'],
+            '#weight'     => $fieldOptions->getWeight(),
+            '#attributes' => [
+                'class' => [
+                    'field-type-' . str_replace('_', '-', $dField['type']),
+                    'field-name-' . str_replace('_', '-', $dFName),
+                    'field-widget-' . str_replace('_', '-', $dFieldInstance['widget']['type'])
+                ]
             ],
+            $dLang        => [],
         ];
 
-        for ($delta = 0; $delta < $field->getNumberOfValues(); ++$delta) {
-            foreach ($this->drupalFieldInfo['property info'] as $key => $propertyInfo) {
-                $form['und'][$delta]['#parents'] = [];
+        $e = &$form[$dFName][$dLang];
+        $e = field_multiple_value_form($dField, $dFieldInstance, $dLang, $dItems, $dForm, $dFormState);
 
-                $form['und'][$delta][$key] = [
-                    '#name'          => $field->getEntityType()->getName() . '[' . $field->getName() . ']' . "[und][$delta][$key]",
-                    '#type'          => $propertyInfo['type'],
-                    '#parents'       => [],
-                    '#title'         => $propertyInfo['label'],
-                    '#default_value' => isset($fieldValueItems[$delta][$key]) ? $fieldValueItems[$delta][$key] : null,
-                ];
+        $form['#parents'] = [];
+        $form_state = ['values' => [], 'complete form' => $form];
+        form_builder('form_builder_element', $form, $form_state);
 
-                if ('text' === $propertyInfo['type']) {
-                    $form['und'][$delta][$key]['#type'] = 'textarea';
+        foreach (element_children($form[$dFName][$dLang]) as $delta) {
+            $e = &$form[$dFName][$dLang][$delta];
+            foreach (element_children($e) as $i) {
+                if (empty($e[$i]['#type'])) {
+                    continue;
                 }
 
-                if (!empty($propertyInfo['options list'])) {
-                    $form['und'][$delta][$key]['#type'] = 'select';
-                    $form['und'][$delta][$key]['#options'] = $propertyInfo['options list']();
+                if (isset($e[$i]['#value'])) {
+                    $name = $eTName . '[' . $dFName . '][' . $dLang . '][' . $delta . '][' . $i . ']';
+                    $e[$i]['#name'] = $name;
+                }
+
+                $iis = element_children($e[$i]);
+                foreach ($iis as $ii) {
+                    $name = $eTName . '[' . $dFName . '][' . $dLang . ']' . implode('', array_map(function($pa) {
+                                return '[' . $pa . ']';
+                            }, $e[$i][$ii]['#parents']));
+                    $e[$i][$ii]['#name'] = $name;
                 }
             }
         }
-
-        $form_state = ['values' => []];
-        form_builder('form_builder_element', $form, $form_state);
 
         return drupal_render($form);
     }
@@ -90,10 +117,30 @@ class DrupalFieldWidget extends FieldWidgetBase
             '#title'         => $this->drupalFieldInfo['label'],
             '#default_value' => isset($fieldValueItems[0]) ? $fieldValueItems[0]['value'] : '',
         ];
+
         if (isset($this->drupalFieldInfo['type'])) {
-            if ('boolean' === $this->drupalFieldInfo['type']) {
-                $e['#type'] = 'checkbox';
+            switch ($this->drupalFieldInfo['type']) {
+                case 'boolean':
+                    $e['#type'] = 'checkbox';
+                    break;
+                case 'text':
+                    $e['#type'] = 'textarea';
+                    $e['#rows'] = 3;
+                    break;
+                case 'integer':
+                    $e['#type'] = 'textfield';
+                    break;
+                case 'date':
+                    $e['#type'] = $this->drupalFieldInfo['type'];
+                    break;
+                default:
+                    dsm($this->drupalFieldInfo['type']);
             }
+        }
+
+        if (isset($this->drupalFieldInfo['options list'])) {
+            $e['#type'] = 'select';
+            $e['#options'] = $this->drupalFieldInfo['options list']();
         }
 
         $form_state = ['values' => []];
