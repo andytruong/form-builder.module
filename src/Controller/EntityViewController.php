@@ -32,7 +32,7 @@ class EntityViewController
         $return = (new Submit($form, $pageNumber))->handle($_POST);
         if ($return instanceof ConstraintViolationList) {
             foreach ($return as $error) {
-                drupal_set_message($error->getMessage(), 'error');
+                drupal_set_message($error->getMessage(), 'error', false);
             }
             return $form->render($pageNumber, self::createFormSubmissionFromCache($form, $pageNumber));
         }

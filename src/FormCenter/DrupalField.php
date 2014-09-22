@@ -70,8 +70,8 @@ class DrupalField extends FieldBase
             return $item->toArray();
         }, $fieldValueItems);
 
-        // Validate 'required' option
-        if (!empty($dFieldInstance['required'])) {
+        // Validate 'required' option & the field is visible in form.
+        if (!empty($dFieldInstance['required']) && null !== $fieldValueItems[0]) {
             $emptyValidator = $dField['module'] . '_field_is_empty';
             if ($emptyValidator($fieldValueItems[0], $dField)) {
                 $msgRaw = '!name field is required.';
@@ -98,9 +98,14 @@ class DrupalField extends FieldBase
     {
         $errors = new ConstraintViolationList();
         if (!empty($this->drupalFieldInfo['required']) && empty($fieldValueItems[0]['value'])) {
+            // The field is not visible on page
+            if (null === $fieldValueItems[0]) {
+                return $errors;
+            }
+
             $msgRaw = '!name field is required.';
             $msg = strtr($msgRaw, ['!name' => $this->drupalFieldInfo['schema field']]);
-            $error = new ConstraintViolation($msg, $msgRaw, [], $fieldValueItems, $dFName . '.0', null);
+            $error = new ConstraintViolation($msg, $msgRaw, [], $fieldValueItems, $this->getName() . '.0', null);
             $errors->add($error);
         }
         return $errors;
