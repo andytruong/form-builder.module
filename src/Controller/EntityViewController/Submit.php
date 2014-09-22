@@ -111,6 +111,10 @@ class Submit
                 cache_clear_all($cacheId, 'cache');
             }
 
+            if ($msg = $this->form->getLayoutOptions()->getConfirmationMessage()) {
+                drupal_set_message($msg);
+            }
+
             drupal_goto("form/{$this->form->fid}");
         }
 
