@@ -4,6 +4,7 @@ namespace Drupal\form_builder\Helper;
 
 use Drupal\form_builder\FormCenter\DrupalField;
 use EntityDrupalWrapper;
+use EntityMetadataWrapperException;
 use EntityStructureWrapper;
 use GO1\FormCenter\Entity\EntityInterface;
 use GO1\FormCenter\Field\FieldValueItemInterface;
@@ -50,7 +51,13 @@ class FormCenterEntityToDrupalEntity
             foreach (array_keys($drupalPropertyInfo['property info']) as $vKey) {
                 $itemValue[$vKey] = $fieldValueItem[$vKey];
             }
-            $drupalEntityWrapper->{$fieldName}->set($itemValue);
+
+            try {
+                $drupalEntityWrapper->{$fieldName}->set($itemValue);
+            }
+            catch (EntityMetadataWrapperException $e) {
+
+            }
         }
         else {
             // @TODO: invalid value maybe entered, how to handle it nicely? — EntityMetadataWrapperException
