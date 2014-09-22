@@ -2,22 +2,23 @@
 
 namespace Drupal\form_builder\Helper;
 
+use Drupal\form_builder\FormEntity;
+
 class FormSubmissionHelper
 {
 
-    public function convertFromRequest(array $request, $token)
+    public function convertFromRequest(FormEntity $form, array $request, $token)
     {
         $cacheId = (new FormTokenHelper())->getDrupalCacheId($token);
         $this->mergeCachedRequest($cacheId, $request);
 
-        $submission = form_builder_manager()->createFormSubmission($this->form);
+        $submission = form_builder_manager()->createFormSubmission($form);
         $convertor = new ArrayToFormCenterEntity();
-        foreach ($this->form->getEntityTypes() as $entityTypeName => $entityType) {
+        foreach ($form->getEntityTypes() as $entityTypeName => $entityType) {
             $entityRequest = $request[str_replace('.', '_', $entityType->getName())];
             $entity = $convertor->convert($entityType, $entityRequest);
             $submission->setEntity($entityTypeName, $entity);
         }
-
         return $submission;
     }
 

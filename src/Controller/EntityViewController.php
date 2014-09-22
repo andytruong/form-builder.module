@@ -6,24 +6,37 @@ use Drupal\form_builder\Controller\EntityViewController\Submit;
 use Drupal\form_builder\FormEntity;
 use Drupal\form_builder\Helper\ArrayToFormCenterEntity;
 use Drupal\form_builder\Helper\FormTokenHelper;
+use RuntimeException;
+use Symfony\Component\Validator\ConstraintViolationList;
 
 class EntityViewController
 {
 
     public static function pageCallback(FormEntity $form, $slug = '', $pageNumber = 1)
     {
-        if ('POST' === $_SERVER['REQUEST_METHOD']) {
-            if (filter_input(INPUT_POST, 'form-page')) {
-                $pageNumber = filter_input(INPUT_POST, 'form-page');
+        if ('GET' === $_SERVER['REQUEST_METHOD']) {
+            if ($slug !== $form->getSlug()) {
+                drupal_goto($form->getPath($pageNumber));
             }
-            return (new Submit($form, $pageNumber))->handle($_POST);
+            return $form->render($pageNumber, self::createFormSubmissionFromCache($form, $pageNumber));
         }
 
-        if ($slug !== $form->getSlug()) {
-            drupal_goto($form->getPath($pageNumber));
+        if ('POST' !== $_SERVER['REQUEST_METHOD']) {
+            throw new RuntimeException('Unsupported method.');
         }
 
-        return $form->render($pageNumber, self::createFormSubmissionFromCache($form, $pageNumber));
+        if (filter_input(INPUT_POST, 'form-page')) {
+            $pageNumber = filter_input(INPUT_POST, 'form-page');
+        }
+
+        $return = (new Submit($form, $pageNumber))->handle($_POST);
+        if ($return instanceof ConstraintViolationList) {
+            foreach ($return as $error) {
+                drupal_set_message($error->getMessage(), 'error');
+            }
+            return $form->render($pageNumber, self::createFormSubmissionFromCache($form, $pageNumber));
+        }
+        return $return;
     }
 
     private static function createFormSubmissionFromCache(FormEntity $form, $pageNumber)

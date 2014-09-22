@@ -32,8 +32,12 @@ class Submit
             throw new RuntimeException('Invalid token.');
         }
 
-        if (!$submission = (new FormSubmissionHelper())->convertFromRequest($request, $token)) {
+        if (!$submission = (new FormSubmissionHelper())->convertFromRequest($this->form, $request, $token)) {
             throw new RuntimeException('Invalid form submission.');
+        }
+
+        if (($errors = $submission->validate()) && count($errors)) {
+            return $errors;
         }
 
         switch ($action) {
