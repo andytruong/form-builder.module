@@ -21,7 +21,7 @@
 </div>
 
 <div class="form-item fomr-type-textfield form-item-slug" ng-if="!slugDoAuto">
-    <label for="edit-title">Slug <span class="form-required" title="This field is required.">*</span></label>
+    <label for="edit-slug">Slug <span class="form-required" title="This field is required.">*</span></label>
 
     <input type="text"
            id="edit-slug"
