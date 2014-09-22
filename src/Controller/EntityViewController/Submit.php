@@ -36,7 +36,7 @@ class Submit
             throw new RuntimeException('Invalid form submission.');
         }
 
-        if (($errors = $submission->validate()) && count($errors)) {
+        if (($action != 'back') && ($errors = $submission->validate()) && count($errors)) {
             return $errors;
         }
 
