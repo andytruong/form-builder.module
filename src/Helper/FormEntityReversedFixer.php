@@ -41,8 +41,14 @@ class FormEntityReversedFixer
         }
 
         $form->layout_options = [];
+
+        // base options
+        $form->layout_options['submitText'] = $layoutOptions->getSubmitText();
+        $form->layout_options['confirmMessage'] = $layoutOptions->getConfirmationMessage();
+
+        // Page fields
         foreach ($layoutOptions->getPages() as $pageUuid => $pageInfo) {
-            $form->layout_options[$pageUuid] = [
+            $form->layout_options['pages'][$pageUuid] = [
                 'title'       => $pageInfo['title'],
                 'description' => $pageInfo['description'],
                 'help'        => $pageInfo['help'],
@@ -52,7 +58,7 @@ class FormEntityReversedFixer
             if (!empty($pageInfo['fields'])) {
                 foreach ($pageInfo['fields'] as $fieldUuid => $fieldInfo) {
                     /* @var $fieldInfo FieldOptions */
-                    $form->layout_options[$pageUuid]['fields'][$fieldUuid]['weight'] = $fieldInfo->getWeight();
+                    $form->layout_options['pages'][$pageUuid]['fields'][$fieldUuid]['weight'] = $fieldInfo->getWeight();
                 }
             }
         }

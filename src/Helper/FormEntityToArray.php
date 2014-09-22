@@ -74,7 +74,7 @@ class FormEntityToArray
         $array['layoutOptions']['pages'] = [];
         foreach ($form->getLayoutOptions()->getPages() as $pageUuid => $pageInfo) {
             $array['layoutOptions']['pages'][$pageUuid] = $pageInfo;
-            $array['layoutOptions']['pages'][$pageUuid]['title'] = empty($array['layoutOptions'][$pageUuid]['title']) ? $pageUuid : $array['layoutOptions'][$pageUuid]['title'];
+            $array['layoutOptions']['pages'][$pageUuid]['title'] = empty($array['layoutOptions']['pages'][$pageUuid]['title']) ? $pageUuid : $array['layoutOptions']['pages'][$pageUuid]['title'];
             foreach ($array['layoutOptions']['pages'][$pageUuid]['fields'] as $fieldUuid => $fieldOptions) {
                 /* @var $fieldOptions FieldOptions */
                 $array['layoutOptions']['pages'][$pageUuid]['fields'][$fieldUuid] = (new Serializer())->toArray($fieldOptions);

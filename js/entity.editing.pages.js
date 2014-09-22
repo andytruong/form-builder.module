@@ -37,7 +37,7 @@
                 this.fieldRemove(pageUuid, this.pageFields[pageUuid][i].uuid);
 
             // Remove page
-            delete(this.entity.layoutOptions[pageUuid]);
+            delete(this.entity.layoutOptions.pages[pageUuid]);
         };
 
         return helper;

@@ -48,7 +48,7 @@ class FormEntityFixer
         }
 
         $form->setLayoutOption($layoutOptions = form_builder_manager()->getFormLayoutOptions());
-        foreach ($form->layout_options as $pageUuid => $pageInfo) {
+        foreach ($form->layout_options['pages'] as $pageUuid => $pageInfo) {
             $title = isset($pageInfo['title']) ? $pageInfo['title'] : '';
             $description = isset($pageInfo['description']) ? $pageInfo['description'] : '';
             $help = isset($pageInfo['help']) ? $pageInfo['help'] : '';
