@@ -4,6 +4,7 @@ namespace Drupal\form_builder\FormCenter;
 
 use GO1\FormCenter\Field\FieldInterface;
 use GO1\FormCenter\Field\FieldOptions;
+use GO1\FormCenter\Field\FieldValueItem;
 use GO1\FormCenter\Field\FieldValueItemInterface;
 use GO1\FormCenter\Field\Widget\FieldWidgetBase;
 
@@ -33,15 +34,24 @@ class DrupalFieldWidget extends FieldWidgetBase
         return $this->renderDrupalProperty($field, $fieldOptions, $fieldValueItems);
     }
 
+    /**
+     * @param FieldInterface $field
+     * @param FieldOptions $fieldOptions
+     * @param FieldValueItemInterface[] $fieldValueItems
+     * @return type
+     */
     protected function renderDrupalField(FieldInterface $field, FieldOptions $fieldOptions, array $fieldValueItems = [])
     {
+        $eTName = $field->getEntityType()->getName();
         $dETName = $field->getEntityType()->getDrupalEntityTypeName();
         $dBundleName = $field->getEntityType()->getDrupalBundleName();
         $dFName = $field->getName();
         $dField = field_info_field($dFName);
         $dFieldInstance = field_info_instance($dETName, $dFName, $dBundleName);
         $dLang = 'und';
-        $dItems = []; # field_get_default_value($entity_type, $entity, $field, $instance);
+        $dItems = array_map(function(FieldValueItem $item) {
+            return $item->toArray();
+        }, $fieldValueItems);
 
         $dForm = ['#parents' => [$dFName, 'und']];
         $dFormState = [];
@@ -75,13 +85,13 @@ class DrupalFieldWidget extends FieldWidgetBase
                 }
 
                 if (isset($e[$i]['#value'])) {
-                    $name = $dETName . '[' . $dFName . '][' . $dLang . '][' . $delta . '][' . $i . ']';
+                    $name = $eTName . '[' . $dFName . '][' . $dLang . '][' . $delta . '][' . $i . ']';
                     $e[$i]['#name'] = $name;
                 }
 
                 $iis = element_children($e[$i]);
                 foreach ($iis as $ii) {
-                    $name = $dETName . '[' . $dFName . '][' . $dLang . ']' . implode('', array_map(function($pa) {
+                    $name = $eTName . '[' . $dFName . '][' . $dLang . ']' . implode('', array_map(function($pa) {
                                 return '[' . $pa . ']';
                             }, $e[$i][$ii]['#parents']));
                     $e[$i][$ii]['#name'] = $name;
