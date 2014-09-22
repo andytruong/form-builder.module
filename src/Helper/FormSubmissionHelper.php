@@ -26,7 +26,8 @@ class FormSubmissionHelper
     {
         // no cached-request, nothing to to
         if (!$cache = cache_get($cacheId)) {
-            return;
+            // make sure user's input not lost.
+            return cache_set($cacheId, json_encode($request), 'cache', strtotime('+ 6 hours'));
         }
 
         // cached request is invalid, cann not do anything
