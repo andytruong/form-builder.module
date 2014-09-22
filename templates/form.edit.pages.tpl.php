@@ -2,20 +2,20 @@
 
 <div class="item-list">
     <ul>
-        <li ng-repeat="(pageUuid, pageInfo) in entity.layoutOptions.pages">
+        <li ng-repeat="page in pages|orderBy:'weight'" ng-init="pageUuid = page.uuid">
             <div class="form-item form-type-textfield">
                 <label>Page name</label>
-                <input type="text" ng-model="pageInfo.title" class="form-text" />
+                <input type="text" ng-model="entity.layoutOptions.pages[pageUuid].title" class="form-text" />
             </div>
 
             <div class="form-item form-type-textfield">
                 <label>Weight</label>
-                <input type="text" ng-model="pageInfo.weight" class="form-text" />
+                <input type="text" ng-model="entity.layoutOptions.pages[pageUuid].weight" class="form-text" />
             </div>
 
             <div class="form-item form-type-textarea form-item-description">
                 <div class="form-textarea-wrapper">
-                    <textarea ng-model="pageInfo.description"
+                    <textarea ng-model="entity.layoutOptions.pages[pageUuid].description"
                               placeholder="Description…"
                               class="text-full form-textarea required"></textarea>
                 </div>

@@ -22,6 +22,10 @@
             if (initState.entity.layoutOptions.pages[pageUuid].fields instanceof Array)
                 initState.entity.layoutOptions.pages[pageUuid].fields = {};
 
+        // if empty, $scope.entity.fields is array!
+        if (initState.entity.fields instanceof Array)
+            initState.entity.fields = {};
+
         return initState;
     });
 
@@ -39,15 +43,12 @@
     module.controller('FormBuilderForm', function ($scope, $helpers) {
         angular.extend($scope, $helpers);
 
-        // if empty, $scope.entity.fields is array!
-        if ($scope.entity.fields instanceof Array)
-            $scope.entity.fields = {};
-
-        // Layout options -> fields
-        $scope.pageFields = {};
         $scope.$watch('entity.layoutOptions.pages', function (pages) {
+            $scope.pages = [];
             $scope.pageFields = {};
+
             angular.forEach(pages, function (pageInfo, pageUuid) {
+                $scope.pages.push({uuid: pageUuid, weight: parseInt(pageInfo.weight)});
                 $scope.pageFields[pageUuid] = [];
                 angular.forEach(pageInfo.fields, function (fieldInfo, fieldUuid) {
                     fieldInfo.uuid = fieldUuid;
