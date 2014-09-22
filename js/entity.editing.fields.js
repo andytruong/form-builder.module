@@ -22,12 +22,9 @@
         // ---------------------
         helper.fieldOnDrop = function ($event, field, baseFieldUuid, pageUuid) {
             var $scope = this;
-            var fieldName = 'object' === typeof field
-                    ? field.entityTypeName + '.' + field.name
-                    : field;
+            var fieldName = 'object' === typeof field ? field.entityTypeName + '.' + field.name : field;
 
-            // add field
-            if (!fieldName.match(/^.+-.+-.+-.+$/))
+            if (typeof $scope.entity.fields[fieldName] === 'undefined')
                 return helper.fieldOnDropAddField($scope, pageUuid, baseFieldUuid, fieldName, field);
 
             // use change a field to other page
