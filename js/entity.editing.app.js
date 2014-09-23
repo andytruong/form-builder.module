@@ -40,6 +40,15 @@
         return helpers;
     });
 
+    module.filter('toArray', function () {
+        return function (input) {
+            var arr = [];
+            for (var i in input)
+                arr.push(input[i]);
+            return arr;
+        };
+    });
+
     module.controller('FormBuilderForm', function ($scope, $helpers) {
         angular.extend($scope, $helpers);
 
