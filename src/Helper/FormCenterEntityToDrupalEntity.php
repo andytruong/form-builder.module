@@ -46,23 +46,72 @@ class FormCenterEntityToDrupalEntity
             ));
         }
 
-        if (isset($drupalPropertyInfo['property info'])) {
+        if (!isset($drupalPropertyInfo['property info'])) {
+            return $this->convertToDrupalProperty($drupalEntityWrapper, $fieldName, $field, $fieldValueItem);
+        }
+
+        try {
             $itemValue = [];
             foreach (array_keys($drupalPropertyInfo['property info']) as $vKey) {
                 $itemValue[$vKey] = $fieldValueItem[$vKey];
             }
-
-            try {
-                $drupalEntityWrapper->{$fieldName}->set($itemValue);
-            }
-            catch (EntityMetadataWrapperException $e) {
-
-            }
+            $drupalEntityWrapper->{$fieldName}->set($itemValue);
         }
-        else {
-            // @TODO: invalid value maybe entered, how to handle it nicely? — EntityMetadataWrapperException
-            $drupalEntityWrapper->{$fieldName}->set($fieldValueItem['value']);
+        catch (EntityMetadataWrapperException $e) {
+
         }
+    }
+
+    /**
+     * @TODO: invalid value maybe entered, how to handle it nicely? — EntityMetadataWrapperException
+     */
+    private function convertToDrupalProperty(EntityStructureWrapper $drupalEntityWrapper, $fieldName, DrupalField $field, FieldValueItemInterface $fieldValueItem)
+    {
+        $realValue = $fieldValueItem['value'];
+        $drupalPropertyInfo = $drupalEntityWrapper->getPropertyInfo($fieldName);
+
+        // No type hint, just set value directly
+        if (empty($drupalPropertyInfo['type'])) {
+            return $drupalEntityWrapper->{$fieldName}->set($realValue);
+        }
+
+        $propertyType = $drupalPropertyInfo['type'];
+        if (0 === strpos($propertyType, 'list<')) {
+            $propertyType = preg_replace('/^list<(.+)>$/', '$1', $propertyType);
+        }
+
+        // Basic data type, set directly
+        switch ($propertyType) {
+            case 'integer':
+            case 'boolean':
+            case 'token':
+            case 'uri':
+            case 'date':
+            case 'text':
+            case 'text_formatted':
+            case 'struct':
+                return $drupalEntityWrapper->{$fieldName}->set($realValue);
+        }
+
+        // property is an entity reference value (node.uid, taxonomy_term.vocabulary, …)
+        // which need convert from `label [id:%entity_id]` to => `%entity_id`
+        if (!$drupalEntityTypeInfo = entity_get_info($drupalEntityWrapper->type())) {
+            throw new \UnexpectedValueException(strtr('Unknow data type for !fieldName: !dataType', [
+                '!fieldName' => $field->getName(),
+                '!dataType'  => $propertyType,
+            ]));
+        }
+
+        if (preg_match('/\[id\:(\d+)\]$/', $fieldValueItem['value'], $matches)) {
+            $realValue = $matches[1];
+            return $drupalEntityWrapper->{$fieldName}->set($realValue);
+        }
+
+        $msg = strtr('Unexpected format for property !fieldName: `%label [id:%id]`. Given: !input', [
+            '!fieldName' => $field->getName(),
+            '!input'     => $fieldValueItem['value'],
+        ]);
+        throw new \UnexpectedValueException($msg);
     }
 
 }

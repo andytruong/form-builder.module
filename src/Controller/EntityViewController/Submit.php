@@ -46,7 +46,7 @@ class Submit
             case 'back':
                 return $this->handleBack($submission, $pageNumber, $token);
             case 'submit':
-                return $this->handleSubmit($submission, $pageNumber, $token);
+                return $this->handleSubmit($submission, $token);
             default:
                 throw new UnexpectedValueException('Wrong form action.');
         }
