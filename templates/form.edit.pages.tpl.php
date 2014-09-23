@@ -15,11 +15,6 @@
                 <input type="text" ng-model="entity.layoutOptions.pages[pageUuid].title" class="form-text" />
             </div>
 
-            <div class="form-item form-type-textfield">
-                <label>Weight</label>
-                <input type="text" ng-model="entity.layoutOptions.pages[pageUuid].weight" class="form-text" />
-            </div>
-
             <div class="form-item form-type-textarea form-item-description">
                 <div class="form-textarea-wrapper">
                     <textarea ng-model="entity.layoutOptions.pages[pageUuid].description"
