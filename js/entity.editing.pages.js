@@ -1,5 +1,5 @@
 (function (angular) {
-    angular.module('FormBuilderPageHelper', []).factory('$pageHelper', function ($http) {
+    angular.module('FormBuilderPageHelper', []).factory('$pageHelper', function ($http, $timeout) {
         var helper = {};
 
         // ---------------------
@@ -44,27 +44,19 @@
         // pageOnDrop
         // ---------------------
         helper.pageOnDrop = function ($event, fromPageUuid, toPageUuid) {
-            var fromI, toI;
+            $scope = this;
+            f = this.entity.layoutOptions.pages[fromPageUuid];
+            t = this.entity.layoutOptions.pages[toPageUuid];
+            f.weight = t.weight + 1;
 
-            for (var i in this.pages)
-                if (fromPageUuid === this.pages[i].uuid)
-                    fromI = i;
+            $timeout(function () {
+                $scope.pages.sort(function (a, b) {
+                    return a.weight - b.weight;
+                });
 
-            for (var i in this.pages)
-                if (toPageUuid === this.pages[i].uuid)
-                    toI = i;
-
-            this.pages[fromI].weight = this.pages[toI].weight + 1;
-
-            this.pages.sort(function (a, b) {
-                return a.weight - b.weight;
-            });
-
-            for (var i in this.pages)
-                this.pages[i].weight = i * 2;
-
-            this.entity.layoutOptions.pages[fromPageUuid].weight = this.pages[fromI].weight;
-            this.entity.layoutOptions.pages[toPageUuid].weight = this.pages[toI].weight;
+                for (var i in $scope.pages)
+                    $scope.entity.layoutOptions.pages[$scope.pages[i].uuid].weight = i * 2;
+            }, 100);
         };
 
         return helper;
