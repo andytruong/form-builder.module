@@ -1,45 +1,21 @@
 /* JUST-FOR-DEV */
-#formBuilderFields #formFields {
-    float: left;
-    width: 60%;
-}
-
-#formBuilderFields #availableResources {
-    float: right;
-    width: 38%;
-}
-
-#edit-actions, div.break {
-    clear: both;
-}
+#formBuilderFields #formFields { float: left; width: 60%; }
+#formBuilderFields #availableResources { float: right; width: 38%; }
+#edit-actions, div.break { clear: both; }
 /* -- JUST-FOR-DEV */
 
+/* Fields */
 #availableFields ul,
-#formFields .item-list ul {
-    margin: 0;
-    padding: 0;
-}
+#formFields .item-list ul { margin: 0; padding: 0; }
 
 #availableFields ul.entity-fields li,
-#formFields li.field {
-    cursor: move;
-}
+#formFields li.field { cursor: move; }
 
 #availableFields li,
-#formFields li {
-    list-style-type: none;
-    padding: 12px;
-    margin: 2px 0;
-}
+#formFields li { list-style-type: none; padding: 12px; margin: 2px 0; }
 
 #availableFields:hover ul.entity-fields li,
-#formFields:hover li.field {
-    padding: 11px;
-    border: 1px #777 dashed;
-}
+#formFields:hover li.field { padding: 11px; border: 1px #777 dashed; }
 
 #formFields ul li.empty.on-drag-hover,
-#formFields ul li.field.on-drag-hover {
-    padding-bottom: 9px;
-    border-bottom: 3px #0074BD solid;
-}
+#formFields ul li.field.on-drag-hover { padding-bottom: 9px; border-bottom: 3px #0074BD solid; }
