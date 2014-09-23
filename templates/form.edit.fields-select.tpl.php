@@ -10,6 +10,7 @@
                         ng-repeat="(fieldName, fieldInfo) in entityTypeInfo.fields"
                         ng-if="!isFieldAdded(entityTypeName, fieldName)"
                         ui-draggable="true"
+                        drag-channel="field"
                         drag="fieldInfo">
                         <strong class="field-human-name">{{fieldInfo.humanName}}</strong>
                         <span class="entity-type-name">({{fieldInfo.entityTypeName}})</span>

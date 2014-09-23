@@ -1,5 +1,6 @@
 <!-- If there's no field added to page -->
 <li class="draggable empty"
+    drop-channel="field"
     ui-on-Drop="fieldOnDrop($event, $data, '', pageUuid)"
     ng-show="isFieldsEmpty(pageUuid)">
     No field.
@@ -10,6 +11,8 @@
             ng-repeat="fieldInfo in pageFields[pageUuid]|orderBy:'weight'"
             ui-on-Drop="fieldOnDrop($event, $data, fieldInfo.uuid, pageUuid)"
             ui-draggable="true"
+            drop-channel="field"
+            drag-channel="field"
             drag="fieldInfo.uuid">
     <strong class="field-human-name">
         {{entity.fields[fieldInfo.uuid].humanName}}
