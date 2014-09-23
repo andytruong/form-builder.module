@@ -25,6 +25,14 @@ function form_builder_menu()
         'page callback'    => 'Drupal\\form_builder\\Controller\\EntityViewController::pageCallback',
         'page arguments'   => [1],
     ];
+
+    $items['form/%/%/autocomplete'] = [
+        'title'            => 'Entity type',
+        'access arguments' => ['access content'],
+        'page callback'    => 'Drupal\\form_builder\\Controller\\EntityReferenceController::pageCallback',
+        'page arguments'   => [1, 2, 4]
+    ];
+
     return $items;
 }
 

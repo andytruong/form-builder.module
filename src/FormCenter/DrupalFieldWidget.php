@@ -134,7 +134,13 @@ class DrupalFieldWidget extends FieldWidgetBase
                     $e['#type'] = $this->drupalFieldInfo['type'];
                     break;
                 default:
-                    dsm($this->drupalFieldInfo['type']);
+                    $entityTypeName = $this->drupalFieldInfo['type'];
+                    $fieldName = $entityTypeName === 'user' ? 'name' : entity_get_info($entityTypeName)['entity keys']['label'];
+                    $e['#autocomplete_path'] = strtr('form/!type/!field/autocomplete', [
+                        '!type'  => $entityTypeName,
+                        '!field' => $fieldName,
+                    ]);
+                    break;
             }
         }
 
