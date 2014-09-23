@@ -74,32 +74,22 @@ class Submit
         drupal_goto($path);
     }
 
-    private function handleSubmit(FormSubmissionInterface $submission, $pageNumber, $token)
+    private function handleSubmit(FormSubmissionInterface $submission, $token)
     {
-        if ($this->form->getLayoutOptions()->isLastPage($pageNumber)) {
-            foreach ($submission->getEntities() as $entityTypeName => $entity) {
-                $storageHandler = form_builder_manager()->getEntityStorageHandler($entityTypeName);
-                $storageHandler->create($entity);
-            }
-
-            if ($cacheId = (new FormTokenHelper())->getDrupalCacheId($token)) {
-                cache_clear_all($cacheId, 'cache');
-            }
-
-            if ($msg = $this->form->getLayoutOptions()->getConfirmationMessage()) {
-                drupal_set_message($msg);
-            }
-
-            drupal_goto("form/{$this->form->fid}");
+        foreach ($submission->getEntities() as $entityTypeName => $entity) {
+            $storageHandler = form_builder_manager()->getEntityStorageHandler($entityTypeName);
+            $storageHandler->create($entity);
         }
 
-        return $this->goToNextPage($submission);
-    }
+        if ($cacheId = (new FormTokenHelper())->getDrupalCacheId($token)) {
+            cache_clear_all($cacheId, 'cache');
+        }
 
-    private function goToNextPage(FormSubmissionInterface $submission)
-    {
-        kpr($submission);
-        exit;
+        if ($msg = $this->form->getLayoutOptions()->getConfirmationMessage()) {
+            drupal_set_message($msg);
+        }
+
+        drupal_goto("form/{$this->form->fid}");
     }
 
 }
