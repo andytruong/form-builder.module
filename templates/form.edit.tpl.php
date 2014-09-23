@@ -27,19 +27,19 @@
                 <label class="option" for="edit-status">Published</label>
             </div>
 
-            <div id="edit-language" class="form-radios">
-                <label for="edit-title">Language</label>
-                <div class="form-item form-type-radio form-item-language" ng-repeat="item in available.languages| orderBy: weight">
-                    <input type="radio"
-                           name="language"
-                           id="edit-language-{{item.language}}"
-                           value="{{item.language}}"
-                           checked="checked"
-                           ng-model="entity.language"
-                           class="form-radio">
-                    <label class="option" for="edit-language-{{item.language}}">{{item.name}}</label>
-                </div>
-            </div>
+            <!--            <div id="edit-language" class="form-radios">
+                            <label for="edit-title">Language</label>
+                            <div class="form-item form-type-radio form-item-language" ng-repeat="item in available.languages| orderBy: weight">
+                                <input type="radio"
+                                       name="language"
+                                       id="edit-language-{{item.language}}"
+                                       value="{{item.language}}"
+                                       checked="checked"
+                                       ng-model="entity.language"
+                                       class="form-radio">
+                                <label class="option" for="edit-language-{{item.language}}">{{item.name}}</label>
+                            </div>
+                        </div>-->
 
             <div class="form-item form-type-textfield form-item-submit-message">
                 <label for="edit-submit-message">Submit text</label>
