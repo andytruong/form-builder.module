@@ -5,6 +5,7 @@
 /* -- JUST-FOR-DEV */
 
 /* Pages */
+#formFields li.draggable.page.on-dragging { visibility: hidden; }
 #formFields li.draggable.page.on-drag-enter { padding: 11px; border: 1px green dashed; }
 #formFields li.draggable.page.on-drag-hover { padding-bottom: 9px; border-bottom: 3px #0074BD solid; }
 #formFields li.draggable.page > .form-item > label { cursor: move; }
