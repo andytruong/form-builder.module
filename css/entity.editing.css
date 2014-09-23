@@ -4,6 +4,13 @@
 #edit-actions, div.break { clear: both; }
 /* -- JUST-FOR-DEV */
 
+/* Pages */
+#formFields li.draggable.page.on-drag-enter { padding: 11px; border: 1px green dashed; }
+#formFields li.draggable.page.on-drag-hover { padding-bottom: 9px; border-bottom: 3px #0074BD solid; }
+#formFields li.draggable.page > .form-item > label { cursor: move; }
+#formFields li.draggable.page { padding: 12px; }
+#formFields li.draggable.page:hover { padding: 11px; border: 1px #333 dashed; }
+
 /* Fields */
 #availableFields ul,
 #formFields .item-list ul { margin: 0; padding: 0; }
@@ -16,6 +23,9 @@
 
 #availableFields:hover ul.entity-fields li,
 #formFields:hover li.field { padding: 11px; border: 1px #777 dashed; }
+
+#availableFields ul.entity-fields li.on-drag-enter,
+#formFields li.field.on-drag-enter { padding: 11px; border: 1px green dashed; }
 
 #formFields ul li.empty.on-drag-hover,
 #formFields ul li.field.on-drag-hover { padding-bottom: 9px; border-bottom: 3px #0074BD solid; }

@@ -40,6 +40,33 @@
             delete(this.entity.layoutOptions.pages[pageUuid]);
         };
 
+        // ---------------------
+        // pageOnDrop
+        // ---------------------
+        helper.pageOnDrop = function ($event, fromPageUuid, toPageUuid) {
+            var fromI, toI;
+
+            for (var i in this.pages)
+                if (fromPageUuid === this.pages[i].uuid)
+                    fromI = i;
+
+            for (var i in this.pages)
+                if (toPageUuid === this.pages[i].uuid)
+                    toI = i;
+
+            this.pages[fromI].weight = this.pages[toI].weight + 1;
+
+            this.pages.sort(function (a, b) {
+                return a.weight - b.weight;
+            });
+
+            for (var i in this.pages)
+                this.pages[i].weight = i * 2;
+
+            this.entity.layoutOptions.pages[fromPageUuid].weight = this.pages[fromI].weight;
+            this.entity.layoutOptions.pages[toPageUuid].weight = this.pages[toI].weight;
+        };
+
         return helper;
     });
 })(angular);
