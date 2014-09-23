@@ -1,5 +1,3 @@
-<label>Form fields</label>
-
 <div class="item-list">
     <ul>
         <li ng-repeat="page in pages|orderBy:'weight'" ng-init="pageUuid = page.uuid">
