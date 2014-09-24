@@ -9,9 +9,9 @@
 <!-- Field details -->
 <li         class="draggable field"
             ng-repeat="fieldInfo in pageFields[pageUuid]|orderBy:'weight'"
+            drop-channel="field"
             ui-on-Drop="fieldOnDrop($event, $data, fieldInfo.uuid, pageUuid)"
             ui-draggable="true"
-            drop-channel="field"
             drag-channel="field"
             drag="fieldInfo.uuid">
     <strong class="field-human-name">
