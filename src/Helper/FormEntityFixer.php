@@ -48,6 +48,8 @@ class FormEntityFixer
         }
 
         $form->setLayoutOption($layoutOptions = form_builder_manager()->getFormLayoutOptions());
+        $layoutOptions->setSubmitText($form->layout_options['submitText']);
+        $layoutOptions->setConfirmationMessage($form->layout_options['confirmationMessage']);
         foreach ($form->layout_options['pages'] as $pageUuid => $pageInfo) {
             $title = isset($pageInfo['title']) ? $pageInfo['title'] : '';
             $description = isset($pageInfo['description']) ? $pageInfo['description'] : '';

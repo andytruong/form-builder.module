@@ -44,7 +44,7 @@ class FormEntityReversedFixer
 
         // base options
         $form->layout_options['submitText'] = $layoutOptions->getSubmitText();
-        $form->layout_options['confirmMessage'] = $layoutOptions->getConfirmationMessage();
+        $form->layout_options['confirmationMessage'] = $layoutOptions->getConfirmationMessage();
 
         // Page fields
         foreach ($layoutOptions->getPages() as $pageUuid => $pageInfo) {

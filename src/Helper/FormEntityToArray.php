@@ -71,6 +71,7 @@ class FormEntityToArray
         }
 
         // Form layout options
+        $array['layoutOptions']['confirmationMessage'] = $form->getLayoutOptions()->getConfirmationMessage();
         $array['layoutOptions']['pages'] = [];
         foreach ($form->getLayoutOptions()->getPages() as $pageUuid => $pageInfo) {
             $array['layoutOptions']['pages'][$pageUuid] = $pageInfo;
