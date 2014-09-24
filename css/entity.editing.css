@@ -5,17 +5,20 @@
 /* -- JUST-FOR-DEV */
 
 /* Pages */
-.drag-icon { padding-right: 20px; min-height: 18px; float: right; background: url(/misc/draggable.png) no-repeat 100% 4px; cursor: move; }
-.drag-icon span { display: none; }
+.drag-icon { padding: 4px 20px 4px 5px; min-height: 18px; float: right; background: url(/misc/draggable.png) no-repeat 100% 8px; cursor: move; }
+.drag-icon span { visibility: hidden; }
 .drag-icon.on-drag-enter { border: 1px #0074BD solid;  }
-.drag-icon:hover,
-.drag-icon.on-drag-enter span { display: inline; font-weight: bold; }
+
+.drag-icon:hover { background-position-y: -12px; }
+.drag-icon:hover span,
+.drag-icon.on-drag-enter span { visibility: visible; font-weight: bold; }
 #formFields li.draggable.page.on-dragging { visibility: hidden; }
 #formFields li.draggable.page.on-drag-enter { padding: 11px; border: 1px green dashed; }
 #formFields li.draggable.page.on-drag-hover { padding-bottom: 9px; border-bottom: 3px #0074BD solid; }
-#formFields li.draggable.page > .form-item > label { cursor: move; }
 #formFields li.draggable.page { padding: 12px; }
 #formFields li.draggable.page:hover { padding: 11px; border: 1px #333 dashed; }
+.page .page-actions { visibility: hidden; }
+.page:hover .page-actions { visibility: visible; }
 
 /* Fields */
 #availableFields ul,

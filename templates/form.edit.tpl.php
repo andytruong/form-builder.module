@@ -7,6 +7,7 @@
 
             <div id="formBuilderFields">
                 <div id="availableResources">
+                    <?php include 'form.edit.field-groups.tpl.php'; ?>
                     <?php include 'form.edit.entity-types.tpl.php'; ?>
                     <?php include 'form.edit.fields-select.tpl.php'; ?>
                 </div>
