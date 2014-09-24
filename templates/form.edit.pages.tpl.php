@@ -1,14 +1,16 @@
 <div class="item-list">
     <ul>
         <li class="draggable page"
-            ui-draggable="true"
-            drag="pageUuid"
-            drag-channel="page"
-            drop-channel="page"
-            ui-draggable="true"
-            ui-on-Drop="pageOnDrop($event, $data, pageUuid)"
             ng-repeat="page in pages|orderBy:'weight'"
             ng-init="pageUuid = page.uuid">
+
+            <div class="drag-icon"
+                 ui-draggable="true"
+                 drag="pageUuid"
+                 ui-draggable="true"
+                 ui-on-Drop="pageOnDrop($event, $data, pageUuid)">
+                <span>{{entity.layoutOptions.pages[pageUuid].title}}</span>
+            </div>
 
             <div class="form-item form-type-textfield">
                 <label>Page name</label>

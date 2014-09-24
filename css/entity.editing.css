@@ -5,6 +5,11 @@
 /* -- JUST-FOR-DEV */
 
 /* Pages */
+.drag-icon { padding-right: 20px; min-height: 18px; float: right; background: url(/misc/draggable.png) no-repeat 100% 4px; cursor: move; }
+.drag-icon span { display: none; }
+.drag-icon.on-drag-enter { border: 1px #0074BD solid;  }
+.drag-icon:hover,
+.drag-icon.on-drag-enter span { display: inline; font-weight: bold; }
 #formFields li.draggable.page.on-dragging { visibility: hidden; }
 #formFields li.draggable.page.on-drag-enter { padding: 11px; border: 1px green dashed; }
 #formFields li.draggable.page.on-drag-hover { padding-bottom: 9px; border-bottom: 3px #0074BD solid; }
