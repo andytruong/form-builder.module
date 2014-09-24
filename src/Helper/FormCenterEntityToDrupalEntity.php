@@ -9,6 +9,7 @@ use EntityStructureWrapper;
 use GO1\FormCenter\Entity\EntityInterface;
 use GO1\FormCenter\Field\FieldValueItemInterface;
 use RuntimeException;
+use UnexpectedValueException;
 
 class FormCenterEntityToDrupalEntity
 {
@@ -29,15 +30,15 @@ class FormCenterEntityToDrupalEntity
         }
 
         foreach ($entityType->getFields() as $fieldName => $field) {
-            foreach ($entity->getFieldValueItems($fieldName) as $fieldValueItem) {
-                $this->convertToDrupalField($drupalEntityWrapper, $fieldName, $field, $fieldValueItem);
+            foreach ($entity->getFieldValueItems($fieldName) as $delta => $fieldValueItem) {
+                $this->convertToDrupalField($drupalEntityWrapper, $fieldName, $field, $fieldValueItem, $delta);
             }
         }
 
         return $drupalEntityWrapper;
     }
 
-    public function convertToDrupalField(EntityStructureWrapper $drupalEntityWrapper, $fieldName, DrupalField $field, FieldValueItemInterface $fieldValueItem)
+    public function convertToDrupalField(EntityStructureWrapper $drupalEntityWrapper, $fieldName, DrupalField $field, FieldValueItemInterface $fieldValueItem, $delta)
     {
         if (!$drupalPropertyInfo = $drupalEntityWrapper->getPropertyInfo($fieldName)) {
             throw new RuntimeException(strtr('Entity !entityType does not support property !ptyName.', [
@@ -46,19 +47,32 @@ class FormCenterEntityToDrupalEntity
             ));
         }
 
-        if (!isset($drupalPropertyInfo['property info'])) {
+        if (empty($drupalPropertyInfo['field'])) {
             return $this->convertToDrupalProperty($drupalEntityWrapper, $fieldName, $field, $fieldValueItem);
         }
 
         try {
             $itemValue = [];
-            foreach (array_keys($drupalPropertyInfo['property info']) as $vKey) {
-                $itemValue[$vKey] = $fieldValueItem[$vKey];
+
+            if (isset($drupalPropertyInfo['property info'])) {
+                foreach (array_keys($drupalPropertyInfo['property info']) as $vKey) {
+                    $itemValue[$vKey] = $fieldValueItem[$vKey];
+                }
             }
-            $drupalEntityWrapper->{$fieldName}->set($itemValue);
+            else {
+                $itemValue = $fieldValueItem['value'];
+            }
+
+            $wrapper = $drupalEntityWrapper->{$fieldName};
+            if ($wrapper instanceof \EntityListWrapper) {
+                $wrapper->offsetSet($delta, $itemValue);
+            }
+            else {
+                $wrapper->set($itemValue);
+            }
         }
         catch (EntityMetadataWrapperException $e) {
-
+            kpr($e);
         }
     }
 
@@ -96,7 +110,7 @@ class FormCenterEntityToDrupalEntity
         // property is an entity reference value (node.uid, taxonomy_term.vocabulary, …)
         // which need convert from `label [id:%entity_id]` to => `%entity_id`
         if (!$drupalEntityTypeInfo = entity_get_info($drupalEntityWrapper->type())) {
-            throw new \UnexpectedValueException(strtr('Unknow data type for !fieldName: !dataType', [
+            throw new UnexpectedValueException(strtr('Unknow data type for !fieldName: !dataType', [
                 '!fieldName' => $field->getName(),
                 '!dataType'  => $propertyType,
             ]));
@@ -111,7 +125,7 @@ class FormCenterEntityToDrupalEntity
             '!fieldName' => $field->getName(),
             '!input'     => $fieldValueItem['value'],
         ]);
-        throw new \UnexpectedValueException($msg);
+        throw new UnexpectedValueException($msg);
     }
 
 }
