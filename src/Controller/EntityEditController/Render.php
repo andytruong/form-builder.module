@@ -49,6 +49,7 @@ class Render
                     }, $this->externalJS), [
                     $jsSettings,
                     drupal_get_path('module', 'form_builder') . '/js/entity.editing.pages.js',
+                    drupal_get_path('module', 'form_builder') . '/js/entity.editing.groups.js',
                     drupal_get_path('module', 'form_builder') . '/js/entity.editing.fields.js',
                     drupal_get_path('module', 'form_builder') . '/js/entity.editing.types.js',
                     drupal_get_path('module', 'form_builder') . '/js/entity.editing.form.js',
