@@ -10,33 +10,36 @@
             return false;
         };
 
-        /**
-         * User enable/disale an entity type.
-         */
-        helper.entityTypeToggle = function (entityTypeName) {
+        helper.entityTypeAdd = function (entityTypeName) {
             var $scope = this;
 
-            // Remove fields. @TODO: Confirm
-            if (true === $scope.entity.entityTypes[entityTypeName]) {
-                for (var i in $scope.available.fields)
-                    if (entityTypeName === $scope.available.fields[i].entityTypeName)
-                        delete($scope.available.fields[i]);
-                for (var i in $scope.entity.fields)
-                    if (entityTypeName === $scope.entity.fields[i].entityTypeName)
-                        delete($scope.entity.fields[i]);
-            }
-            else {
-                $scope.available.addingEntityTypeNames[entityTypeName] = true;
-                var post = {action: 'addEntityType', entityTypeName: entityTypeName, entity: $scope.entity};
-                var done = function (data) {
-                    delete($scope.available.addingEntityTypeNames[entityTypeName]);
-                    for (var name in data.entityTypeFields)
-                        $scope.available.fields[entityTypeName][name] = data.entityTypeFields[name];
-                };
+            $scope.available.addingEntityTypeNames[entityTypeName] = true;
+            $scope.entity.entityTypes[entityTypeName] = true;
 
-                // $http.post(window.location.pathname, post).success(done);
-                delete($scope.available.addingEntityTypeNames[entityTypeName]);
-            }
+            // Currently, we loaded all entity types, fields to single page.
+            // In real app, this amount maybe very big. In that case, we wil
+            // contact server for every user select adding new entity type.
+            // var post = {action: 'addEntityType', entityTypeName: entityTypeName, entity: $scope.entity};
+            // var done = function (data) {
+            //     delete($scope.available.addingEntityTypeNames[entityTypeName]);
+            //     for (var name in data.entityTypeFields)
+            //         $scope.available.fields[entityTypeName][name] = data.entityTypeFields[name];
+            // };
+            // $http.post(window.location.pathname, post).success(done);
+
+            delete($scope.available.addingEntityTypeNames[entityTypeName]);
+        };
+
+        helper.entityTypeRemove = function (entityTypeName) {
+            this.entity.entityTypes[entityTypeName] = false;
+
+            for (var i in this.available.fields)
+                if (entityTypeName === this.available.fields[i].entityTypeName)
+                    delete(this.available.fields[i]);
+
+            for (var i in this.entity.fields)
+                if (entityTypeName === this.entity.fields[i].entityTypeName)
+                    delete(this.entity.fields[i]);
         };
 
         return helper;

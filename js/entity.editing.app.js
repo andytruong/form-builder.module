@@ -65,6 +65,18 @@
                 });
             });
         }, true);
+
+        // @todo: This shoud be handler better, but I got stuck at ng-change, …
+        // On add new entity-type
+        $scope.$watch('entityTypeAdding', function (entityTypeName) {
+            if (!entityTypeName)
+                return;
+            if (!$scope.entity.entityTypes[entityTypeName])
+                return $scope.entityTypeAdd(entityTypeName);
+            else if (confirm('Are you sure to remove ' + entityTypeName))
+                return $scope.entityTypeRemove(entityTypeName);
+            $scope.entityTypeAdding = '';
+        });
     });
 
 })(angular, Drupal);
