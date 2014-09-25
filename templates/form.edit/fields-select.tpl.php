@@ -23,7 +23,6 @@
                         drag-channel="field"
                         drag="fieldInfo">
                         <strong class="field-human-name">{{fieldInfo.humanName}}</strong>
-                        <span class="entity-type-name">({{fieldInfo.entityTypeName}})</span>
                         <div class="description" ng-if="fieldInfo.description">
                             {{fieldInfo.description}}
                         </div>
