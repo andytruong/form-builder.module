@@ -19,5 +19,6 @@
 
             <?php include 'pages.actions.tpl.php'; ?>
         </li>
+        <li ng-if="!pages.length">No page available</li>
     </ul>
 </div>
