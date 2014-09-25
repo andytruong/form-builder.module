@@ -1,19 +1,19 @@
 <div ng-app="FormBuilderApp">
     <div ng-controller="FormBuilderForm">
         <form>
-            <?php include 'form.edit.title.tpl.php'; ?>
+            <?php include 'form.edit/title.tpl.php'; ?>
 
             <div class="break"></div>
 
             <div id="formBuilderFields">
                 <div id="availableResources">
-                    <?php include 'form.edit.groups.tpl.php'; ?>
-                    <?php include 'form.edit.entity-types.tpl.php'; ?>
-                    <?php include 'form.edit.fields-select.tpl.php'; ?>
+                    <?php include 'form.edit/groups.tpl.php'; ?>
+                    <?php include 'form.edit/entity-types.tpl.php'; ?>
+                    <?php include 'form.edit/fields-select.tpl.php'; ?>
                 </div>
 
                 <div id="formFields" class="form-item form-type-markup">
-                    <?php include 'form.edit.pages.tpl.php'; ?>
+                    <?php include 'form.edit/pages.tpl.php'; ?>
                 </div>
             </div>
 

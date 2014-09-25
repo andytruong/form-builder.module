@@ -12,12 +12,12 @@
                 <span>{{entity.layoutOptions.pages[pageUuid].title}}</span>
             </div>
 
-            <?php include 'form.edit.pages.info.tpl.php'; ?>
+            <?php include 'pages.info.tpl.php'; ?>
             <ul>
-                <?php include 'form.edit.fields.item.tpl.php'; ?>
+                <?php include 'fields.item.tpl.php'; ?>
             </ul>
 
-            <?php include 'form.edit.pages.actions.tpl.php'; ?>
+            <?php include 'pages.actions.tpl.php'; ?>
         </li>
     </ul>
 </div>
