@@ -12,33 +12,12 @@
                 <span>{{entity.layoutOptions.pages[pageUuid].title}}</span>
             </div>
 
-            <div class="form-item form-type-textfield">
-                <label>Page name</label>
-                <input type="text"
-                       class="form-text"
-                       ng-model-options="{ updateOn: 'blur' }"
-                       ng-model="entity.layoutOptions.pages[pageUuid].title"/>
-            </div>
-
-            <div class="form-item form-type-textarea form-item-description">
-                <div class="form-textarea-wrapper">
-                    <textarea ng-model="entity.layoutOptions.pages[pageUuid].description"
-                              ng-model-options="{ updateOn: 'blur' }"
-                              placeholder="Description…"
-                              class="text-full form-textarea required"></textarea>
-                </div>
-            </div>
-
+            <?php include 'form.edit.pages.info.tpl.php'; ?>
             <ul>
                 <?php include 'form.edit.fields.item.tpl.php'; ?>
             </ul>
 
-            <div class="page-actions">
-                <ul class="action-links">
-                    <li><a href ng-click="groupNewFieldset(pageUuid)">Add group</a></li>
-                    <li><a href ng-click="pageRemove(pageUuid)">Remove page</a></li>
-                </ul>
-            </div>
+            <?php include 'form.edit.pages.actions.tpl.php'; ?>
         </li>
     </ul>
 </div>

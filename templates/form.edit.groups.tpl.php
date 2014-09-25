@@ -1,4 +1,5 @@
 <div class="form-item form-type-textfield">
+    <label for="edit-title">Add new page</label>
     <input type="text"
            id="edit-new-page-title"
            name="title"
