@@ -13,8 +13,9 @@
             </div>
 
             <?php include 'pages.info.tpl.php'; ?>
+
             <ul>
-                <?php include 'fields.item.tpl.php'; ?>
+                <?php include 'pages.stack.tpl.php'; ?>
             </ul>
 
             <?php include 'pages.actions.tpl.php'; ?>

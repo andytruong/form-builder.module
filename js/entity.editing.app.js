@@ -43,8 +43,10 @@
     module.filter('toArray', function () {
         return function (input) {
             var arr = [];
-            for (var i in input)
+            for (var i in input) {
+                input[i].ngKEY = i;
                 arr.push(input[i]);
+            }
             return arr;
         };
     });
@@ -70,6 +72,15 @@
                     fieldInfo.uuid = fieldUuid;
                     $scope.pageStack[pageUuid].push(fieldInfo);
                 });
+
+                // add groups to render array
+                if (typeof pageInfo.groups !== 'undefined') {
+                    angular.forEach(pageInfo.groups, function (groupInfo, groupUuid) {
+                        groupInfo.uuid = groupUuid;
+                        groupInfo.isGroup = true;
+                        $scope.pageStack[pageUuid].push(groupInfo);
+                    });
+                }
             });
         }, true);
 
