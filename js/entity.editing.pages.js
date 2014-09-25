@@ -33,8 +33,8 @@
                 return;
 
             // Remove fields
-            for (var i in this.pageFields[pageUuid])
-                this.fieldRemove(pageUuid, this.pageFields[pageUuid][i].uuid);
+            for (var i in this.pageStack[pageUuid])
+                this.fieldRemove(pageUuid, this.pageStack[pageUuid][i].uuid);
 
             // Remove page
             delete(this.entity.layoutOptions.pages[pageUuid]);

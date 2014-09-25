@@ -14,7 +14,7 @@
         };
 
         helper.isFieldsEmpty = function (pageUuid) {
-            return 0 === this.pageFields[pageUuid].length;
+            return 0 === this.pageStack[pageUuid].length;
         };
 
         // ---------------------
@@ -29,7 +29,7 @@
 
             // use change a field to other page
             $scope.changePage = true;
-            angular.forEach($scope.pageFields[pageUuid], function (pageField) {
+            angular.forEach($scope.pageStack[pageUuid], function (pageField) {
                 if (pageField.uuid === fieldName)
                     $scope.changePage = false;
             });
@@ -60,7 +60,7 @@
 
                         $scope.entity.fields[data.fieldUuid] = data.field;
                         $scope.available.addedFields[data.fieldUuid] = $scope.available.addingFields[fieldName];
-                        $scope.pageFields[pageUuid].push(field);
+                        $scope.pageStack[pageUuid].push(field);
                         $scope.entity.layoutOptions.pages[pageUuid].fields[data.fieldUuid] = {weight: weight, domTagName: 'div', domClasses: []};
                         delete($scope.available.addingFields[pageUuid][fieldName]);
                     });
@@ -72,21 +72,21 @@
         helper.fieldOnDropChangeWeight = function ($scope, pageUuid, baseFieldUuid, fieldUuid) {
             var baseFieldKey, fieldKey;
 
-            for (var key in $scope.pageFields[pageUuid])
-                if (fieldUuid === $scope.pageFields[pageUuid][key].uuid)
+            for (var key in $scope.pageStack[pageUuid])
+                if (fieldUuid === $scope.pageStack[pageUuid][key].uuid)
                     fieldKey = key;
 
-            for (var key in $scope.pageFields[pageUuid])
-                if (baseFieldUuid === $scope.pageFields[pageUuid][key].uuid)
+            for (var key in $scope.pageStack[pageUuid])
+                if (baseFieldUuid === $scope.pageStack[pageUuid][key].uuid)
                     baseFieldKey = key;
 
-            $scope.pageFields[pageUuid][fieldKey].weight = 1 + $scope.pageFields[pageUuid][baseFieldKey].weight;
+            $scope.pageStack[pageUuid][fieldKey].weight = 1 + $scope.pageStack[pageUuid][baseFieldKey].weight;
             // Change field weights for next move
-            $scope.pageFields[pageUuid].sort(function (a, b) {
+            $scope.pageStack[pageUuid].sort(function (a, b) {
                 return a.weight - b.weight;
             });
-            for (var i in $scope.pageFields[pageUuid])
-                $scope.pageFields[pageUuid][i].weight = i * 2;
+            for (var i in $scope.pageStack[pageUuid])
+                $scope.pageStack[pageUuid][i].weight = i * 2;
         };
 
         // ---------------------

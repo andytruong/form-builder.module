@@ -54,14 +54,21 @@
 
         $scope.$watch('entity.layoutOptions.pages', function (pages) {
             $scope.pages = [];
-            $scope.pageFields = {};
+            $scope.pageStack = {};
 
             angular.forEach(pages, function (pageInfo, pageUuid) {
+                // Add page to render array
                 $scope.pages.push({uuid: pageUuid, weight: parseInt(pageInfo.weight)});
-                $scope.pageFields[pageUuid] = [];
+
+                // ---------------------
+                // build field/group render array
+                // ---------------------
+                $scope.pageStack[pageUuid] = [];
+
+                // add fields to render array
                 angular.forEach(pageInfo.fields, function (fieldInfo, fieldUuid) {
                     fieldInfo.uuid = fieldUuid;
-                    $scope.pageFields[pageUuid].push(fieldInfo);
+                    $scope.pageStack[pageUuid].push(fieldInfo);
                 });
             });
         }, true);
