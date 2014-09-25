@@ -30,7 +30,9 @@
 #availableFields ul.entity-fields li,
 #formFields li.field { cursor: move; }
 
-#availableFields li,
+#availableFields .item-list ul li { list-style-type: none; }
+
+#availableFields .item-list li ul li,
 #formFields li { list-style-type: none; padding: 12px; margin: 2px 0; }
 
 #availableFields ul.entity-fields li,
