@@ -50,7 +50,9 @@ class Manager extends ManagerBase
                 $machineName = "drupal.{$entityName}.{$bundleName}";
                 $entityType = new DrupalEntityType();
                 $entityType->setName($machineName);
-                $entityType->setHumanName($entityInfo['label'] !== $bundleInfo['label'] ? $entityInfo['label'] . ' › ' . $bundleInfo['label'] : $entityInfo['label']);
+                $entityType->setHumanName($entityInfo['label'] !== $bundleInfo['label']
+                    ? $bundleInfo['label'] . '('. $entityInfo['label'] .')'
+                    : $entityInfo['label']);
                 $entityType->setIDKey($entityInfo['entity keys']['id']);
                 $entityType->setDrupalEntityTypeInfo($entityInfo);
                 $entityType->setDrupalBundleInfo($bundleInfo);

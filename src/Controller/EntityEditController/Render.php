@@ -78,7 +78,7 @@ class Render
 
     private function getEntityInfo()
     {
-        return (new FormEntityToArray())->convertEntity($this->ctrl->entity);
+        return (new FormEntityToArray())->convertForm($this->ctrl->entity);
     }
 
 }

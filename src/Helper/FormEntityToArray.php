@@ -6,6 +6,7 @@ use AndyTruong\Serializer\Serializer;
 use Drupal\form_builder\FormEntity;
 use GO1\FormCenter\Field\FieldInterface;
 use GO1\FormCenter\Field\FieldOptions;
+use GO1\FormCenter\Form\Layout\FieldGroup;
 
 class FormEntityToArray
 {
@@ -48,7 +49,7 @@ class FormEntityToArray
         return $fields;
     }
 
-    public function convertEntity(FormEntity $form)
+    public function convertForm(FormEntity $form)
     {
         $array = (new Serializer())->toArray($form);
 
@@ -73,18 +74,36 @@ class FormEntityToArray
         // Form layout options
         $array['layoutOptions']['confirmationMessage'] = $form->getLayoutOptions()->getConfirmationMessage();
         $array['layoutOptions']['pages'] = [];
+
+        // Form layout options -> pages
         foreach ($form->getLayoutOptions()->getPages() as $pageUuid => $pageInfo) {
-            $array['layoutOptions']['pages'][$pageUuid] = $pageInfo;
-            $array['layoutOptions']['pages'][$pageUuid]['title'] = empty($array['layoutOptions']['pages'][$pageUuid]['title']) ? $pageUuid : $array['layoutOptions']['pages'][$pageUuid]['title'];
-            foreach ($array['layoutOptions']['pages'][$pageUuid]['fields'] as $fieldUuid => $fieldOptions) {
-                /* @var $fieldOptions FieldOptions */
-                $array['layoutOptions']['pages'][$pageUuid]['fields'][$fieldUuid] = (new Serializer())->toArray($fieldOptions);
-            }
+            $array['layoutOptions']['pages'][$pageUuid] = $this->convertFormPage($pageUuid, $pageInfo);
         }
 
         unset($array['layoutOptions']['uuid_generator']);
-
         return $array;
+    }
+
+    private function convertFormPage($pageUuid, $pageInfo)
+    {
+        $return = $pageInfo;
+        $return['title'] = empty($return['title']) ? $pageUuid : $return['title'];
+
+        // Page fields
+        foreach ($return['fields'] as $fieldUuid => $fieldOptions) {
+            /* @var $fieldOptions FieldOptions */
+            $return['fields'][$fieldUuid] = (new Serializer())->toArray($fieldOptions);
+        }
+
+        // Page groups
+        if (!empty($return['groups'])) {
+            foreach ($return['groups'] as $groupUuid => $fieldGroup) {
+                /* @var $fieldOptions FieldGroup */
+                $return['groups'][$groupUuid] = (new Serializer())->toArray($fieldGroup);
+            }
+        }
+
+        return $return;
     }
 
 }
