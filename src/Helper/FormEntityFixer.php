@@ -65,8 +65,9 @@ class FormEntityFixer
 
         // convert fields
         if (!empty($pageInfo['fields'])) {
-            foreach ($pageInfo['fields'] as $fieldUuid => $fieldInfo) {
-                $layoutOptions->addField($pageUuid, $fieldUuid, $fieldInfo['weight']);
+            foreach ($pageInfo['fields'] as $fieldKey => $fieldInfo) {
+                $parent = isset($fieldInfo['parent']) ? $fieldInfo['parent'] : null;
+                $layoutOptions->addField($pageUuid, $fieldKey, $parent, $fieldInfo['weight']);
             }
         }
 

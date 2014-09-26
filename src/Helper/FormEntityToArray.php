@@ -6,7 +6,6 @@ use AndyTruong\Serializer\Serializer;
 use Drupal\form_builder\FormEntity;
 use GO1\FormCenter\Field\FieldInterface;
 use GO1\FormCenter\Field\FieldOptions;
-use GO1\FormCenter\Form\Layout\FieldGroup;
 
 class FormEntityToArray
 {
@@ -90,18 +89,15 @@ class FormEntityToArray
         $return['title'] = empty($return['title']) ? $pageUuid : $return['title'];
 
         // Page fields
-        foreach ($return['fields'] as $fieldUuid => $fieldOptions) {
+        foreach ($return['fields'] as $fieldKey => $fieldOptions) {
             /* @var $fieldOptions FieldOptions */
-            $return['fields'][$fieldUuid] = (new Serializer())->toArray($fieldOptions);
+            $return['fields'][$fieldKey] = (new Serializer())->toArray($fieldOptions);
         }
 
         // Page groups
         if (!empty($return['groups'])) {
             foreach ($return['groups'] as $groupUuid => $fieldGroup) {
-                /* @var $fieldOptions FieldGroup */
                 $return['groups'][$groupUuid] = (new Serializer())->toArray($fieldGroup);
-                $return['groups'][$groupUuid]['fields'] = $return['groups'][$groupUuid]['fieldInfos'];
-                unset($return['groups'][$groupUuid]['fieldInfos']);
             }
         }
 
