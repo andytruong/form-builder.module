@@ -9,8 +9,9 @@
 
     <!-- fields in group -->
     <li class="draggable field"
-        ng-repeat="fieldInfo in groupInfo.fields|toArray"
-        ng-init="fieldUuid = fieldInfo.ngKEY"
+        ng-repeat="fieldInfo in pageStack[pageUuid]|orderBy:'weight'"
+        ng-init="fieldUuid = fieldInfo.uuid"
+        ng-if="(!fieldInfo.isGroup) && (groupInfo.uuid === fieldInfo.parent)"
         ui-draggable="true"
         drag-channel="field"
         drop-channel="field"
