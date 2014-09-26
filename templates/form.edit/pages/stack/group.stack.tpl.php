@@ -13,7 +13,8 @@
         ng-init="fieldUuid = fieldInfo.ngKEY"
         ui-draggable="true"
         drag-channel="field"
-        drop-channel="field">
+        drop-channel="field"
+        ui-on-Drop="groupOnDrageField(pageUuid, groupInfo.uuid, $data, fieldUuid)">
 
         <div class="field-actions">
             <ul class="action-links">
