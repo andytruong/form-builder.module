@@ -4,11 +4,11 @@
         var helper = {};
 
         helper.groupIsEmpty = function (pageId, groupId) {
-            for (var fieldId in this.entity.pages[pageId].fields)
-                if (typeof this.entity.pages[pageId].fields[fieldId].parent !== 'undefined')
-                    if (this.entity.pages[pageId].fields[fieldId].parent === groupId)
-                        return true;
-            return false;
+            for (var fieldId in this.entity.layoutOptions.pages[pageId].fields)
+                if (typeof this.entity.layoutOptions.pages[pageId].fields[fieldId].parent !== 'undefined')
+                    if (this.entity.layoutOptions.pages[pageId].fields[fieldId].parent === groupId)
+                        return false;
+            return true;
         };
 
         helper.groupNewFieldset = function () {
