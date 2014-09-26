@@ -14,7 +14,7 @@ class FormEntityFixer
     {
         // Must have uuidGenerator, layoutOptions
         $form->setUuidGenerator(form_builder_manager()->getUuidGenerator());
-        $form->setLayoutOption(form_builder_manager()->getFormLayoutOptions());
+        $form->setLayoutOptions(form_builder_manager()->getFormLayoutOptions());
 
         foreach (['entity_types', 'form_fields', 'layout_options', 'form_listeners'] as $key) {
             if (!empty($form->{$key}) && is_string($form->{$key})) {
@@ -46,7 +46,7 @@ class FormEntityFixer
     private function fixFormLayoutOptions(FormEntity $form)
     {
         if (!empty($form->layout_options)) {
-            $form->setLayoutOption($layoutOptions = form_builder_manager()->getFormLayoutOptions());
+            $form->setLayoutOptions($layoutOptions = form_builder_manager()->getFormLayoutOptions());
             $layoutOptions->setSubmitText($form->layout_options['submitText']);
             $layoutOptions->setConfirmationMessage($form->layout_options['confirmationMessage']);
             foreach ($form->layout_options['pages'] as $pageUuid => $pageInfo) {
