@@ -34,23 +34,29 @@
         // ---------------------
         // Field: Field dragging
         // ---------------------
-        helper.fieldOnDrop = function ($channel, $data, baseFieldUuid, pageUuid) {
+        helper.fieldOnDrop = function ($channel, $data, baseFieldUuid, toPageId) {
             var $scope = this;
-            var fieldKey = $data.fieldInfo.uuid;
+            var fieldId = $data.fieldInfo.uuid;
             var changePage = true;
 
             if ('newField' === $channel)
-                return helper.fieldOnDropAddField($scope, pageUuid, baseFieldUuid, $data);
+                return helper.fieldOnDropAddField($scope, toPageId, baseFieldUuid, $data);
 
             // user changes a field to other page
-            angular.forEach($scope.pageStack[pageUuid], function (pageField) {
-                if (pageField.uuid === fieldKey)
+            angular.forEach($scope.pageStack[toPageId], function (pageField) {
+                if (pageField.uuid === fieldId)
                     changePage = false;
             });
 
             changePage
-                    ? helper.fieldOnDropChangePage($scope, pageUuid, baseFieldUuid, fieldKey)
-                    : helper.fieldOnDropChangeWeight($scope, pageUuid, baseFieldUuid, fieldKey);
+                    ? helper.fieldOnDropChangePage($scope, toPageId, baseFieldUuid, fieldId)
+                    : helper.fieldOnDropChangeWeight($scope, toPageId, baseFieldUuid, fieldId);
+
+            // User change field from group to root
+            if ('fieldInGroup' === $channel) {
+                // change field parent
+                $scope.entity.layoutOptions.pages[toPageId].fields[fieldId].parent = null;
+            }
         };
 
         // ---------------------
