@@ -1,5 +1,5 @@
 (function (angular, Drupal) {
-    var module = angular.module('FormBuilderApp', ['ngDragDrop', 'FormBuilderPageHelper', 'FormBuilderFieldHelper', 'FormBuilderEntityTypeHelper', 'FormBuilderFormHelper']);
+    var module = angular.module('FormBuilderApp', ['ngDragDrop', 'FormBuilderPageHelper', 'FormBuilderFieldHelper', 'FormBuilderGroupHelper', 'FormBuilderEntityTypeHelper', 'FormBuilderFormHelper']);
 
     module.factory('$initState', function () {
         var initState = {
@@ -29,11 +29,12 @@
         return initState;
     });
 
-    module.factory('$helpers', function ($initState, $pageHelper, $fieldHelper, $entityTypeHelper, $formHelper) {
+    module.factory('$helpers', function ($initState, $pageHelper, $fieldHelper, $groupHelper, $entityTypeHelper, $formHelper) {
         var helpers = $initState;
 
         angular.extend(helpers, $pageHelper);
         angular.extend(helpers, $fieldHelper);
+        angular.extend(helpers, $groupHelper);
         angular.extend(helpers, $entityTypeHelper);
         angular.extend(helpers, $formHelper);
 
@@ -43,8 +44,10 @@
     module.filter('toArray', function () {
         return function (input) {
             var arr = [];
-            for (var i in input)
+            for (var i in input) {
+                input[i].ngKEY = i;
                 arr.push(input[i]);
+            }
             return arr;
         };
     });
@@ -54,17 +57,45 @@
 
         $scope.$watch('entity.layoutOptions.pages', function (pages) {
             $scope.pages = [];
-            $scope.pageFields = {};
+            $scope.pageStack = {};
 
             angular.forEach(pages, function (pageInfo, pageUuid) {
+                // Add page to render array
                 $scope.pages.push({uuid: pageUuid, weight: parseInt(pageInfo.weight)});
-                $scope.pageFields[pageUuid] = [];
+
+                // ---------------------
+                // build field/group render array
+                // ---------------------
+                $scope.pageStack[pageUuid] = [];
+
+                // add fields to render array
                 angular.forEach(pageInfo.fields, function (fieldInfo, fieldUuid) {
                     fieldInfo.uuid = fieldUuid;
-                    $scope.pageFields[pageUuid].push(fieldInfo);
+                    $scope.pageStack[pageUuid].push(fieldInfo);
                 });
+
+                // add groups to render array
+                if (typeof pageInfo.groups !== 'undefined') {
+                    angular.forEach(pageInfo.groups, function (groupInfo, groupUuid) {
+                        groupInfo.uuid = groupUuid;
+                        groupInfo.isGroup = true;
+                        $scope.pageStack[pageUuid].push(groupInfo);
+                    });
+                }
             });
         }, true);
+
+        // @todo: This shoud be handler better, but I got stuck at ng-change, …
+        // On add new entity-type
+        $scope.$watch('entityTypeAdding', function (entityTypeName) {
+            if (!entityTypeName)
+                return;
+            if (!$scope.entity.entityTypes[entityTypeName])
+                return $scope.entityTypeAdd(entityTypeName);
+            else if (confirm('Are you sure to remove ' + entityTypeName))
+                return $scope.entityTypeRemove(entityTypeName);
+            $scope.entityTypeAdding = '';
+        });
     });
 
 })(angular, Drupal);

@@ -15,10 +15,13 @@
 #formFields li.draggable.page.on-dragging { visibility: hidden; }
 #formFields li.draggable.page.on-drag-enter { padding: 11px; border: 1px green dashed; }
 #formFields li.draggable.page.on-drag-hover { padding-bottom: 9px; border-bottom: 3px #0074BD solid; }
-#formFields li.draggable.page { padding: 12px; }
-#formFields li.draggable.page:hover { padding: 11px; border: 1px #333 dashed; }
-.page .page-actions { visibility: hidden; }
-.page:hover .page-actions { visibility: visible; }
+#formFields li.draggable.page { padding: 12px; margin-bottom: 10px; }
+#formFields li.draggable.page { padding: 11px; border: 1px #aaa dashed; }
+
+#formFields li div.page-actions li { padding: 0 15px 0 0; }
+#formFields li div.page-actions li a { line-height: 20px; }
+.page .page-actions a i.icon { display: inline-block; width: 12px; height: 12px; background: url(/modules/shortcut/shortcut.png) 0 0px no-repeat; }
+.page .page-actions a i.icon.remove { background-position-x: -11px; }
 
 /* Fields */
 #availableFields ul,
@@ -27,14 +30,20 @@
 #availableFields ul.entity-fields li,
 #formFields li.field { cursor: move; }
 
-#availableFields li,
+#availableFields .item-list ul li { list-style-type: none; }
+#availableFields .item-list li ul li { padding: 5px 12px; margin: 2px 0; }
+
 #formFields li { list-style-type: none; padding: 12px; margin: 2px 0; }
 
-#availableFields:hover ul.entity-fields li,
-#formFields:hover li.field { padding: 11px; border: 1px #777 dashed; }
+#availableFields ul.entity-fields li,
+#formFields li.field { padding: 11px; border: 1px #aaa dashed; }
 
 #availableFields ul.entity-fields li.on-drag-enter,
 #formFields li.field.on-drag-enter { padding: 11px; border: 1px green dashed; }
 
 #formFields ul li.empty.on-drag-hover,
 #formFields ul li.field.on-drag-hover { padding-bottom: 9px; border-bottom: 3px #0074BD solid; }
+
+#formFields li div.field-actions { float: right; }
+#formFields li div.field-actions ul.action-links li { padding: 0 15px 0 0; }
+#formFields li div.field-actions ul.action-links li a { line-height: 20px; }

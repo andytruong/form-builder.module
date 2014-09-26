@@ -4,6 +4,8 @@ namespace Drupal\form_builder\Helper;
 
 use Drupal\form_builder\FormCenter\DrupalFormLayout;
 use Drupal\form_builder\FormEntity;
+use GO1\FormCenter\Form\Layout\FieldGroup;
+use GO1\FormCenter\Form\Layout\FormLayoutOptions;
 
 class FormEntityFixer
 {
@@ -43,28 +45,58 @@ class FormEntityFixer
 
     private function fixFormLayoutOptions(FormEntity $form)
     {
-        if (empty($form->layout_options)) {
-            return;
-        }
-
-        $form->setLayoutOption($layoutOptions = form_builder_manager()->getFormLayoutOptions());
-        $layoutOptions->setSubmitText($form->layout_options['submitText']);
-        $layoutOptions->setConfirmationMessage($form->layout_options['confirmationMessage']);
-        foreach ($form->layout_options['pages'] as $pageUuid => $pageInfo) {
-            $title = isset($pageInfo['title']) ? $pageInfo['title'] : '';
-            $description = isset($pageInfo['description']) ? $pageInfo['description'] : '';
-            $help = isset($pageInfo['help']) ? $pageInfo['help'] : '';
-            $weight = isset($pageInfo['weight']) ? $pageInfo['weight'] : null;
-            $layoutOptions->addPage($pageUuid, $title, $description, $help, $weight);
-
-            if (empty($pageInfo['fields'])) {
-                continue;
-            }
-
-            foreach ($pageInfo['fields'] as $fieldUuid => $fieldInfo) {
-                $layoutOptions->addField($pageUuid, $fieldUuid, $fieldInfo['weight']);
+        if (!empty($form->layout_options)) {
+            $form->setLayoutOption($layoutOptions = form_builder_manager()->getFormLayoutOptions());
+            $layoutOptions->setSubmitText($form->layout_options['submitText']);
+            $layoutOptions->setConfirmationMessage($form->layout_options['confirmationMessage']);
+            foreach ($form->layout_options['pages'] as $pageUuid => $pageInfo) {
+                $this->fixFormPageLayoutOptions($layoutOptions, $pageUuid, $pageInfo);
             }
         }
+    }
+
+    private function fixFormPageLayoutOptions(FormLayoutOptions $layoutOptions, $pageUuid, $pageInfo)
+    {
+        $title = isset($pageInfo['title']) ? $pageInfo['title'] : '';
+        $description = isset($pageInfo['description']) ? $pageInfo['description'] : '';
+        $help = isset($pageInfo['help']) ? $pageInfo['help'] : '';
+        $weight = isset($pageInfo['weight']) ? $pageInfo['weight'] : null;
+        $layoutOptions->addPage($pageUuid, $title, $description, $help, $weight);
+
+        // convert fields
+        if (!empty($pageInfo['fields'])) {
+            foreach ($pageInfo['fields'] as $fieldKey => $fieldInfo) {
+                $parent = isset($fieldInfo['parent']) ? $fieldInfo['parent'] : null;
+                $layoutOptions->addField($pageUuid, $fieldKey, $parent, $fieldInfo['weight']);
+            }
+        }
+
+        // convert field-groups
+        if (!empty($pageInfo['groups'])) {
+            foreach ($pageInfo['groups'] as $groupUuid => $groupInfo) {
+                $layoutOptions->addGroup($this->convertArrayToFieldGroup($groupInfo), $pageUuid, $groupUuid);
+            }
+        }
+    }
+
+    private function convertArrayToFieldGroup($groupInfo)
+    {
+        $fieldGroup = new FieldGroup();
+
+        foreach (['type', 'title', 'description', 'parents', 'options'] as $pty) {
+            if (isset($groupInfo[$pty])) {
+                $method = 'set' . at_camelize($pty);
+                $fieldGroup->{$method}($groupInfo[$pty]);
+            }
+        }
+
+        if (!empty($groupInfo['fields'])) {
+            foreach ($groupInfo['fields'] as $fieldKey => $fieldInfo) {
+                $fieldGroup->addField($fieldKey, $fieldInfo);
+            }
+        }
+
+        return $fieldGroup;
     }
 
     private function fixFormFields(FormEntity $form)
