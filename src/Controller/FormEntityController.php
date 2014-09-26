@@ -7,6 +7,7 @@ use Drupal\form_builder\FormEntity;
 use Drupal\form_builder\Helper\FormEntityFixer;
 use Drupal\form_builder\Helper\FormEntityReversedFixer;
 use EntityAPIController;
+use GO1\FormCenter\Form\FormInterface;
 
 class FormEntityController extends EntityAPIController
 {
@@ -39,6 +40,10 @@ class FormEntityController extends EntityAPIController
         return parent::query($ids, $conditions, $revision_id);
     }
 
+    /**
+     * @param FormInterface $form
+     * @param DatabaseTransaction $transaction
+     */
     public function save($form, DatabaseTransaction $transaction = NULL)
     {
         (new FormEntityReversedFixer())->fix($form);
