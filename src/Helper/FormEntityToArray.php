@@ -100,6 +100,8 @@ class FormEntityToArray
             foreach ($return['groups'] as $groupUuid => $fieldGroup) {
                 /* @var $fieldOptions FieldGroup */
                 $return['groups'][$groupUuid] = (new Serializer())->toArray($fieldGroup);
+                $return['groups'][$groupUuid]['fields'] = $return['groups'][$groupUuid]['fieldInfos'];
+                unset($return['groups'][$groupUuid]['fieldInfos']);
             }
         }
 

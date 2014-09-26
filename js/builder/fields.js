@@ -6,6 +6,14 @@
         helper.fieldRemove = function (pageUuid, fieldUuid) {
             delete(this.entity.fields[fieldUuid]);
             delete(this.entity.layoutOptions.pages[pageUuid]['fields'][fieldUuid]);
+
+            if (typeof this.entity.layoutOptions.pages[pageUuid].groups === 'undefined')
+                return;
+
+            // Remove field config in a group
+            for (var groupUuid in this.entity.layoutOptions.pages[pageUuid].groups)
+                if (typeof this.entity.layoutOptions.pages[pageUuid].groups[groupUuid].fields[fieldUuid] !== 'undefined')
+                    delete(this.entity.layoutOptions.pages[pageUuid].groups[groupUuid].fields[fieldUuid]);
         };
 
         helper.isAvailableFieldsEmpty = function (entityTypeName) {

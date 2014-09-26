@@ -5,7 +5,7 @@
 
         help.groupNewFieldset = function () {
         };
-        
+
         return helper;
     });
 
