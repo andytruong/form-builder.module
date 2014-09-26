@@ -34,15 +34,15 @@
         // ---------------------
         // Field: Field dragging
         // ---------------------
-        helper.fieldOnDrop = function ($channel, field, baseFieldUuid, pageUuid) {
+        helper.fieldOnDrop = function ($channel, $data, baseFieldUuid, pageUuid) {
             var $scope = this;
-            var fieldName = 'object' === typeof field ? field.entityTypeName + '.' + field.name : field;
+            var fieldName = 'string' === typeof $data ? $data : '';
             var changePage = true;
 
             if ('newField' === $channel)
-                return helper.fieldOnDropAddField($scope, pageUuid, baseFieldUuid, fieldName, field);
+                return helper.fieldOnDropAddField($scope, pageUuid, baseFieldUuid, $data);
 
-            // use change a field to other page
+            // user changes a field to other page
             angular.forEach($scope.pageStack[pageUuid], function (pageField) {
                 if (pageField.uuid === fieldName)
                     changePage = false;
@@ -56,7 +56,8 @@
         // ---------------------
         // Field: Adding new field — user drag from available fields to page
         // ---------------------
-        helper.fieldOnDropAddField = function ($scope, pageUuid, baseFieldUuid, fieldName, field) {
+        helper.fieldOnDropAddField = function ($scope, pageUuid, baseFieldUuid, field) {
+            var fieldName = field.entityTypeName + '.' + field.name;
             $scope.available.addingFields[pageUuid] = $scope.available.addingFields[pageUuid] || {};
             $scope.available.addingFields[pageUuid][fieldName] = field;
 
