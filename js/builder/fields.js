@@ -28,7 +28,7 @@
         // ---------------------
         // Field: Field dragging
         // ---------------------
-        helper.fieldOnDrop = function ($event, field, baseFieldUuid, pageUuid) {
+        helper.fieldOnDrop = function (field, baseFieldUuid, pageUuid) {
             var $scope = this;
             var fieldName = 'object' === typeof field ? field.entityTypeName + '.' + field.name : field;
 

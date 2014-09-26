@@ -2,7 +2,7 @@
         ng-repeat="fieldInfo in pageStack[pageUuid]|orderBy:'weight'"
         ng-if="!fieldInfo.isGroup"
         drop-channel="field"
-        ui-on-Drop="fieldOnDrop($event, $data, fieldInfo.uuid, pageUuid)"
+        ui-on-Drop="fieldOnDrop($data, fieldInfo.uuid, pageUuid)"
         ui-draggable="true"
         drag-channel="field"
         drag="fieldInfo.uuid">
