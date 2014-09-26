@@ -21,34 +21,35 @@
          * 3. Drag group to group
          */
         helper.groupFieldOnDrop = function ($channel, $data, toPageId, groupId, toFieldId) {
-            var fromFieldId = $data.fieldInfo.uuid;
-
             switch ($channel) {
                 case 'fieldInRoot':
                 case 'fieldInGroup':
+                    var fromFieldId = $data.fieldInfo.uuid;
                     this.groupFieldOnDropField(toPageId, groupId, fromFieldId, toFieldId);
                     break;
                 case 'newField':
-                    this.groupFieldOnDropNewField(toPageId, groupId, fromFieldId, toFieldId);
+                    this.groupFieldOnDropNewField($data, toPageId, groupId, fromFieldId, toFieldId);
             }
         };
 
         helper.groupFieldOnDropField = function (toPageId, groupId, fromFieldId, toFieldId) {
-            // @todo Add field to new page
+            // @todo If user moves field from other page
+            //  - add field to new page
+            //  - remove field from old page
             if (typeof this.entity.layoutOptions.pages[toPageId].fields[fromFieldId] === 'undefined') {
                 this.entity.layoutOptions.pages[toPageId].fields[fromFieldId] = {weight: 0, domTagName: 'div', domClasses: [], parent: null};
             }
 
-            // Set field parent
+            // Update field parent & weight
             this.entity.layoutOptions.pages[toPageId].fields[fromFieldId].parent = groupId;
             this.entity.layoutOptions.pages[toPageId].fields[fromFieldId].weight = 'undefined' === typeof this.entity.layoutOptions.pages[toPageId].fields[toFieldId]
                     ? 0
                     : 1 + this.entity.layoutOptions.pages[toPageId].fields[toFieldId].weight;
+        };
 
-            // Remove field from old page
-
-            // this.entity.layoutOptions.pages[toPageId].groups[groupId].fields[fromFieldId] = {weight: 0};
-        }
+        helper.groupFieldOnDropNewField = function (fieldInfo, toPageId, groupId, fromFieldId, toFieldId) {
+            this.fieldOnDropAddField(this, toPageId, toFieldId, fieldInfo);
+        };
 
         return helper;
     });

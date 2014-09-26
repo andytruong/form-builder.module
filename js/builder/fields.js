@@ -68,11 +68,7 @@
             $scope.available.addingFields[pageUuid][fieldName] = fieldInfo;
 
             $http
-                    .post(window.location.pathname, {
-                        action: 'add-field',
-                        fieldName: fieldName,
-                        entity: $scope.entity
-                    })
+                    .post(window.location.pathname, {action: 'add-field', fieldName: fieldName, entity: $scope.entity})
                     .success(function (data) {
                         var fieldName = data.field.entityTypeName + '.' + data.field.name;
                         var weight = baseFieldUuid ? 1 + $scope.entity.layoutOptions.pages[pageUuid].fields[baseFieldUuid].weight : 0;
@@ -82,7 +78,12 @@
                         $scope.entity.fields[data.fieldUuid] = data.field;
                         $scope.available.addedFields[data.fieldUuid] = $scope.available.addingFields[fieldName];
                         $scope.pageStack[pageUuid].push(fieldInfo);
-                        $scope.entity.layoutOptions.pages[pageUuid].fields[data.fieldUuid] = {weight: weight, domTagName: 'div', domClasses: [], parent: null};
+                        $scope.entity.layoutOptions.pages[pageUuid].fields[data.fieldUuid] = {
+                            weight: weight,
+                            domTagName: 'div',
+                            domClasses: [],
+                            parent: $scope.entity.layoutOptions.pages[pageUuid].fields[baseFieldUuid].parent
+                        };
                         delete($scope.available.addingFields[pageUuid][fieldName]);
                     });
         };
