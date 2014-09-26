@@ -41,7 +41,9 @@
 
             // Set field parent
             this.entity.layoutOptions.pages[toPageId].fields[fromFieldId].parent = groupId;
-            this.entity.layoutOptions.pages[toPageId].fields[fromFieldId].weight = 1 + this.entity.layoutOptions.pages[toPageId].fields[toFieldId].weight;
+            this.entity.layoutOptions.pages[toPageId].fields[fromFieldId].weight = 'undefined' === typeof this.entity.layoutOptions.pages[toPageId].fields[toFieldId]
+                    ? 0
+                    : 1 + this.entity.layoutOptions.pages[toPageId].fields[toFieldId].weight;
 
             // Remove field from old page
 
