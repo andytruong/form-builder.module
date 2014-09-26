@@ -2,6 +2,7 @@
 
 namespace Drupal\form_builder\Helper;
 
+use AndyTruong\Serializer\Serializer;
 use Drupal\form_builder\FormEntity;
 use GO1\FormCenter\Field\FieldOptions;
 
@@ -60,6 +61,12 @@ class FormEntityReversedFixer
                     /* @var $fieldInfo FieldOptions */
                     $form->layout_options['pages'][$pageUuid]['fields'][$fieldUuid]['parent'] = $fieldInfo->getParent();
                     $form->layout_options['pages'][$pageUuid]['fields'][$fieldUuid]['weight'] = $fieldInfo->getWeight();
+                }
+            }
+
+            if (!empty($pageInfo['groups'])) {
+                foreach ($pageInfo['groups'] as $groupUuid => $groupInfo) {
+                    $form->layout_options['pages'][$pageUuid]['groups'][$groupUuid] = (new Serializer())->toArray($groupInfo);
                 }
             }
         }
