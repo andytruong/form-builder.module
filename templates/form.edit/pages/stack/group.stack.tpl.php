@@ -3,7 +3,7 @@
     <li class="draggable empty"
         drop-channel="field"
         ui-on-Drop="fieldOnDrop($event, $data, '', pageUuid)"
-        ng-show="!(groupInfo.fields | toArray).length">
+        ng-if="groupIsEmpty(pageUuid, groupInfo.uuid)">
         No field.
     </li>
 

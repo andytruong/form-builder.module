@@ -3,6 +3,14 @@
     angular.module('FormBuilderGroupHelper', []).factory('$groupHelper', function ($http, $timeout) {
         var helper = {};
 
+        helper.groupIsEmpty = function (pageId, groupId) {
+            for (var fieldId in this.entity.pages[pageId].fields)
+                if (typeof this.entity.pages[pageId].fields[fieldId].parent !== 'undefined')
+                    if (this.entity.pages[pageId].fields[fieldId].parent === groupId)
+                        return true;
+            return false;
+        };
+
         helper.groupNewFieldset = function () {
         };
 
