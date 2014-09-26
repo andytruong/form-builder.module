@@ -1,6 +1,6 @@
 <li     class="draggable field"
         ng-repeat="fieldInfo in pageStack[pageUuid]|orderBy:'weight'"
-        ng-if="!fieldInfo.isGroup"
+        ng-if="!fieldInfo.isGroup && !fieldInfo.parent"
         drop-channel="field"
         ui-on-Drop="fieldOnDrop($data, fieldInfo.uuid, pageUuid)"
         ui-draggable="true"
