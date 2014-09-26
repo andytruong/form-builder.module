@@ -3,7 +3,7 @@
         ng-if="!fieldInfo.isGroup && !fieldInfo.parent"
         ui-draggable="true"
         drag-channel="fieldInRoot"
-        drag="fieldInfo.uuid"
+        drag='{ "fieldInfo": {{fieldInfo}} }'
         drop-channel="*"
         drop-validate="fieldDragValidate($channel, $data)"
         ui-on-Drop="fieldOnDrop($channel, $data, fieldInfo.uuid, pageUuid)">

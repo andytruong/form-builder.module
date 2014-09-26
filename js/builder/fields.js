@@ -36,7 +36,7 @@
         // ---------------------
         helper.fieldOnDrop = function ($channel, $data, baseFieldUuid, pageUuid) {
             var $scope = this;
-            var fieldName = 'string' === typeof $data ? $data : '';
+            var fieldKey = $data.fieldInfo.uuid;
             var changePage = true;
 
             if ('newField' === $channel)
@@ -44,22 +44,22 @@
 
             // user changes a field to other page
             angular.forEach($scope.pageStack[pageUuid], function (pageField) {
-                if (pageField.uuid === fieldName)
+                if (pageField.uuid === fieldKey)
                     changePage = false;
             });
 
             changePage
-                    ? helper.fieldOnDropChangePage($scope, pageUuid, baseFieldUuid, fieldName)
-                    : helper.fieldOnDropChangeWeight($scope, pageUuid, baseFieldUuid, fieldName);
+                    ? helper.fieldOnDropChangePage($scope, pageUuid, baseFieldUuid, fieldKey)
+                    : helper.fieldOnDropChangeWeight($scope, pageUuid, baseFieldUuid, fieldKey);
         };
 
         // ---------------------
         // Field: Adding new field — user drag from available fields to page
         // ---------------------
-        helper.fieldOnDropAddField = function ($scope, pageUuid, baseFieldUuid, field) {
-            var fieldName = field.entityTypeName + '.' + field.name;
+        helper.fieldOnDropAddField = function ($scope, pageUuid, baseFieldUuid, fieldInfo) {
+            var fieldName = fieldInfo.entityTypeName + '.' + fieldInfo.name;
             $scope.available.addingFields[pageUuid] = $scope.available.addingFields[pageUuid] || {};
-            $scope.available.addingFields[pageUuid][fieldName] = field;
+            $scope.available.addingFields[pageUuid][fieldName] = fieldInfo;
 
             $http
                     .post(window.location.pathname, {
@@ -71,11 +71,11 @@
                         var fieldName = data.field.entityTypeName + '.' + data.field.name;
                         var weight = baseFieldUuid ? 1 + $scope.entity.layoutOptions.pages[pageUuid].fields[baseFieldUuid].weight : 0;
 
-                        field.uuid = data.fieldUuid;
+                        fieldInfo.uuid = data.fieldUuid;
 
                         $scope.entity.fields[data.fieldUuid] = data.field;
                         $scope.available.addedFields[data.fieldUuid] = $scope.available.addingFields[fieldName];
-                        $scope.pageStack[pageUuid].push(field);
+                        $scope.pageStack[pageUuid].push(fieldInfo);
                         $scope.entity.layoutOptions.pages[pageUuid].fields[data.fieldUuid] = {weight: weight, domTagName: 'div', domClasses: [], parent: null};
                         delete($scope.available.addingFields[pageUuid][fieldName]);
                     });

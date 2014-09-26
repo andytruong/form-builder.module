@@ -13,9 +13,10 @@
         ng-init="fieldUuid = fieldInfo.uuid"
         ng-if="(!fieldInfo.isGroup) && (groupInfo.uuid === fieldInfo.parent)"
         ui-draggable="true"
+        drag='{ "pageUuid": "{{pageUuid}}", "groupUuid": "{{groupInfo.uuid}}", "fieldInfo": {{fieldInfo}} }'
         drag-channel="fieldInGroup"
         drop-channel="*"
-        ui-on-Drop="groupFieldOnDrop($channel, pageUuid, groupInfo.uuid, $data, fieldUuid)">
+        ui-on-Drop="groupFieldOnDrop($channel, $data, pageUuid, groupInfo.uuid, fieldUuid)">
 
         <div class="field-actions">
             <ul class="action-links">

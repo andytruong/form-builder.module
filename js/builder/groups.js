@@ -20,7 +20,9 @@
          * 2. Drag new field to group
          * 3. Drag group to group
          */
-        helper.groupFieldOnDrop = function ($channel, toPageId, groupId, fromFieldId, toFieldId) {
+        helper.groupFieldOnDrop = function ($channel, $data, toPageId, groupId, toFieldId) {
+            var fromFieldId = $data.fieldInfo.uuid;
+
             switch ($channel) {
                 case 'fieldInRoot':
                 case 'fieldInGroup':
