@@ -7,8 +7,8 @@
         No field.
     </li>
 
-    <?php include 'stack.field.tpl.php'; ?>
-    <?php include 'stack.group.tpl.php'; ?>
+    <?php include 'stack/field.tpl.php'; ?>
+    <?php include 'stack/group.tpl.php'; ?>
 
     <!-- User drags new field to page, ask server for things… -->
     <li class="adding" ng-repeat="field in available.addingFields[pageUuid]">
