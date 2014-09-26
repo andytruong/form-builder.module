@@ -12,13 +12,9 @@
                 <span>{{entity.layoutOptions.pages[pageUuid].title}}</span>
             </div>
 
-            <?php include 'pages.info.tpl.php'; ?>
-
-            <ul>
-                <?php include 'pages.stack.tpl.php'; ?>
-            </ul>
-
-            <?php include 'pages.actions.tpl.php'; ?>
+            <?php include 'pages/info.tpl.php'; ?>
+            <?php include 'pages/stack.tpl.php'; ?>
+            <?php include 'pages/actions.tpl.php'; ?>
         </li>
         <li ng-if="!pages.length">No page available</li>
     </ul>
