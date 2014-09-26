@@ -1,8 +1,9 @@
 <ul>
     <!-- If there's no field added to page -->
     <li class="draggable empty"
-        drop-channel="field"
-        ui-on-Drop="fieldOnDrop($event, $data, '', pageUuid)"
+        drop-channel="*"
+        drop-validate="fieldDragValidate($channel, $data)"
+        ui-on-Drop="fieldOnDrop($channel, $data, null, pageUuid)"
         ng-show="isFieldsEmpty(pageUuid)">
         No field.
     </li>

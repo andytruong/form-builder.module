@@ -20,7 +20,7 @@
                         ng-repeat="(fieldName, fieldInfo) in entityTypeInfo.fields | toArray | filter:search"
                         ng-if="!isFieldAdded(entityTypeName, fieldName)"
                         ui-draggable="true"
-                        drag-channel="field"
+                        drag-channel="newField"
                         drag="fieldInfo">
                         <strong class="field-human-name">{{fieldInfo.humanName}}</strong>
                         <div class="description" ng-if="fieldInfo.description">

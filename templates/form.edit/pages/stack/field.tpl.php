@@ -1,11 +1,12 @@
 <li     class="draggable field"
         ng-repeat="fieldInfo in pageStack[pageUuid]|orderBy:'weight'"
         ng-if="!fieldInfo.isGroup && !fieldInfo.parent"
-        drop-channel="field"
-        ui-on-Drop="fieldOnDrop($data, fieldInfo.uuid, pageUuid)"
         ui-draggable="true"
-        drag-channel="field"
-        drag="fieldInfo.uuid">
+        drag-channel="fieldInRoot"
+        drag="fieldInfo.uuid"
+        drop-channel="*"
+        drop-validate="fieldDragValidate($channel, $data)"
+        ui-on-Drop="fieldOnDrop($channel, $data, fieldInfo.uuid, pageUuid)">
 
     <div class="field-actions">
         <ul class="action-links">
@@ -17,5 +18,6 @@
     <strong class="field-human-name">
         {{entity.fields[fieldInfo.uuid].humanName}}
     </strong>
+
     <span class="entity-type-name">({{entity.fields[fieldInfo.uuid].entityTypeName}})</span>
 </li>

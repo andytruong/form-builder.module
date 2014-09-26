@@ -25,24 +25,30 @@
             return 0 === this.pageStack[pageUuid].length;
         };
 
+        helper.fieldDragValidate = function ($channel, $data) {
+            return ('newField' === $channel)
+                    || ('fieldInRoot' === $channel)
+                    || ('fieldInGroup' === $channel);
+        };
+
         // ---------------------
         // Field: Field dragging
         // ---------------------
-        helper.fieldOnDrop = function (field, baseFieldUuid, pageUuid) {
+        helper.fieldOnDrop = function ($channel, field, baseFieldUuid, pageUuid) {
             var $scope = this;
             var fieldName = 'object' === typeof field ? field.entityTypeName + '.' + field.name : field;
+            var changePage = true;
 
-            if (typeof $scope.entity.fields[fieldName] === 'undefined')
+            if ('newField' === $channel)
                 return helper.fieldOnDropAddField($scope, pageUuid, baseFieldUuid, fieldName, field);
 
             // use change a field to other page
-            $scope.changePage = true;
             angular.forEach($scope.pageStack[pageUuid], function (pageField) {
                 if (pageField.uuid === fieldName)
-                    $scope.changePage = false;
+                    changePage = false;
             });
 
-            $scope.changePage
+            changePage
                     ? helper.fieldOnDropChangePage($scope, pageUuid, baseFieldUuid, fieldName)
                     : helper.fieldOnDropChangeWeight($scope, pageUuid, baseFieldUuid, fieldName);
         };
@@ -79,7 +85,6 @@
         // ---------------------
         helper.fieldOnDropChangeWeight = function ($scope, pageUuid, baseFieldUuid, fieldUuid) {
             var baseFieldKey, fieldKey;
-
             for (var key in $scope.pageStack[pageUuid])
                 if (fieldUuid === $scope.pageStack[pageUuid][key].uuid)
                     fieldKey = key;
@@ -88,8 +93,7 @@
                 if (baseFieldUuid === $scope.pageStack[pageUuid][key].uuid)
                     baseFieldKey = key;
 
-            $scope.pageStack[pageUuid][fieldKey].weight = 1 + $scope.pageStack[pageUuid][baseFieldKey].weight;
-            // Change field weights for next move
+            $scope.pageStack[pageUuid][fieldKey].weight = 1 + $scope.pageStack[pageUuid][baseFieldKey].weight;             // Change field weights for next move
             $scope.pageStack[pageUuid].sort(function (a, b) {
                 return a.weight - b.weight;
             });
@@ -118,7 +122,6 @@
 
             return $scope;
         };
-
         return helper;
     });
 
