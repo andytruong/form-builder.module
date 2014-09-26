@@ -58,6 +58,7 @@ class FormEntityReversedFixer
             if (!empty($pageInfo['fields'])) {
                 foreach ($pageInfo['fields'] as $fieldUuid => $fieldInfo) {
                     /* @var $fieldInfo FieldOptions */
+                    $form->layout_options['pages'][$pageUuid]['fields'][$fieldUuid]['parent'] = $fieldInfo->getParent();
                     $form->layout_options['pages'][$pageUuid]['fields'][$fieldUuid]['weight'] = $fieldInfo->getWeight();
                 }
             }
