@@ -26,20 +26,5 @@
         </div>
     </div>
 
-    <!-- fields in group -->
-    <ul>
-        <!-- If there's no field added to page -->
-        <li class="draggable empty"
-            drop-channel="field"
-            ui-on-Drop="fieldOnDrop($event, $data, '', pageUuid)"
-            ng-show="!(groupInfo.fieldInfos | toArray).length">
-            No field.
-        </li>
-
-        <li class="draggable field"
-            ng-repeat="fieldInfo in groupInfo.fieldInfos|toArray"
-            ng-init="fieldUuid = fieldInfo.ngKEY">
-            {{entity.fields[fieldUuid].humanName}}
-        </li>
-    </ul>
+    <?php include 'group.stack.tpl.php'; ?>
 </li>

@@ -48,12 +48,12 @@ class Render
                         return ['type' => 'external', 'data' => $path];
                     }, $this->externalJS), [
                     $jsSettings,
-                    drupal_get_path('module', 'form_builder') . '/js/entity.editing.pages.js',
-                    drupal_get_path('module', 'form_builder') . '/js/entity.editing.groups.js',
-                    drupal_get_path('module', 'form_builder') . '/js/entity.editing.fields.js',
-                    drupal_get_path('module', 'form_builder') . '/js/entity.editing.types.js',
-                    drupal_get_path('module', 'form_builder') . '/js/entity.editing.form.js',
-                    drupal_get_path('module', 'form_builder') . '/js/entity.editing.app.js'
+                    drupal_get_path('module', 'form_builder') . '/js/builder/pages.js',
+                    drupal_get_path('module', 'form_builder') . '/js/builder/groups.js',
+                    drupal_get_path('module', 'form_builder') . '/js/builder/fields.js',
+                    drupal_get_path('module', 'form_builder') . '/js/builder/types.js',
+                    drupal_get_path('module', 'form_builder') . '/js/builder/form.js',
+                    drupal_get_path('module', 'form_builder') . '/js/builder/app.js'
                 ])
             ]
         ];
