@@ -15,7 +15,7 @@
         ui-draggable="true"
         drag-channel="fieldInGroup"
         drop-channel="*"
-        ui-on-Drop="groupOnDrageField(pageUuid, groupInfo.uuid, $data, fieldUuid)">
+        ui-on-Drop="groupFieldOnDrop($channel, pageUuid, groupInfo.uuid, $data, fieldUuid)">
 
         <div class="field-actions">
             <ul class="action-links">

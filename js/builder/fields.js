@@ -75,7 +75,7 @@
                         $scope.entity.fields[data.fieldUuid] = data.field;
                         $scope.available.addedFields[data.fieldUuid] = $scope.available.addingFields[fieldName];
                         $scope.pageStack[pageUuid].push(field);
-                        $scope.entity.layoutOptions.pages[pageUuid].fields[data.fieldUuid] = {weight: weight, domTagName: 'div', domClasses: []};
+                        $scope.entity.layoutOptions.pages[pageUuid].fields[data.fieldUuid] = {weight: weight, domTagName: 'div', domClasses: [], parent: null};
                         delete($scope.available.addingFields[pageUuid][fieldName]);
                     });
         };
