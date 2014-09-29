@@ -4,6 +4,10 @@
 #edit-actions, div.break { clear: both; }
 /* -- JUST-FOR-DEV */
 
+.dropzone { height: 5px; }
+.dropzone.on-drag-enter { background: #ccc; }
+.dropzone.on-drag-hover { background: #0074BD; }
+
 /* Pages */
 .drag-icon { padding: 4px 20px 4px 5px; min-height: 18px; float: right; background: url(/misc/draggable.png) no-repeat 100% 8px; cursor: move; }
 .drag-icon span { visibility: hidden; }
