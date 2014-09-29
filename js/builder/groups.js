@@ -29,24 +29,36 @@
             }
         };
 
-        /**
-         * Cases to handle
-         * 1. Drag form field to group
-         * 2. Drag new field to group
-         * 3. Drag group to group
-         */
         helper.groupFieldOnDrop = function ($channel, $data, toPageId, groupId, toFieldId, increase) {
             this.groupFixFieldWeight(toPageId, groupId);
 
             switch ($channel) {
+                case 'groupInRoot':
+                    this.groupFieldOnDropGroup(toPageId, toFieldId, increase, $data.itemInfo, increase);
+                    break;
+
                 case 'fieldInRoot':
                 case 'fieldInGroup':
                     var fromFieldId = $data.itemInfo.uuid;
                     this.groupFieldOnDropField(toPageId, groupId, fromFieldId, toFieldId, increase);
                     break;
+
                 case 'newField':
                     this.groupFieldOnDropNewField($data.itemInfo, toPageId, groupId, fromFieldId, toFieldId, increase);
             }
+        };
+
+        // ---------------------
+        // Drop group to a group
+        // ---------------------
+        helper.groupFieldOnDropGroup = function (toPageId, toFieldId, increase, groupInfo, increase) {
+            // find toGroupId
+            var toGroupId = this.entity.layoutOptions.pages[toPageId].fields[toFieldId].parent;
+            var weight = increase + this.entity.layoutOptions.pages[toPageId].fields[toFieldId].weight;
+
+            // Change parent for the group, then change weight
+            this.entity.layoutOptions.pages[toPageId].groups[groupInfo.uuid].parent = toGroupId;
+            this.entity.layoutOptions.pages[toPageId].groups[groupInfo.uuid].weight = weight;
         };
 
         helper.groupFieldOnDropField = function (toPageId, groupId, fromFieldId, toFieldId, increase) {
