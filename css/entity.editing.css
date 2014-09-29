@@ -8,8 +8,8 @@
 .field.draggable .drag-icon { position: relative; z-index: 100; float: left; margin: -5px 15px 0 -5px; }
 li.field { position: relative; }
 li.field .dropzone { position: absolute; left: 0; width: 100%; }
-li.field .dropzone.before { top: 0; border-right: 5px solid green; }
-li.field .dropzone.after { bottom: 0; border-right: 5px solid red; }
+li.field .dropzone.before { top: 0; }
+li.field .dropzone.after { bottom: 0; }
 .dropzone { height: 20px; cursor: auto; }
 .dropzone.before.on-drag-enter { border-top: 2px solid #ccc; }
 .dropzone.before.on-drag-hover { border-top: 2px solid #0074BD; }
