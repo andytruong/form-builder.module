@@ -40,7 +40,7 @@
             var changePage = true;
 
             if ('newField' === $channel)
-                return helper.fieldOnDropAddField($scope, toPageId, baseFieldUuid, $data.itemInfo);
+                return helper.fieldOnDropAddField($scope, toPageId, baseFieldUuid, $data.itemInfo, increase);
 
             // user changes a field to other page
             angular.forEach($scope.pageStack[toPageId], function (pageField) {
@@ -62,7 +62,7 @@
         // ---------------------
         // Field: Adding new field — user drag from available fields to page
         // ---------------------
-        helper.fieldOnDropAddField = function ($scope, pageUuid, baseFieldUuid, fieldInfo) {
+        helper.fieldOnDropAddField = function ($scope, pageUuid, baseFieldUuid, fieldInfo, increase) {
             var fieldName = fieldInfo.entityTypeName + '.' + fieldInfo.name;
             $scope.available.addingFields[pageUuid] = $scope.available.addingFields[pageUuid] || {};
             $scope.available.addingFields[pageUuid][fieldName] = fieldInfo;
@@ -71,7 +71,7 @@
                     .post(window.location.pathname, {action: 'add-field', fieldName: fieldName, entity: $scope.entity})
                     .success(function (data) {
                         var fieldName = data.field.entityTypeName + '.' + data.field.name;
-                        var weight = baseFieldUuid ? 1 + $scope.entity.layoutOptions.pages[pageUuid].fields[baseFieldUuid].weight : 0;
+                        var weight = baseFieldUuid ? increase + $scope.entity.layoutOptions.pages[pageUuid].fields[baseFieldUuid].weight : 0;
 
                         fieldInfo.uuid = data.fieldUuid;
 

@@ -1,14 +1,3 @@
-<div class="field-actions">
-  <ul class="action-links">
-    <li><a href ng-click="fieldConfig(pageUuid, itemInfo.uuid)">Config</a></li>
-    <li><a href ng-click="fieldRemove(pageUuid, itemInfo.uuid)">Remove</a></li>
-  </ul>
-</div>
-
-<strong class="group-title">{{itemInfo.title}} ({{itemInfo.type}})</strong>
-
-<div class="description">{{itemInfo.description}}</div>
-
 <div ng-if="itemInfo.editing">
   <div class="group-options" ng-if="'fieldset' === itemInfo.type">
     <div class="form-item form-type-checkbox form-item-collapsible">
