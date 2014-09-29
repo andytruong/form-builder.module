@@ -4,12 +4,17 @@
 #edit-actions, div.break { clear: both; }
 /* -- JUST-FOR-DEV */
 
+/* Drop & drag zones */
+.field.draggable .drag-icon { position: relative; z-index: 100; float: left; margin: -5px 15px 0 -5px; }
 li.field { position: relative; }
-li.field .dropzone { position: absolute; top: 0; left: 0; width: 100%; }
-li.field .dropzone.after { top: 100%; }
-.dropzone { height: 5px; }
-.dropzone.on-drag-enter { background: #ccc; }
-.dropzone.on-drag-hover { background: #0074BD; }
+li.field .dropzone { position: absolute; left: 0; width: 100%; }
+li.field .dropzone.before { top: 0; border-right: 5px solid green; }
+li.field .dropzone.after { bottom: 0; border-right: 5px solid red; }
+.dropzone { height: 20px; cursor: auto; }
+.dropzone.before.on-drag-enter { border-top: 2px solid #ccc; }
+.dropzone.before.on-drag-hover { border-top: 2px solid #0074BD; }
+.dropzone.after.on-drag-enter { border-bottom: 2px solid #ccc; }
+.dropzone.after.on-drag-hover { border-bottom: 2px solid #0074BD; }
 
 /* Pages */
 .drag-icon { padding: 4px 20px 4px 5px; min-height: 18px; float: right; background: url(/misc/draggable.png) no-repeat 100% 8px; cursor: move; }
