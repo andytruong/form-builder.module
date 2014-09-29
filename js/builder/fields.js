@@ -34,7 +34,7 @@
         // ---------------------
         // Field: Field dragging
         // ---------------------
-        helper.fieldOnDrop = function ($channel, $data, baseFieldUuid, toPageId) {
+        helper.fieldOnDrop = function ($channel, $data, baseFieldUuid, toPageId, increase) {
             var $scope = this;
             var fieldId = $data.itemInfo.uuid;
             var changePage = true;
@@ -49,8 +49,8 @@
             });
 
             changePage
-                    ? helper.fieldOnDropChangePage($scope, toPageId, baseFieldUuid, fieldId)
-                    : helper.fieldOnDropChangeWeight($scope, toPageId, baseFieldUuid, fieldId);
+                    ? helper.fieldOnDropChangePage($scope, toPageId, baseFieldUuid, fieldId, increase)
+                    : helper.fieldOnDropChangeWeight($scope, toPageId, baseFieldUuid, fieldId, increase);
 
             // User change field from group to root
             if ('fieldInGroup' === $channel) {
@@ -91,7 +91,7 @@
         // ---------------------
         // Field: Change position of field inside a page.
         // ---------------------
-        helper.fieldOnDropChangeWeight = function ($scope, pageUuid, baseFieldUuid, fieldUuid) {
+        helper.fieldOnDropChangeWeight = function ($scope, pageUuid, baseFieldUuid, fieldUuid, increase) {
             var baseFieldKey, fieldKey;
             for (var key in $scope.pageStack[pageUuid])
                 if (fieldUuid === $scope.pageStack[pageUuid][key].uuid)
@@ -101,7 +101,7 @@
                 if (baseFieldUuid === $scope.pageStack[pageUuid][key].uuid)
                     baseFieldKey = key;
 
-            $scope.pageStack[pageUuid][fieldKey].weight = 1 + $scope.pageStack[pageUuid][baseFieldKey].weight;             // Change field weights for next move
+            $scope.pageStack[pageUuid][fieldKey].weight = increase + $scope.pageStack[pageUuid][baseFieldKey].weight;             // Change field weights for next move
             $scope.pageStack[pageUuid].sort(function (a, b) {
                 return a.weight - b.weight;
             });

@@ -15,7 +15,7 @@
     <div class="dropzone before"
          drop-channel="*"
          drop-validate="fieldDragValidate($channel, $data)"
-         ui-on-Drop="fieldOnDrop($channel, $data, itemInfo.uuid, pageUuid)"></div>
+         ui-on-Drop="fieldOnDrop($channel, $data, itemInfo.uuid, pageUuid, -1)"></div>
 
     <div ng-attr-drag-channel="{{itemInfo.isGroup ? 'groupInRoot' : 'fieldInRoot'}}"
          ui-draggable="true"
@@ -27,7 +27,7 @@
     <div class="dropzone after"
          drop-channel="*"
          drop-validate="fieldDragValidate($channel, $data)"
-         ui-on-Drop="fieldOnDrop($channel, $data, itemInfo.uuid, pageUuid)"></div>
+         ui-on-Drop="fieldOnDrop($channel, $data, itemInfo.uuid, pageUuid, 1)"></div>
   </li>
 
   <!-- User drags new field to page, ask server for things… -->
