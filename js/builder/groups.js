@@ -45,7 +45,7 @@
                     this.groupFieldOnDropField(toPageId, groupId, fromFieldId, toFieldId, increase);
                     break;
                 case 'newField':
-                    this.groupFieldOnDropNewField($data, toPageId, groupId, fromFieldId, toFieldId, increase);
+                    this.groupFieldOnDropNewField($data.itemInfo, toPageId, groupId, fromFieldId, toFieldId, increase);
             }
         };
 
