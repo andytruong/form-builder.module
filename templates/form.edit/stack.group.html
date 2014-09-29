@@ -1,0 +1,50 @@
+<ul>
+  <!-- If there's no field added to page -->
+  <li class="draggable empty"
+      drop-channel="*"
+      drop-validate="fieldDragValidate($channel, $data)"
+      ui-on-Drop="groupFieldOnDrop($channel, $data, pageId, parent, fieldUuid)"
+      ng-if="groupIsEmpty(pageId, parent)">
+    No field.
+  </li>
+
+  <!-- fields in group -->
+  <li class="draggable field"
+      ng-repeat="itemInfo in pageStack[pageId]|orderBy:'weight'"
+      ng-init="itemId = itemInfo.uuid"
+      ng-if="parent == itemInfo.parent">
+
+    <div class="dropzone before"
+         drop-channel="*"
+         ui-on-Drop="groupFieldOnDrop($channel, $data, pageId, parent, fieldUuid, -1)"></div>
+
+    <div class="drag-icon"
+         ng-attr-drag-channel="{{groupItemInfo.isGroup ? 'groupInGroup' : 'fieldInGroup'}}"
+         ui-draggable="true"
+         drag='{ "itemInfo": {{itemInfo}} }'
+         drag='{ "pageId": "{{pageId}}", "groupUuid": "{{parent}}", "itemInfo": {{itemInfo}} }'></div>
+
+    <div ng-if="!itemInfo.isGroup">
+      <div class="field-actions">
+        <ul class="action-links">
+          <li><a href ng-click="fieldConfig(pageId, itemId)">Config</a></li>
+          <li><a href ng-click="fieldRemove(pageId, itemId)">Remove</a></li>
+        </ul>
+      </div>
+      <strong class="field-human-name">{{entity.fields[itemId].humanName}}</strong>
+      <span class="entity-type-name">({{entity.fields[itemId].entityTypeName}})</span>
+    </div>
+
+    <div ng-if="itemInfo.isGroup">
+      <strong class="group-title">{{itemInfo.title}} ({{itemInfo.type}})</strong>
+      <div class="description">{{itemInfo.description}}</div>
+      <div ng-include
+           src="'stack.group.html'"
+           ng-init="parent = itemInfo.uuid">{{parent}}</div>
+    </div>
+
+    <div class="dropzone after"
+         drop-channel="*"
+         ui-on-Drop="groupFieldOnDrop($channel, $data, pageId, parent, fieldUuid, 1)"></div>
+  </li>
+</ul>
