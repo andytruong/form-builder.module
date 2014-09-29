@@ -1,4 +1,8 @@
 <div ng-app="FormBuilderApp">
+  <script type="text/ng-template" id="stack.group.html">
+    <?php include 'form.edit/stack.group.html'; ?>
+  </script>
+
   <div ng-controller="FormBuilderForm">
     <form>
         <?php include 'form.edit/title.tpl.php'; ?>
