@@ -36,11 +36,11 @@
         // ---------------------
         helper.fieldOnDrop = function ($channel, $data, baseFieldUuid, toPageId) {
             var $scope = this;
-            var fieldId = $data.fieldInfo.uuid;
+            var fieldId = $data.itemInfo.uuid;
             var changePage = true;
 
             if ('newField' === $channel)
-                return helper.fieldOnDropAddField($scope, toPageId, baseFieldUuid, $data);
+                return helper.fieldOnDropAddField($scope, toPageId, baseFieldUuid, $data.itemInfo);
 
             // user changes a field to other page
             angular.forEach($scope.pageStack[toPageId], function (pageField) {

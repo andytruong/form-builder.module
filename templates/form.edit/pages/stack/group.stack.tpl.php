@@ -3,8 +3,8 @@
   <li class="draggable empty"
       drop-channel="*"
       drop-validate="fieldDragValidate($channel, $data)"
-      ui-on-Drop="groupFieldOnDrop($channel, $data, pageUuid, groupInfo.uuid, fieldUuid)"
-      ng-if="groupIsEmpty(pageUuid, groupInfo.uuid)">
+      ui-on-Drop="groupFieldOnDrop($channel, $data, pageUuid, itemInfo.uuid, fieldUuid)"
+      ng-if="groupIsEmpty(pageUuid, itemInfo.uuid)">
     No field.
   </li>
 
@@ -12,12 +12,12 @@
   <li class="draggable field"
       ng-repeat="fieldInfo in pageStack[pageUuid]|orderBy:'weight'"
       ng-init="fieldUuid = fieldInfo.uuid"
-      ng-if="(!fieldInfo.isGroup) && (groupInfo.uuid === fieldInfo.parent)"
+      ng-if="(!fieldInfo.isGroup) && (itemInfo.uuid === fieldInfo.parent)"
       ui-draggable="true"
-      drag='{ "pageUuid": "{{pageUuid}}", "groupUuid": "{{groupInfo.uuid}}", "fieldInfo": {{fieldInfo}} }'
+      drag='{ "pageUuid": "{{pageUuid}}", "groupUuid": "{{itemInfo.uuid}}", "itemInfo": {{fieldInfo}} }'
       drag-channel="fieldInGroup"
       drop-channel="*"
-      ui-on-Drop="groupFieldOnDrop($channel, $data, pageUuid, groupInfo.uuid, fieldUuid)">
+      ui-on-Drop="groupFieldOnDrop($channel, $data, pageUuid, itemInfo.uuid, fieldUuid)">
 
     <div class="field-actions">
       <ul class="action-links">

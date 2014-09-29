@@ -29,7 +29,8 @@
             }
         };
 
-        helper.groupNewFieldset = function () {
+        helper.groupDragValidate = function ($channel, $data) {
+            return false;
         };
 
         /**
@@ -44,7 +45,7 @@
             switch ($channel) {
                 case 'fieldInRoot':
                 case 'fieldInGroup':
-                    var fromFieldId = $data.fieldInfo.uuid;
+                    var fromFieldId = $data.itemInfo.uuid;
                     this.groupFieldOnDropField(toPageId, groupId, fromFieldId, toFieldId);
                     break;
                 case 'newField':

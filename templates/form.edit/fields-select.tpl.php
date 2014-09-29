@@ -21,7 +21,7 @@
               ng-if="!isFieldAdded(entityTypeName, fieldName)"
               ui-draggable="true"
               drag-channel="newField"
-              drag="fieldInfo">
+              drag='{ "itemInfo": {{fieldInfo}} }'>
             <strong class="field-human-name">{{fieldInfo.humanName}}</strong>
             <div class="description" ng-if="fieldInfo.description">
               {{fieldInfo.description}}
