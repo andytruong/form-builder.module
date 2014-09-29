@@ -1,4 +1,13 @@
 <div ng-if="itemInfo.editing">
+  <div class="form-item fomr-type-textfield">
+    <input type="text"
+           size="60"
+           maxlength="255"
+           class="form-text required"
+           ng-model="itemInfo.title"
+           ng-model-options="{ updateOn: 'blur' }"/>
+  </div>
+
   <div class="form-item form-type-select">
     <label for="edit-language">Group type</label>
     <select class="form-select" ng-model="itemInfo.type">
