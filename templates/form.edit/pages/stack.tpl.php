@@ -12,7 +12,7 @@
       ng-show="!itemInfo.parent"
       ng-repeat="itemInfo in pageStack[pageUuid]|orderBy:'weight'">
 
-    <div class="dropzone"
+    <div class="dropzone before"
          drop-channel="*"
          drop-validate="fieldDragValidate($channel, $data)"
          ui-on-Drop="fieldOnDrop($channel, $data, itemInfo.uuid, pageUuid)"></div>
@@ -24,7 +24,7 @@
       <div ng-if="!itemInfo.isGroup"><?php include 'stack/field.tpl.php'; ?></div>
     </div>
 
-    <div class="dropzone"
+    <div class="dropzone after"
          drop-channel="*"
          drop-validate="fieldDragValidate($channel, $data)"
          ui-on-Drop="fieldOnDrop($channel, $data, itemInfo.uuid, pageUuid)"></div>
