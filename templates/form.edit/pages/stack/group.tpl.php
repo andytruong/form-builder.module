@@ -4,13 +4,13 @@
            size="60"
            maxlength="255"
            class="form-text required"
-           ng-model="itemInfo.title"
+           ng-model="entity.layoutOptions.pages[pageUuid].groups[itemInfo.uuid].title"
            ng-model-options="{ updateOn: 'blur' }"/>
   </div>
 
   <div class="form-item form-type-select">
     <label for="edit-language">Group type</label>
-    <select class="form-select" ng-model="itemInfo.type">
+    <select class="form-select" ng-model="entity.layoutOptions.pages[pageUuid].groups[itemInfo.uuid].type">
       <option value="fieldset">Fieldset</option>
       <option value="vtabs">Vertical tabs</option>
       <option value="htabs">Horizontal tabs</option>
