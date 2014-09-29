@@ -12,9 +12,8 @@ class FormEntityToArray
 
     public function convertEntityTypes($entityTypes)
     {
-        $convertor = $this;
         $serializer = new Serializer();
-        return array_map(function($EntityType) use ($convertor, $serializer) {
+        return array_map(function($EntityType) use ($serializer) {
             $return = $serializer->toArray($EntityType);
             if (!empty($return['fields'])) {
                 foreach ($return['fields'] as $fieldName => $field) {
