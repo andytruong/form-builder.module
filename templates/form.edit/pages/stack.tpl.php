@@ -9,7 +9,7 @@
   </li>
 
   <li ng-attr-class="{{itemInfo.isGroup ? 'draggable group field' : 'draggable field'}}"
-      ng-show="!item.parent"
+      ng-show="!itemInfo.parent"
       ng-repeat="itemInfo in pageStack[pageUuid]|orderBy:'weight'">
 
     <div class="dropzone"
@@ -17,8 +17,8 @@
          drop-validate="fieldDragValidate($channel, $data)"
          ui-on-Drop="fieldOnDrop($channel, $data, itemInfo.uuid, pageUuid)"></div>
 
-    <div ng-attr-ui-draggable="{{itemInfo.isGroup ? false : true}}"
-         ng-attr-drag-channel="{{itemInfo.isGroup ? '' : 'fieldInRoot'}}"
+    <div ng-attr-drag-channel="{{itemInfo.isGroup ? 'groupInRoot' : 'fieldInRoot'}}"
+         ui-draggable="true"
          drag='{ "itemInfo": {{itemInfo}} }'>
       <div ng-if="itemInfo.isGroup"><?php include 'stack/group.tpl.php'; ?></div>
       <div ng-if="!itemInfo.isGroup"><?php include 'stack/field.tpl.php'; ?></div>
