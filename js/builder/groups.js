@@ -81,7 +81,28 @@
                     this.pageStack[pageId][i].editing = !this.pageStack[pageId][i].editing;
         };
 
+        helper.idGenerator = function () {
+            function s4() {
+                return Math.floor((1 + Math.random()) * 0x10000)
+                        .toString(16)
+                        .substring(1);
+            }
+            return function () {
+                return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+                        s4() + '-' + s4() + s4() + s4();
+            };
+        };
+
+        // ---------------------
+        // Add new group to a page
+        // ---------------------
         helper.groupCreatenew = function (pageId) {
+            var groupId = helper.idGenerator();
+            this.entity.layoutOptions.pages[pageId].groups[groupId] = {
+                "title": "New group",
+                "type": "fieldset",
+                "weight": 1000
+            };
         };
 
         return helper;
