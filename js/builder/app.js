@@ -9,11 +9,7 @@
             newPageAdding: false
         };
 
-        angular.extend(initState.available, {
-            addingEntityTypeNames: {},
-            addingFields: {},
-            addedFields: {}
-        });
+        angular.extend(initState.available, {addingEntityTypeNames: {}, addingFields: {}, addedFields: {}});
 
         if (initState.entity.layoutOptions.pages instanceof Array)
             initState.entity.layoutOptions.pages = {};
