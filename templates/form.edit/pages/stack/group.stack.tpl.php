@@ -10,17 +10,25 @@
 
   <!-- fields in group -->
   <li class="draggable field"
-      ng-repeat="fieldInfo in pageStack[pageId]|orderBy:'weight'"
-      ng-init="fieldUuid = fieldInfo.uuid"
-      ng-if="(!fieldInfo.isGroup) && (itemInfo.uuid === fieldInfo.parent)">
+      ng-repeat="groupItemInfo in pageStack[pageId]|orderBy:'weight'"
+      ng-init="fieldUuid = groupItemInfo.uuid"
+      ng-if="(!groupItemInfo.isGroup) && (itemInfo.uuid === groupItemInfo.parent)">
 
     <div class="dropzone before"
          drop-channel="*"
          ui-on-Drop="groupFieldOnDrop($channel, $data, pageId, itemInfo.uuid, fieldUuid, -1)"></div>
 
-    <div ui-draggable="true"
-         drag-channel="fieldInGroup"
-         drag='{ "pageId": "{{pageId}}", "groupUuid": "{{itemInfo.uuid}}", "itemInfo": {{fieldInfo}} }'>
+    <div class="drag-icon"
+         ng-attr-drag-channel="{{groupItemInfo.isGroup ? 'groupInGroup' : 'fieldInGroup'}}"
+         ui-draggable="true"
+         drag='{ "itemInfo": {{groupItemInfo}} }'
+         drag='{ "pageId": "{{pageId}}", "groupUuid": "{{itemInfo.uuid}}", "itemInfo": {{groupItemInfo}} }'></div>
+
+    <div ng-show="groupItemInfo.isGroup">
+      <pre>{{entity.layoutOptions.pages[pageId].groups[groupItemInfo.uuid]|json}}</pre>
+    </div>
+
+    <div ng-show="!groupItemInfo.isGroup">
       <div class="field-actions">
         <ul class="action-links">
           <li><a href ng-click="fieldConfig(pageId, fieldUuid)">Config</a></li>
@@ -39,7 +47,4 @@
          drop-channel="*"
          ui-on-Drop="groupFieldOnDrop($channel, $data, pageId, itemInfo.uuid, fieldUuid, 1)"></div>
   </li>
-
-  <!-- fields in group -->
-  <!-- Include parent. -->
 </ul>
