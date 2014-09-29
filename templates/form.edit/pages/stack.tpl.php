@@ -14,12 +14,12 @@
 
     <div class="dropzone before"
          drop-channel="*"
-         drop-validate="fieldDragValidate($channel, $data)"
+         drop-validate="stackItemDragValidate($channel, $data, itemInfo.isGroup)"
          ui-on-Drop="fieldOnDrop($channel, $data, itemInfo.uuid, pageId, -1)"></div>
 
     <div>
       <div class="drag-icon"
-           ng-attr-drag-channel="{{itemInfo.isGroup ? 'groupInRoot' : 'fieldInRoot'}}" 
+           ng-attr-drag-channel="{{itemInfo.isGroup ? 'groupInRoot' : 'fieldInRoot'}}"
            ui-draggable="true"
            drag='{ "itemInfo": {{itemInfo}} }'></div>
 
@@ -46,7 +46,7 @@
 
     <div class="dropzone after"
          drop-channel="*"
-         drop-validate="fieldDragValidate($channel, $data)"
+         drop-validate="stackItemDragValidate($channel, $data, itemInfo.isGroup)"
          ui-on-Drop="fieldOnDrop($channel, $data, itemInfo.uuid, pageId, 1)"></div>
   </li>
 

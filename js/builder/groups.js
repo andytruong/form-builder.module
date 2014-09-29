@@ -29,10 +29,6 @@
             }
         };
 
-        helper.groupDragValidate = function ($channel, $data) {
-            return false;
-        };
-
         /**
          * Cases to handle
          * 1. Drag form field to group
@@ -122,6 +118,16 @@
 
             // Remove group from page
             delete(this.entity.layoutOptions.pages[pageId].groups[itemId]);
+        };
+
+        // ---------------------
+        // Validate drop channel for stack item.
+        // ---------------------
+        helper.stackItemDragValidate = function ($channel, $data, isGroup) {
+            if (!isGroup)
+                return this.fieldDragValidate($channel, $data);
+
+            return 'newField' !== $channel;
         };
 
         return helper;
