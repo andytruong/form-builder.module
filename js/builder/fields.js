@@ -27,6 +27,7 @@
 
         helper.fieldDragValidate = function ($channel, $data) {
             return ('newField' === $channel)
+                    || ('groupInRoot' === $channel)
                     || ('fieldInRoot' === $channel)
                     || ('fieldInGroup' === $channel);
         };
