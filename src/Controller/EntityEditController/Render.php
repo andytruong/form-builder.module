@@ -17,7 +17,7 @@ class Render
     /** @var array */
     protected $externalJS = [
         '//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.0/angular.min.js',
-        '//cdn.rawgit.com/ganarajpr/angular-dragdrop/master/draganddrop.js',
+        '//cdn.rawgit.com/ganarajpr/angular-dragdrop/89d4fcaedc5023527aa1e542fd84adc21f30c70b/draganddrop.js',
     ];
 
     public function __construct($ctrl)
