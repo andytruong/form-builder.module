@@ -27,6 +27,7 @@
 
         helper.fieldDragValidate = function ($channel, $data) {
             return ('newField' === $channel)
+                    || ('groupInRoot' === $channel)
                     || ('fieldInRoot' === $channel)
                     || ('fieldInGroup' === $channel);
         };
@@ -34,13 +35,13 @@
         // ---------------------
         // Field: Field dragging
         // ---------------------
-        helper.fieldOnDrop = function ($channel, $data, baseFieldUuid, toPageId) {
+        helper.fieldOnDrop = function ($channel, $data, baseFieldUuid, toPageId, increase) {
             var $scope = this;
-            var fieldId = $data.fieldInfo.uuid;
+            var fieldId = $data.itemInfo.uuid;
             var changePage = true;
 
             if ('newField' === $channel)
-                return helper.fieldOnDropAddField($scope, toPageId, baseFieldUuid, $data);
+                return helper.fieldOnDropAddField($scope, toPageId, baseFieldUuid, $data.itemInfo, increase);
 
             // user changes a field to other page
             angular.forEach($scope.pageStack[toPageId], function (pageField) {
@@ -49,8 +50,8 @@
             });
 
             changePage
-                    ? helper.fieldOnDropChangePage($scope, toPageId, baseFieldUuid, fieldId)
-                    : helper.fieldOnDropChangeWeight($scope, toPageId, baseFieldUuid, fieldId);
+                    ? helper.fieldOnDropChangePage($scope, toPageId, baseFieldUuid, fieldId, increase)
+                    : helper.fieldOnDropChangeWeight($scope, toPageId, baseFieldUuid, fieldId, increase);
 
             // User change field from group to root
             if ('fieldInGroup' === $channel) {
@@ -62,7 +63,7 @@
         // ---------------------
         // Field: Adding new field — user drag from available fields to page
         // ---------------------
-        helper.fieldOnDropAddField = function ($scope, pageUuid, baseFieldUuid, fieldInfo) {
+        helper.fieldOnDropAddField = function ($scope, pageUuid, baseFieldUuid, fieldInfo, increase) {
             var fieldName = fieldInfo.entityTypeName + '.' + fieldInfo.name;
             $scope.available.addingFields[pageUuid] = $scope.available.addingFields[pageUuid] || {};
             $scope.available.addingFields[pageUuid][fieldName] = fieldInfo;
@@ -71,7 +72,7 @@
                     .post(window.location.pathname, {action: 'add-field', fieldName: fieldName, entity: $scope.entity})
                     .success(function (data) {
                         var fieldName = data.field.entityTypeName + '.' + data.field.name;
-                        var weight = baseFieldUuid ? 1 + $scope.entity.layoutOptions.pages[pageUuid].fields[baseFieldUuid].weight : 0;
+                        var weight = baseFieldUuid ? increase + $scope.entity.layoutOptions.pages[pageUuid].fields[baseFieldUuid].weight : 0;
 
                         fieldInfo.uuid = data.fieldUuid;
 
@@ -91,7 +92,7 @@
         // ---------------------
         // Field: Change position of field inside a page.
         // ---------------------
-        helper.fieldOnDropChangeWeight = function ($scope, pageUuid, baseFieldUuid, fieldUuid) {
+        helper.fieldOnDropChangeWeight = function ($scope, pageUuid, baseFieldUuid, fieldUuid, increase) {
             var baseFieldKey, fieldKey;
             for (var key in $scope.pageStack[pageUuid])
                 if (fieldUuid === $scope.pageStack[pageUuid][key].uuid)
@@ -101,7 +102,7 @@
                 if (baseFieldUuid === $scope.pageStack[pageUuid][key].uuid)
                     baseFieldKey = key;
 
-            $scope.pageStack[pageUuid][fieldKey].weight = 1 + $scope.pageStack[pageUuid][baseFieldKey].weight;             // Change field weights for next move
+            $scope.pageStack[pageUuid][fieldKey].weight = increase + $scope.pageStack[pageUuid][baseFieldKey].weight;             // Change field weights for next move
             $scope.pageStack[pageUuid].sort(function (a, b) {
                 return a.weight - b.weight;
             });

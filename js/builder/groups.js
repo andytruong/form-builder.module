@@ -29,7 +29,8 @@
             }
         };
 
-        helper.groupNewFieldset = function () {
+        helper.groupDragValidate = function ($channel, $data) {
+            return false;
         };
 
         /**
@@ -38,21 +39,21 @@
          * 2. Drag new field to group
          * 3. Drag group to group
          */
-        helper.groupFieldOnDrop = function ($channel, $data, toPageId, groupId, toFieldId) {
+        helper.groupFieldOnDrop = function ($channel, $data, toPageId, groupId, toFieldId, increase) {
             this.groupFixFieldWeight(toPageId, groupId);
 
             switch ($channel) {
                 case 'fieldInRoot':
                 case 'fieldInGroup':
-                    var fromFieldId = $data.fieldInfo.uuid;
-                    this.groupFieldOnDropField(toPageId, groupId, fromFieldId, toFieldId);
+                    var fromFieldId = $data.itemInfo.uuid;
+                    this.groupFieldOnDropField(toPageId, groupId, fromFieldId, toFieldId, increase);
                     break;
                 case 'newField':
-                    this.groupFieldOnDropNewField($data, toPageId, groupId, fromFieldId, toFieldId);
+                    this.groupFieldOnDropNewField($data, toPageId, groupId, fromFieldId, toFieldId, increase);
             }
         };
 
-        helper.groupFieldOnDropField = function (toPageId, groupId, fromFieldId, toFieldId) {
+        helper.groupFieldOnDropField = function (toPageId, groupId, fromFieldId, toFieldId, increase) {
             // @todo If user moves field from other page
             //  - add field to new page
             //  - remove field from old page
@@ -64,11 +65,11 @@
             this.entity.layoutOptions.pages[toPageId].fields[fromFieldId].parent = groupId;
             this.entity.layoutOptions.pages[toPageId].fields[fromFieldId].weight = 'undefined' === typeof this.entity.layoutOptions.pages[toPageId].fields[toFieldId]
                     ? 0
-                    : 1 + this.entity.layoutOptions.pages[toPageId].fields[toFieldId].weight;
+                    : increase + this.entity.layoutOptions.pages[toPageId].fields[toFieldId].weight;
         };
 
-        helper.groupFieldOnDropNewField = function (fieldInfo, toPageId, groupId, fromFieldId, toFieldId) {
-            this.fieldOnDropAddField(this, toPageId, toFieldId, fieldInfo);
+        helper.groupFieldOnDropNewField = function (fieldInfo, toPageId, groupId, fromFieldId, toFieldId, increase) {
+            this.fieldOnDropAddField(this, toPageId, toFieldId, fieldInfo, increase);
         };
 
         return helper;
