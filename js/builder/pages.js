@@ -15,7 +15,7 @@
                     })
                     .success(function (data) {
                         $scope.newPageAdding = false;
-                        $scope.entity.layoutOptions.pages[data.pageUuid] = {
+                        $scope.entity.layoutOptions.pages[data.pageId] = {
                             title: $scope.newPageTitle,
                             description: '',
                             weight: 1,
@@ -28,16 +28,16 @@
         // ---------------------
         // Remove page
         // ---------------------
-        helper.pageRemove = function (pageUuid) {
+        helper.pageRemove = function (pageId) {
             if (!confirm("Are you sure to delete page?"))
                 return;
 
             // Remove fields
-            for (var i in this.pageStack[pageUuid])
-                this.fieldRemove(pageUuid, this.pageStack[pageUuid][i].uuid);
+            for (var i in this.pageStack[pageId])
+                this.fieldRemove(pageId, this.pageStack[pageId][i].uuid);
 
             // Remove page
-            delete(this.entity.layoutOptions.pages[pageUuid]);
+            delete(this.entity.layoutOptions.pages[pageId]);
         };
 
         // ---------------------

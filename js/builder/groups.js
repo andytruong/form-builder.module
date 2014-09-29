@@ -81,6 +81,9 @@
                     this.pageStack[pageId][i].editing = !this.pageStack[pageId][i].editing;
         };
 
+        helper.groupCreatenew = function (pageId) {
+        };
+
         return helper;
     });
 

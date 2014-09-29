@@ -3,17 +3,17 @@
     angular.module('FormBuilderFieldHelper', []).factory('$fieldHelper', function ($http) {
         var helper = {};
 
-        helper.fieldRemove = function (pageUuid, fieldUuid) {
+        helper.fieldRemove = function (pageId, fieldUuid) {
             delete(this.entity.fields[fieldUuid]);
-            delete(this.entity.layoutOptions.pages[pageUuid]['fields'][fieldUuid]);
+            delete(this.entity.layoutOptions.pages[pageId]['fields'][fieldUuid]);
 
-            if (typeof this.entity.layoutOptions.pages[pageUuid].groups === 'undefined')
+            if (typeof this.entity.layoutOptions.pages[pageId].groups === 'undefined')
                 return;
 
             // Remove field config in a group
-            for (var groupUuid in this.entity.layoutOptions.pages[pageUuid].groups)
-                if (typeof this.entity.layoutOptions.pages[pageUuid].groups[groupUuid].fields[fieldUuid] !== 'undefined')
-                    delete(this.entity.layoutOptions.pages[pageUuid].groups[groupUuid].fields[fieldUuid]);
+            for (var groupUuid in this.entity.layoutOptions.pages[pageId].groups)
+                if (typeof this.entity.layoutOptions.pages[pageId].groups[groupUuid].fields[fieldUuid] !== 'undefined')
+                    delete(this.entity.layoutOptions.pages[pageId].groups[groupUuid].fields[fieldUuid]);
         };
 
         helper.isAvailableFieldsEmpty = function (entityTypeName) {
@@ -21,8 +21,8 @@
             return angular.equals({}, this.available.entityTypes[entityTypeName].fields);
         };
 
-        helper.isFieldsEmpty = function (pageUuid) {
-            return 0 === this.pageStack[pageUuid].length;
+        helper.isFieldsEmpty = function (pageId) {
+            return 0 === this.pageStack[pageId].length;
         };
 
         helper.fieldDragValidate = function ($channel, $data) {
@@ -63,51 +63,51 @@
         // ---------------------
         // Field: Adding new field — user drag from available fields to page
         // ---------------------
-        helper.fieldOnDropAddField = function ($scope, pageUuid, baseFieldUuid, fieldInfo, increase) {
+        helper.fieldOnDropAddField = function ($scope, pageId, baseFieldUuid, fieldInfo, increase) {
             var fieldName = fieldInfo.entityTypeName + '.' + fieldInfo.name;
-            $scope.available.addingFields[pageUuid] = $scope.available.addingFields[pageUuid] || {};
-            $scope.available.addingFields[pageUuid][fieldName] = fieldInfo;
+            $scope.available.addingFields[pageId] = $scope.available.addingFields[pageId] || {};
+            $scope.available.addingFields[pageId][fieldName] = fieldInfo;
 
             $http
                     .post(window.location.pathname, {action: 'add-field', fieldName: fieldName, entity: $scope.entity})
                     .success(function (data) {
                         var fieldName = data.field.entityTypeName + '.' + data.field.name;
-                        var weight = baseFieldUuid ? increase + $scope.entity.layoutOptions.pages[pageUuid].fields[baseFieldUuid].weight : 0;
+                        var weight = baseFieldUuid ? increase + $scope.entity.layoutOptions.pages[pageId].fields[baseFieldUuid].weight : 0;
 
                         fieldInfo.uuid = data.fieldUuid;
 
                         $scope.entity.fields[data.fieldUuid] = data.field;
                         $scope.available.addedFields[data.fieldUuid] = $scope.available.addingFields[fieldName];
-                        $scope.pageStack[pageUuid].push(fieldInfo);
-                        $scope.entity.layoutOptions.pages[pageUuid].fields[data.fieldUuid] = {
+                        $scope.pageStack[pageId].push(fieldInfo);
+                        $scope.entity.layoutOptions.pages[pageId].fields[data.fieldUuid] = {
                             weight: weight,
                             domTagName: 'div',
                             domClasses: [],
-                            parent: $scope.entity.layoutOptions.pages[pageUuid].fields[baseFieldUuid].parent
+                            parent: $scope.entity.layoutOptions.pages[pageId].fields[baseFieldUuid].parent
                         };
-                        delete($scope.available.addingFields[pageUuid][fieldName]);
+                        delete($scope.available.addingFields[pageId][fieldName]);
                     });
         };
 
         // ---------------------
         // Field: Change position of field inside a page.
         // ---------------------
-        helper.fieldOnDropChangeWeight = function ($scope, pageUuid, baseFieldUuid, fieldUuid, increase) {
+        helper.fieldOnDropChangeWeight = function ($scope, pageId, baseFieldUuid, fieldUuid, increase) {
             var baseFieldKey, fieldKey;
-            for (var key in $scope.pageStack[pageUuid])
-                if (fieldUuid === $scope.pageStack[pageUuid][key].uuid)
+            for (var key in $scope.pageStack[pageId])
+                if (fieldUuid === $scope.pageStack[pageId][key].uuid)
                     fieldKey = key;
 
-            for (var key in $scope.pageStack[pageUuid])
-                if (baseFieldUuid === $scope.pageStack[pageUuid][key].uuid)
+            for (var key in $scope.pageStack[pageId])
+                if (baseFieldUuid === $scope.pageStack[pageId][key].uuid)
                     baseFieldKey = key;
 
-            $scope.pageStack[pageUuid][fieldKey].weight = increase + $scope.pageStack[pageUuid][baseFieldKey].weight;             // Change field weights for next move
-            $scope.pageStack[pageUuid].sort(function (a, b) {
+            $scope.pageStack[pageId][fieldKey].weight = increase + $scope.pageStack[pageId][baseFieldKey].weight;             // Change field weights for next move
+            $scope.pageStack[pageId].sort(function (a, b) {
                 return a.weight - b.weight;
             });
-            for (var i in $scope.pageStack[pageUuid])
-                $scope.pageStack[pageUuid][i].weight = i * 2;
+            for (var i in $scope.pageStack[pageId])
+                $scope.pageStack[pageId][i].weight = i * 2;
         };
 
         // ---------------------

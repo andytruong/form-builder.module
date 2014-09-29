@@ -18,9 +18,9 @@
         if (initState.entity.layoutOptions.pages instanceof Array)
             initState.entity.layoutOptions.pages = {};
 
-        for (var pageUuid in initState.entity.layoutOptions.pages)
-            if (initState.entity.layoutOptions.pages[pageUuid].fields instanceof Array)
-                initState.entity.layoutOptions.pages[pageUuid].fields = {};
+        for (var pageId in initState.entity.layoutOptions.pages)
+            if (initState.entity.layoutOptions.pages[pageId].fields instanceof Array)
+                initState.entity.layoutOptions.pages[pageId].fields = {};
 
         // if empty, $scope.entity.fields is array!
         if (initState.entity.fields instanceof Array)
@@ -59,19 +59,19 @@
             $scope.pages = [];
             $scope.pageStack = {};
 
-            angular.forEach(pages, function (pageInfo, pageUuid) {
+            angular.forEach(pages, function (pageInfo, pageId) {
                 // Add page to render array
-                $scope.pages.push({uuid: pageUuid, weight: parseInt(pageInfo.weight)});
+                $scope.pages.push({uuid: pageId, weight: parseInt(pageInfo.weight)});
 
                 // ---------------------
                 // build field/group render array
                 // ---------------------
-                $scope.pageStack[pageUuid] = [];
+                $scope.pageStack[pageId] = [];
 
                 // add fields to render array
                 angular.forEach(pageInfo.fields, function (fieldInfo, fieldUuid) {
                     fieldInfo.uuid = fieldUuid;
-                    $scope.pageStack[pageUuid].push(fieldInfo);
+                    $scope.pageStack[pageId].push(fieldInfo);
                 });
 
                 // add groups to render array
@@ -79,7 +79,7 @@
                     angular.forEach(pageInfo.groups, function (groupInfo, groupUuid) {
                         groupInfo.uuid = groupUuid;
                         groupInfo.isGroup = true;
-                        $scope.pageStack[pageUuid].push(groupInfo);
+                        $scope.pageStack[pageId].push(groupInfo);
                     });
                 }
             });

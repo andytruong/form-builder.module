@@ -3,25 +3,25 @@
   <li class="draggable empty"
       drop-channel="*"
       drop-validate="fieldDragValidate($channel, $data)"
-      ui-on-Drop="fieldOnDrop($channel, $data, null, pageUuid)"
-      ng-show="isFieldsEmpty(pageUuid)">
+      ui-on-Drop="fieldOnDrop($channel, $data, null, pageId)"
+      ng-show="isFieldsEmpty(pageId)">
     No field.
   </li>
 
   <li ng-attr-class="{{itemInfo.isGroup ? 'draggable group field' : 'draggable field'}}"
       ng-show="!itemInfo.parent"
-      ng-repeat="itemInfo in pageStack[pageUuid]|orderBy:'weight'">
+      ng-repeat="itemInfo in pageStack[pageId]|orderBy:'weight'">
 
     <div class="dropzone before"
          drop-channel="*"
          drop-validate="fieldDragValidate($channel, $data)"
-         ui-on-Drop="fieldOnDrop($channel, $data, itemInfo.uuid, pageUuid, -1)"></div>
+         ui-on-Drop="fieldOnDrop($channel, $data, itemInfo.uuid, pageId, -1)"></div>
 
     <div>
       <div class="field-actions">
         <ul class="action-links">
-          <li><a href ng-click="stackItemConfig(pageUuid, itemInfo.uuid)">Config</a></li>
-          <li><a href ng-click="fieldRemove(pageUuid, itemInfo.uuid)">Remove</a></li>
+          <li><a href ng-click="stackItemConfig(pageId, itemInfo.uuid)">Config</a></li>
+          <li><a href ng-click="fieldRemove(pageId, itemInfo.uuid)">Remove</a></li>
         </ul>
       </div>
 
@@ -43,11 +43,11 @@
     <div class="dropzone after"
          drop-channel="*"
          drop-validate="fieldDragValidate($channel, $data)"
-         ui-on-Drop="fieldOnDrop($channel, $data, itemInfo.uuid, pageUuid, 1)"></div>
+         ui-on-Drop="fieldOnDrop($channel, $data, itemInfo.uuid, pageId, 1)"></div>
   </li>
 
   <!-- User drags new field to page, ask server for things… -->
-  <li class="adding" ng-repeat="field in available.addingFields[pageUuid]">
+  <li class="adding" ng-repeat="field in available.addingFields[pageId]">
     Adding <strong>{{field.humanName}}</strong>…
   </li>
 </ul>

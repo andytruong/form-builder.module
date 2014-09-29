@@ -2,14 +2,14 @@
   <ul>
     <li class="draggable page"
         ng-repeat="page in pages|orderBy:'weight'"
-        ng-init="pageUuid = page.uuid">
+        ng-init="pageId = page.uuid">
 
       <div class="drag-icon"
            ui-draggable="true"
-           drag="pageUuid"
+           drag="pageId"
            ui-draggable="true"
-           ui-on-Drop="pageOnDrop($event, $data, pageUuid)">
-        <span>{{entity.layoutOptions.pages[pageUuid].title}}</span>
+           ui-on-Drop="pageOnDrop($event, $data, pageId)">
+        <span>{{entity.layoutOptions.pages[pageId].title}}</span>
       </div>
 
       <?php include 'pages/info.tpl.php'; ?>
