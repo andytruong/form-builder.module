@@ -20,8 +20,8 @@
     <div>
       <div class="field-actions">
         <ul class="action-links">
-          <li><a href ng-click="stackItemConfig(pageId, itemInfo.uuid)">Config</a></li>
-          <li><a href ng-click="fieldRemove(pageId, itemInfo.uuid)">Remove</a></li>
+          <li><a href ng-click="stackItemConfig(pageId, itemInfo.uuid, itemInfo.isGroup)">Config</a></li>
+          <li><a href ng-click="stackItemRemove(pageId, itemInfo.uuid, itemInfo.isGroup)">Remove</a></li>
         </ul>
       </div>
 

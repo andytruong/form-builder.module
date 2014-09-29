@@ -105,6 +105,27 @@
             };
         };
 
+        // ---------------------
+        // Remove a group from page
+        // ---------------------
+        helper.stackItemRemove = function (pageId, itemId, isGroup) {
+            if (!isGroup)
+                return this.fieldRemove(pageId, itemId);
+
+            var groupWeight = this.entity.layoutOptions.pages[pageId].groups[itemId].weight;
+
+            // change parent for fields
+            for (var fieldId in this.entity.layoutOptions.pages[pageId].fields)
+                if (this.entity.layoutOptions.pages[pageId].fields[fieldId].parent !== 'undefined')
+                    if (this.entity.layoutOptions.pages[pageId].fields[fieldId].parent === itemId) {
+                        delete(this.entity.layoutOptions.pages[pageId].fields[fieldId].parent);
+                        this.entity.layoutOptions.pages[pageId].fields[fieldId].weight = groupWeight;
+                    }
+
+            // Remove group from page
+            delete(this.entity.layoutOptions.pages[pageId].groups[itemId]);
+        };
+
         return helper;
     });
 
