@@ -8,16 +8,16 @@
         drop-validate="fieldDragValidate($channel, $data)"
         ui-on-Drop="fieldOnDrop($channel, $data, fieldInfo.uuid, pageUuid)">
 
-    <div class="field-actions">
-        <ul class="action-links">
-            <li><a href ng-click="fieldConfig(pageUuid, fieldInfo.uuid)">Config</a></li>
-            <li><a href ng-click="fieldRemove(pageUuid, fieldInfo.uuid)">Remove</a></li>
-        </ul>
-    </div>
+  <div class="field-actions">
+    <ul class="action-links">
+      <li><a href ng-click="fieldConfig(pageUuid, fieldInfo.uuid)">Config</a></li>
+      <li><a href ng-click="fieldRemove(pageUuid, fieldInfo.uuid)">Remove</a></li>
+    </ul>
+  </div>
 
-    <strong class="field-human-name">
-        {{entity.fields[fieldInfo.uuid].humanName}}
-    </strong>
+  <strong class="field-human-name">
+    {{entity.fields[fieldInfo.uuid].humanName}}
+  </strong>
 
-    <span class="entity-type-name">({{entity.fields[fieldInfo.uuid].entityTypeName}})</span>
+  <span class="entity-type-name">({{entity.fields[fieldInfo.uuid].entityTypeName}})</span>
 </li>
