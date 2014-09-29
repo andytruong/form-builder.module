@@ -29,6 +29,19 @@
         return initState;
     });
 
+    module.directive('pageStack', function () {
+        var path = Drupal.settings.basePath + Drupal.settings.FormBuilder.modulePath + '/templates/form.edit/stack.html';
+        return {restrict: 'C', templateUrl: path, link: function (scope) {
+                if (typeof scope.parent === 'undefined')
+                    scope.parent = null;
+            }};
+    });
+
+    module.directive('groupConfig', function () {
+        var path = Drupal.settings.basePath + Drupal.settings.FormBuilder.modulePath + '/templates/form.edit/group.config.html';
+        return {restrict: 'C', templateUrl: path};
+    });
+
     module.factory('$helpers', function ($initState, $pageHelper, $fieldHelper, $groupHelper, $entityTypeHelper, $formHelper) {
         var helpers = $initState;
 

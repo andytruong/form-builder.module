@@ -62,8 +62,9 @@ class Render
     private function getRenderInfo()
     {
         return [
-            'available' => $this->getAvailableInfo(),
-            'entity'    => $this->getEntityInfo(),
+            'modulePath' => drupal_get_path('module', 'form_builder'),
+            'available'  => $this->getAvailableInfo(),
+            'entity'     => $this->getEntityInfo(),
         ];
     }
 
