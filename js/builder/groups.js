@@ -72,6 +72,15 @@
             this.fieldOnDropAddField(this, toPageId, toFieldId, fieldInfo, increase);
         };
 
+        // ---------------------
+        // Stack item: config
+        // ---------------------
+        helper.stackItemConfig = function (pageId, itemId, isGroup) {
+            for (var i in this.pageStack[pageId])
+                if (itemId === this.pageStack[pageId][i].uuid)
+                    this.pageStack[pageId][i].editing = !this.pageStack[pageId][i].editing;
+        };
+
         return helper;
     });
 

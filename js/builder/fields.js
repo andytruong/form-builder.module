@@ -131,6 +131,7 @@
 
             return $scope;
         };
+
         return helper;
     });
 
