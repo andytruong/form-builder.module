@@ -83,7 +83,7 @@ class FormEntityFixer
     {
         $fieldGroup = new FieldGroup();
 
-        foreach (['type', 'title', 'description', 'parents', 'options'] as $pty) {
+        foreach (['type', 'title', 'description', 'parent', 'weight', 'options'] as $pty) {
             if (isset($groupInfo[$pty])) {
                 $method = 'set' . at_camelize($pty);
                 $fieldGroup->{$method}($groupInfo[$pty]);
