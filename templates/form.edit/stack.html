@@ -35,7 +35,8 @@
       <strong class="group-title">{{itemInfo.title}} ({{itemInfo.type}})</strong>
       <div class="description">{{itemInfo.description}}</div>
       <div class="group-config"></div>
-      <div ng-include
+      <div class="group-stack"
+           ng-include
            src="'stack.group.html'"
            ng-init="parent = itemInfo.uuid"></div>
     </div>

@@ -38,7 +38,8 @@
     <div ng-if="itemInfo.isGroup">
       <strong class="group-title">{{itemInfo.title}} ({{itemInfo.type}})</strong>
       <div class="description">{{itemInfo.description}}</div>
-      <div ng-include
+      <div class="group-stack"
+           ng-include
            src="'stack.group.html'"
            ng-init="parent = itemInfo.uuid">{{parent}}</div>
     </div>
