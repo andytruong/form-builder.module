@@ -10,10 +10,17 @@
         <span>{{entity.layoutOptions.pages[pageId].title}}</span>
       </div>
 
+      <!-- General page information -->
       <?php include 'pages/info.tpl.php'; ?>
+
+      <!-- Fields & Groups -->
       <div class="page-stack"></div>
+
+      <!-- Extra informations -->
       <?php include 'pages/actions.tpl.php'; ?>
     </li>
+
+    <!-- If there's no page -->
     <li ng-if="!pages.length">No page available</li>
   </ul>
 </div>

@@ -68,6 +68,7 @@
                     .success(function (data) {
                         var fieldName = data.field.entityTypeName + '.' + data.field.name;
                         var weight = baseFieldUuid ? increase + $scope.entity.layoutOptions.pages[pageId].fields[baseFieldUuid].weight : 0;
+                        var parent = null === baseFieldUuid ? null : $scope.entity.layoutOptions.pages[pageId].fields[baseFieldUuid].parent;
 
                         fieldInfo.uuid = data.fieldUuid;
 
@@ -78,7 +79,7 @@
                             weight: weight,
                             domTagName: 'div',
                             domClasses: [],
-                            parent: $scope.entity.layoutOptions.pages[pageId].fields[baseFieldUuid].parent
+                            parent: parent
                         };
                         delete($scope.available.addingFields[pageId][fieldName]);
                     });

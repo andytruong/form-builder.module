@@ -1,7 +1,11 @@
 <ul>
-  <!-- User drags new field to page, ask server for things… -->
-  <li class="adding" ng-repeat="field in available.addingFields[pageId]">
-    Adding <strong>{{field.humanName}}</strong>…
+  <!-- If stack is empty, display empty text… -->
+  <li class="draggable empty"
+      drop-channel="*"
+      drop-validate="stackItemDragValidate($channel, $data, false)"
+      ui-on-Drop="fieldOnDrop($channel, $data, null, pageId, 0)"
+      ng-show="isFieldsEmpty(pageUuid)">
+    No field.
   </li>
 
   <!-- Stack items -->
