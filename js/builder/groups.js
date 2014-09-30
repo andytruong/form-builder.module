@@ -51,7 +51,7 @@
         // ---------------------
         // Drop group to a group
         // ---------------------
-        helper.groupFieldOnDropGroup = function (toPageId, toFieldId, increase, groupInfo, increase) {
+        helper.groupFieldOnDropGroup = function (toPageId, toFieldId, increase, groupInfo, increase) {            
             // find toGroupId
             var toGroupId = this.entity.layoutOptions.pages[toPageId].fields[toFieldId].parent;
             var weight = increase + this.entity.layoutOptions.pages[toPageId].fields[toFieldId].weight;

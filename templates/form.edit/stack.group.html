@@ -3,7 +3,7 @@
   <li class="draggable empty"
       drop-channel="*"
       drop-validate="fieldDragValidate($channel, $data)"
-      ui-on-Drop="groupFieldOnDrop($channel, $data, pageId, parent, fieldUuid)"
+      ui-on-Drop="groupFieldOnDrop($channel, $data, pageId, parent, itemInfo.uuid)"
       ng-if="groupIsEmpty(pageId, parent)">
     No field.
   </li>
@@ -16,7 +16,7 @@
 
     <div class="dropzone before"
          drop-channel="*"
-         ui-on-Drop="groupFieldOnDrop($channel, $data, pageId, parent, fieldUuid, -1)"></div>
+         ui-on-Drop="groupFieldOnDrop($channel, $data, pageId, parent, itemInfo.uuid, -1)"></div>
 
     <div class="drag-icon"
          ng-attr-drag-channel="{{groupItemInfo.isGroup ? 'groupInGroup' : 'fieldInGroup'}}"
@@ -46,6 +46,6 @@
 
     <div class="dropzone after"
          drop-channel="*"
-         ui-on-Drop="groupFieldOnDrop($channel, $data, pageId, parent, fieldUuid, 1)"></div>
+         ui-on-Drop="groupFieldOnDrop($channel, $data, pageId, parent, itemInfo.uuid, 1)"></div>
   </li>
 </ul>
