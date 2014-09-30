@@ -18,10 +18,13 @@
         <ul class="entity-fields">
           <li data-name="{{fieldName}}"
               ng-repeat="(fieldName, fieldInfo) in entityTypeInfo.fields | toArray | filter:search"
-              ng-if="!isFieldAdded(entityTypeName, fieldName)"
-              ui-draggable="true"
-              drag-channel="newField"
-              drag='{ "itemInfo": {{fieldInfo}} }'>
+              ng-if="!isFieldAdded(entityTypeName, fieldName)">
+
+            <div class="drag-icon"
+                 ui-draggable="true"
+                 drag-channel="newField"
+                 drag='{ "itemInfo": {{fieldInfo}} }'></div>
+
             <strong class="field-human-name">{{fieldInfo.humanName}}</strong>
             <div class="description" ng-if="fieldInfo.description">
               {{fieldInfo.description}}

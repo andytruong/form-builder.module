@@ -13,10 +13,10 @@ li.field .dropzone { display: none; position: absolute; left: 0; width: 100%; }
 li.field .dropzone.before { top: 0; }
 li.field .dropzone.after { bottom: 0; }
 .dropzone { height: 20px; cursor: auto; }
-.dropzone.before.on-drag-enter { display: block; border-top: 2px solid #ccc; }
-.dropzone.before.on-drag-hover { border-top: 2px solid #0074BD; }
-.dropzone.after.on-drag-enter { border-bottom: 2px solid #ccc; }
-.dropzone.after.on-drag-hover { border-bottom: 2px solid #0074BD; }
+.dropzone.before.on-drag-enter { display: block; border-top: 1px solid #ccc; }
+.dropzone.before.on-drag-hover { border-top: 1px solid #0074BD; }
+.dropzone.after.on-drag-enter { border-bottom: 1px solid #ccc; }
+.dropzone.after.on-drag-hover { border-bottom: 1px solid #0074BD; }
 
 /* Only display after dropzone on last element of list. */
 .page-stack > ul > li.field > .dropzone.after.on-drag-enter { display: none; }
@@ -44,23 +44,25 @@ li.field .dropzone.after { bottom: 0; }
 .page .page-actions a i.icon.remove { background-position-x: -11px; }
 
 /* --------------------- */
+/* Available fields      */
+/* --------------------- */
+#availableFields .item-list ul li { list-style-type: none; }
+#availableFields .item-list li ul li { padding: 5px 12px 5px 35px; margin: 2px 0; }
+#availableFields ul.entity-fields li { padding: 11px; border: 1px #aaa dashed; }
+#availableFields .drag-icon { float: left; margin-left: -30px; padding-left: 0; }
+
+/* --------------------- */
 /* Fields                */
 /* --------------------- */
 #availableFields ul,
 #formFields .item-list ul { margin: 0; padding: 0; }
-
-#availableFields .item-list ul li { list-style-type: none; }
-#availableFields .item-list li ul li { padding: 5px 12px; margin: 2px 0; }
-
 #formFields li { list-style-type: none; padding: 5px 0; margin: 2px 0; }
-
-#availableFields ul.entity-fields li { padding: 11px; border: 1px #aaa dashed; }
 
 #availableFields ul.entity-fields li.on-drag-enter,
 #formFields li.field.on-drag-enter { padding: 11px; border: 1px green dashed; }
 
 #formFields ul li.empty.on-drag-hover,
-#formFields ul li.field.on-drag-hover { padding-bottom: 9px; border-bottom: 3px #0074BD solid; }
+#formFields ul li.field.on-drag-hover { padding-bottom: 9px; border-bottom: 1px #0074BD solid; }
 
 #formFields li div.field-actions { float: right; }
 #formFields li div.field-actions ul.action-links li { padding: 0 15px 0 0; }
