@@ -12,15 +12,17 @@ li.field { position: relative; }
 li.field .dropzone { display: none; position: absolute; left: 0; width: 100%; }
 li.field .dropzone.before { top: 0; }
 li.field .dropzone.after { bottom: 0; }
-.dropzone { height: 20px; cursor: auto; }
+.dropzone { height: 25px; cursor: auto; }
 .dropzone.before.on-drag-enter { display: block; border-top: 1px solid #ccc; }
 .dropzone.before.on-drag-hover { border-top: 1px solid #0074BD; }
 .dropzone.after.on-drag-enter { border-bottom: 1px solid #ccc; }
 .dropzone.after.on-drag-hover { border-bottom: 1px solid #0074BD; }
 
 /* Only display after dropzone on last element of list. */
-.page-stack > ul > li.field > .dropzone.after.on-drag-enter { display: none; }
-.page-stack > ul > li.field:last-child > .dropzone.after.on-drag-enter { display: block; }
+.page-stack > ul > li.field > .dropzone.after.on-drag-enter,
+.group-stack > ul > li.field > .dropzone.after.on-drag-enter { display: none; }
+.page-stack > ul > li.field:last-child > .dropzone.after.on-drag-enter,
+.group-stack > ul > li.field:last-child > .dropzone.after.on-drag-enter { display: block; height: 15px; }
 
 /* --------------------- */
 /* Pages                 */
