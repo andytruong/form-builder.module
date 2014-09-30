@@ -23,13 +23,14 @@
          ui-draggable="true"
          drag='{ "pageId": "{{pageId}}", "groupUuid": "{{parent}}", "itemInfo": {{itemInfo}} }'></div>
 
+    <div class="field-actions">
+      <ul class="action-links">
+        <li><a href ng-click="stackItemConfig(pageId, itemId, itemInfo.isGroup)">Config</a></li>
+        <li><a href ng-click="stackItemRemove(pageId, itemId, itemInfo.isGroup)">Remove</a></li>
+      </ul>
+    </div>
+
     <div ng-if="!itemInfo.isGroup">
-      <div class="field-actions">
-        <ul class="action-links">
-          <li><a href ng-click="fieldConfig(pageId, itemId)">Config</a></li>
-          <li><a href ng-click="fieldRemove(pageId, itemId)">Remove</a></li>
-        </ul>
-      </div>
       <strong class="field-human-name">{{entity.fields[itemId].humanName}}</strong>
       <span class="entity-type-name">({{entity.fields[itemId].entityTypeName}})</span>
     </div>

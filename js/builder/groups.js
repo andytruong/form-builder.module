@@ -127,7 +127,12 @@
             for (var fieldId in this.entity.layoutOptions.pages[pageId].fields)
                 if (this.entity.layoutOptions.pages[pageId].fields[fieldId].parent !== 'undefined')
                     if (this.entity.layoutOptions.pages[pageId].fields[fieldId].parent === itemId) {
-                        delete(this.entity.layoutOptions.pages[pageId].fields[fieldId].parent);
+                        // update group's children parent
+                        if ('undefined' === typeof this.entity.layoutOptions.pages[pageId].groups[itemId].parent)
+                            delete(this.entity.layoutOptions.pages[pageId].fields[fieldId].parent);
+                        else
+                            this.entity.layoutOptions.pages[pageId].fields[fieldId].parent = this.entity.layoutOptions.pages[pageId].groups[itemId].parent;
+                        // update group's children's weight
                         this.entity.layoutOptions.pages[pageId].fields[fieldId].weight = groupWeight;
                     }
 
