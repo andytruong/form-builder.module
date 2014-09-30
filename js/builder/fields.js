@@ -47,10 +47,12 @@
                     ? helper.fieldOnDropChangePage($scope, toPageId, baseFieldUuid, fieldId, increase)
                     : helper.fieldOnDropChangeWeight($scope, toPageId, baseFieldUuid, fieldId, increase);
 
-            // User change field from group to root
+            // User change field from group to root, change field parent
             if ('fieldInGroup' === $channel) {
-                // change field parent
-                $scope.entity.layoutOptions.pages[toPageId].fields[fieldId].parent = null;
+                if (typeof $scope.entity.layoutOptions.pages[toPageId].fields[fieldId] !== 'undefined')
+                    $scope.entity.layoutOptions.pages[toPageId].fields[fieldId].parent = null;
+                else if (typeof $scope.entity.layoutOptions.pages[toPageId].groups[fieldId] !== 'undefined')
+                    $scope.entity.layoutOptions.pages[toPageId].groups[fieldId].parent = null;
             }
         };
 
