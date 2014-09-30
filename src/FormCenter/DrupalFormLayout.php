@@ -86,15 +86,66 @@ class DrupalFormLayout extends FormLayoutHTML
 
     protected function doRender($params)
     {
-        // Move fields to group
-        foreach ($params['groups'] as $groupId => $groupInfo) {
-            $this->doRenderFieldset($params, $groupId, $groupInfo);
-        }
-
+        $params['fields'] = $this->doRenderRecursive($params);
         return parent::doRender($params);
     }
 
-    private function doRenderFieldset(&$params, $groupId, $groupInfo)
+    private function doRenderRecursive($params, $parent = null)
+    {
+        $fields = [];
+
+        // sort elements
+        usort($params['positions'][$parent], function($a, $b) {
+            return $a['weight'] < $b['weight'] ? -1 : 1;
+        });
+
+        // Loop through elements
+        foreach ($params['positions'][$parent] as $item) {
+            $itemId = $item['id'];
+            if (!$isGroup = isset($params['groups'][$itemId])) {
+                $fields[$itemId] = $params['fields'][$itemId];
+            }
+            else {
+                $fields[$itemId] = $this->doRenderGroup($params, $itemId, $params['groups'][$itemId]);
+            }
+        }
+
+        return $fields;
+    }
+
+    private function doRenderGroup($params, $groupId, $groupInfo)
+    {
+        switch ($groupInfo['type']) {
+            case 'vtabs':
+                return $this->doRenderVerticalTabs($params, $groupId, $groupInfo);
+
+            case 'fieldset':
+            default:
+                return $this->doRenderFieldset($params, $groupId, $groupInfo);
+        }
+    }
+
+    private function doRenderVerticalTabs($params, $groupId, $groupInfo)
+    {
+        $element[$groupId] = [
+            '#type'        => 'vertical_tabs',
+            '#title'       => $groupInfo['title'],
+            '#description' => $groupInfo['description'],
+        ];
+
+        foreach ($params['positions'][$groupId] as $item) {
+            $itemId = $item['id'];
+            if (isset($params['groups'][$itemId])) {
+                $params['groups'][$itemId]['options']['collapsible'] = true;
+                $params['groups'][$itemId]['options']['collapsed'] = true;
+                $element[$groupId][$itemId] = $this->doRenderFieldset($params, $itemId, $params['groups'][$itemId], $groupId);
+            }
+        }
+
+        return drupal_render($element);
+    }
+
+    private function doRenderFieldset($params, $groupId, $groupInfo, $parentGroupId = null)
     {
         $element = [
             '#title'       => $groupInfo['title'],
@@ -104,18 +155,14 @@ class DrupalFormLayout extends FormLayoutHTML
         ];
 
         if (!empty($params['positions'][$groupId])) {
-            foreach ($params['positions'][$groupId] as $child) {
-                $id = $child['id'];
-                $element['#value'][$id] = [
-                    '#markup' => $params['fields'][$id],
-                    '#weight' => $child['weight'],
-                ];
-                unset($params['fields'][$id]);
-            }
-            $element['#value'] = drupal_render($element['#value']);
+            $element['#value'] = implode('', $this->doRenderRecursive($params, $groupId));
         }
 
-        $params['fields'][$groupId] = theme('fieldset', ['element' => $element]);
+        if (null !== $parentGroupId) {
+            return $element + ['#type' => 'fieldset', '#group' => $parentGroupId];
+        }
+
+        return theme('fieldset', ['element' => $element]);
     }
 
 }
