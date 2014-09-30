@@ -33,7 +33,6 @@
             var changePage = true;
 
             if ('newField' === $channel) {
-                console.log($data);
                 return helper.fieldOnDropAddField($scope, toPageId, baseFieldUuid, $data.itemInfo, increase);
             }
 

@@ -21,7 +21,6 @@
     <div class="drag-icon"
          ng-attr-drag-channel="{{groupItemInfo.isGroup ? 'groupInGroup' : 'fieldInGroup'}}"
          ui-draggable="true"
-         drag='{ "itemInfo": {{itemInfo}} }'
          drag='{ "pageId": "{{pageId}}", "groupUuid": "{{parent}}", "itemInfo": {{itemInfo}} }'></div>
 
     <div ng-if="!itemInfo.isGroup">

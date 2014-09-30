@@ -40,7 +40,7 @@
                 case 'fieldInRoot':
                 case 'fieldInGroup':
                     var fromFieldId = $data.itemInfo.uuid;
-                    this.groupFieldOnDropField(toPageId, groupId, fromFieldId, toFieldId, increase);
+                    this.groupFieldOnDropField(toPageId, groupId, fromFieldId, toFieldId, $data.itemInfo.isGroup, increase);
                     break;
 
                 case 'newField':
@@ -51,7 +51,7 @@
         // ---------------------
         // Drop group to a group
         // ---------------------
-        helper.groupFieldOnDropGroup = function (toPageId, toFieldId, increase, groupInfo, increase) {            
+        helper.groupFieldOnDropGroup = function (toPageId, toFieldId, increase, groupInfo, increase) {
             // find toGroupId
             var toGroupId = this.entity.layoutOptions.pages[toPageId].fields[toFieldId].parent;
             var weight = increase + this.entity.layoutOptions.pages[toPageId].fields[toFieldId].weight;
@@ -61,19 +61,22 @@
             this.entity.layoutOptions.pages[toPageId].groups[groupInfo.uuid].weight = weight;
         };
 
-        helper.groupFieldOnDropField = function (toPageId, groupId, fromFieldId, toFieldId, increase) {
+        helper.groupFieldOnDropField = function (toPageId, groupId, fromItemId, toItemId, fromIsGroup, increase) {
             // @todo If user moves field from other page
             //  - add field to new page
             //  - remove field from old page
-            if (typeof this.entity.layoutOptions.pages[toPageId].fields[fromFieldId] === 'undefined') {
-                this.entity.layoutOptions.pages[toPageId].fields[fromFieldId] = {weight: 0, domTagName: 'div', domClasses: [], parent: null};
-            }
+            if (!fromIsGroup) {
+                if (typeof this.entity.layoutOptions.pages[toPageId].fields[fromItemId] === 'undefined')
+                    this.entity.layoutOptions.pages[toPageId].fields[fromItemId] = {weight: 0, domTagName: 'div', domClasses: [], parent: null};
 
-            // Update field parent & weight
-            this.entity.layoutOptions.pages[toPageId].fields[fromFieldId].parent = groupId;
-            this.entity.layoutOptions.pages[toPageId].fields[fromFieldId].weight = 'undefined' === typeof this.entity.layoutOptions.pages[toPageId].fields[toFieldId]
-                    ? 0
-                    : increase + this.entity.layoutOptions.pages[toPageId].fields[toFieldId].weight;
+                // Update field parent & weight
+                this.entity.layoutOptions.pages[toPageId].fields[fromItemId].parent = groupId;
+                this.entity.layoutOptions.pages[toPageId].fields[fromItemId].weight = 'undefined' === typeof this.entity.layoutOptions.pages[toPageId].fields[toItemId] ? 0 : increase + this.entity.layoutOptions.pages[toPageId].fields[toItemId].weight;
+            }
+            else {
+                this.entity.layoutOptions.pages[toPageId].groups[fromItemId].parent = groupId;
+                this.entity.layoutOptions.pages[toPageId].groups[fromItemId].weight = 'undefined' === typeof this.entity.layoutOptions.pages[toPageId].groups[fromItemId] ? 0 : increase + this.entity.layoutOptions.pages[toPageId].groups[fromItemId].weight;
+            }
         };
 
         helper.groupFieldOnDropNewField = function (fieldInfo, toPageId, groupId, fromFieldId, toFieldId, increase) {
