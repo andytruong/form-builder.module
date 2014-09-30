@@ -2,11 +2,9 @@
 
 namespace Drupal\form_builder\FormCenter;
 
-use AndyTruong\Serializer\Serializer;
 use Drupal\form_builder\FormEntity;
 use Drupal\form_builder\Helper\FormTokenHelper;
 use GO1\FormCenter\Form\FormInterface;
-use GO1\FormCenter\Form\Layout\FieldGroup;
 use GO1\FormCenter\Form\Layout\FormLayoutHTML;
 
 class DrupalFormLayout extends FormLayoutHTML
@@ -88,30 +86,36 @@ class DrupalFormLayout extends FormLayoutHTML
 
     protected function doRender($params)
     {
+        // Move fields to group
         foreach ($params['groups'] as $groupId => $groupInfo) {
-            $element = [
-                '#title'       => $groupInfo['title'],
-                '#description' => $groupInfo['description'],
-                '#collapsible' => isset($groupInfo['options']['collapsible']) ? $groupInfo['options']['collapsible'] : true,
-                '#collapsed'   => isset($groupInfo['options']['collapsed']) ? $groupInfo['options']['collapsed'] : false,
-            ];
-
-            if (!empty($params['positions'][$groupId])) {
-                foreach ($params['positions'][$groupId] as $child) {
-                    $id = $child['id'];
-                    $element['#value'][$id] = [
-                        '#markup' => $params['fields'][$id],
-                        '#weight' => $child['weight'],
-                    ];
-                    unset($params['fields'][$id]);
-                }
-                $element['#value'] = drupal_render($element['#value']);
-            }
-
-            $params['fields'][$groupId] = theme('fieldset', ['element' => $element]);
+            $this->doRenderFieldset($params, $groupId, $groupInfo);
         }
 
         return parent::doRender($params);
+    }
+
+    private function doRenderFieldset(&$params, $groupId, $groupInfo)
+    {
+        $element = [
+            '#title'       => $groupInfo['title'],
+            '#description' => $groupInfo['description'],
+            '#collapsible' => isset($groupInfo['options']['collapsible']) ? $groupInfo['options']['collapsible'] : true,
+            '#collapsed'   => isset($groupInfo['options']['collapsed']) ? $groupInfo['options']['collapsed'] : false,
+        ];
+
+        if (!empty($params['positions'][$groupId])) {
+            foreach ($params['positions'][$groupId] as $child) {
+                $id = $child['id'];
+                $element['#value'][$id] = [
+                    '#markup' => $params['fields'][$id],
+                    '#weight' => $child['weight'],
+                ];
+                unset($params['fields'][$id]);
+            }
+            $element['#value'] = drupal_render($element['#value']);
+        }
+
+        $params['fields'][$groupId] = theme('fieldset', ['element' => $element]);
     }
 
 }
