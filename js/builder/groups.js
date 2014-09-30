@@ -8,6 +8,12 @@
                 if (typeof this.entity.layoutOptions.pages[pageId].fields[fieldId].parent !== 'undefined')
                     if (groupId === this.entity.layoutOptions.pages[pageId].fields[fieldId].parent)
                         return false;
+
+            for (var groupKey in this.entity.layoutOptions.pages[pageId].groups)
+                if (typeof this.entity.layoutOptions.pages[pageId].groups[groupKey].parent !== 'undefined')
+                    if (groupId === this.entity.layoutOptions.pages[pageId].groups[groupKey].parent)
+                        return false;
+
             return true;
         };
 
