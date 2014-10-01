@@ -4,9 +4,10 @@
         var helper = {};
 
         helper.isFieldAdded = function (entityTypeName, fieldName) {
-            for (var fieldUuid in this.entity.fields)
-                if (fieldName === this.entity.fields[fieldUuid].name && entityTypeName === this.entity.fields[fieldUuid].entityTypeName)
-                    return true;
+            for (var fieldKey in this.entity.fields)
+                if (fieldName === this.entity.fields[fieldKey].name)
+                    if (entityTypeName === this.entity.fields[fieldKey].entityTypeName)
+                        return true;
             return false;
         };
 
