@@ -19,7 +19,9 @@ class FormUIController extends EntityDefaultUIController
         }
 
         // we use angularjs to build editing form for form-entity.
-        $items['admin/structure/fob-form/manage/%entity_object']['page callback'] = 'Drupal\form_builder\Controller\EntityEditController::pageCallback';
+        $items['admin/structure/fob-form/manage/%entity_object']['page callback']
+            = $items['admin/structure/fob-form/add']['page callback']
+            = 'Drupal\form_builder\Controller\EntityEditController::pageCallback';
 
         return $items;
     }

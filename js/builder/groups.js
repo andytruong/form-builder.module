@@ -113,6 +113,10 @@
         // ---------------------
         helper.groupCreatenew = function (pageId) {
             var groupId = helper.idGenerator();
+
+            if ('undefined' === typeof this.entity.layoutOptions.pages[pageId].groups)
+                this.entity.layoutOptions.pages[pageId].groups = {};
+
             this.entity.layoutOptions.pages[pageId].groups[groupId] = {
                 "title": "New group",
                 "type": "fieldset",

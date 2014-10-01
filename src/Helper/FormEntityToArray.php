@@ -54,7 +54,7 @@ class FormEntityToArray
         $array['status'] = (bool) $array['status'];
 
         // AngularJS friendly
-        $array['entityTypes'] = array_keys($array['entityTypes']);
+        $array['entityTypes'] = !empty($array['entityTypes']) ? array_keys($array['entityTypes']) : [];
         foreach ($array['entityTypes'] as $i => $name) {
             unset($array['entityTypes'][$i]);
             $array['entityTypes'][$name] = true;

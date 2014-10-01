@@ -3,6 +3,8 @@
 namespace Drupal\form_builder\FormCenter;
 
 use AndyTruong\Uuid\Uuid;
+use Drupal\form_builder\FormEntity;
+use GO1\FormCenter\Form\Layout\FormLayoutOptions;
 use GO1\FormCenter\Manager\Manager as ManagerBase;
 
 class Manager extends ManagerBase
@@ -91,6 +93,19 @@ class Manager extends ManagerBase
         $hook = "{$module}_field_schema";
         module_load_install($module);
         return $hook($field = ['type' => $fieldTypeName]);
+    }
+
+    public function createForm()
+    {
+        $form = new FormEntity();
+        $form->setLayout(new DrupalFormLayout());
+
+        // Add default page
+        $layoutOptions = new FormLayoutOptions();
+        $layoutOptions->addPage('master', 'Master');
+        $form->setLayoutOptions($layoutOptions);
+
+        return $form;
     }
 
 }

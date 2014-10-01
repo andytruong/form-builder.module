@@ -22,8 +22,11 @@ class EntityEditController
     /** @var FormEntity */
     public $entity;
 
-    public function __construct(FormEntity $entity)
+    public function __construct(FormEntity $entity = null)
     {
+        if (null === $entity) {
+            $entity = form_builder_manager()->createForm();
+        }
         $this->entity = $entity;
     }
 
@@ -37,7 +40,12 @@ class EntityEditController
         return new SubmitHandler($this);
     }
 
-    public static function pageCallback($entityType, $entity)
+    /**
+     * @param string $entityType
+     * @param FormEntity $entity
+     * @return type
+     */
+    public static function pageCallback($entityType, $entity = null)
     {
         $me = new self($entity);
 
