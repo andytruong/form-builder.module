@@ -1,5 +1,7 @@
 (function (angular) {
     angular.module('FormBuilderFormHelper', []).factory('$formHelper', function ($http) {
+        var helper = {};
+
         // ---------------------
         // Add slug helper
         // ---------------------

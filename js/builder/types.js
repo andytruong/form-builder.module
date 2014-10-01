@@ -1,7 +1,7 @@
 (function (angular) {
 
     angular.module('FormBuilderEntityTypeHelper', []).factory('$entityTypeHelper', function ($http) {
-        helper = {};
+        var helper = {};
 
         helper.isFieldAdded = function (entityTypeName, fieldName) {
             for (var fieldUuid in this.entity.fields)
