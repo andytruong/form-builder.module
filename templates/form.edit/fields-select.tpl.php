@@ -18,7 +18,7 @@
         <ul class="entity-fields">
           <li data-name="{{fieldName}}"
               ng-repeat="(fieldName, fieldInfo) in entityTypeInfo.fields | toArray | filter:search"
-              ng-if="!isFieldAdded(entityTypeName, fieldName)">
+              ng-if="!isFieldAdded(entityTypeName, fieldInfo.name)">
 
             <div class="drag-icon"
                  ui-draggable="true"
