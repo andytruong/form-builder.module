@@ -140,6 +140,16 @@ class DrupalFieldWidget extends FieldWidgetBase
                     $e['#type'] = 'textfield';
                     break;
                 case 'date':
+                    if ('date' === $this->drupalFieldInfo['type']) {
+                        if (isset($fieldValueItems[0]['value'])) {
+                            list($year, $month, $day) = explode('-', date('Y-m-d', $fieldValueItems[0]['value']));
+                            $fieldValueItems[0]['year'] = $year;
+                            $fieldValueItems[0]['month'] = $month;
+                            $fieldValueItems[0]['day'] = (int) $day;
+                            unset($fieldValueItems[0]['value']);
+                            $e['#default_value'] = $fieldValueItems[0]->toArray();
+                        }
+                    }
                     $e['#type'] = $this->drupalFieldInfo['type'];
                     break;
                 default:
