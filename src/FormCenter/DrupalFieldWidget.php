@@ -38,9 +38,9 @@ class DrupalFieldWidget extends FieldWidgetBase
      * @param FieldInterface $field
      * @param FieldOptions $fieldOptions
      * @param FieldValueItemInterface[] $fieldValueItems
-     * @return type
+     * @return string
      */
-    protected function renderDrupalField(FieldInterface $field, FieldOptions $fieldOptions, array $fieldValueItems = [])
+    public function renderDrupalField(FieldInterface $field, FieldOptions $fieldOptions, array $fieldValueItems = [], $returnArray = false)
     {
         $eTName = $field->getEntityType()->getName();
         $dETName = $field->getEntityType()->getDrupalEntityTypeName();
@@ -71,13 +71,17 @@ class DrupalFieldWidget extends FieldWidgetBase
         ];
 
         $e = &$form[$dFName][$dLang];
+        if ($dField['cardinality'] == -1) {
+            $dFormState['field']['#parents'][$dFName]['und']['#fields'][$dFName]['und'] = ['items_count' => 2];
+        }
         $e = field_multiple_value_form($dField, $dFieldInstance, $dLang, $dItems, $dForm, $dFormState);
 
         $form['#parents'] = [];
         $form_state = ['values' => [], 'complete form' => $form];
 
         if (!empty($e['add_more']['#ajax'])) {
-            $e['add_more']['#ajax']['path'] = 'form/' . arg(1) . '/more/' . $eTName . '/' . $field->getName();
+            unset($e['add_more']['#ajax'], $e['add_more']['#submit']);
+            $e['add_more']['#attributes']['class'][] = 'fob-field-more';
         }
 
         form_builder('form_builder_element', $form, $form_state);
@@ -102,6 +106,10 @@ class DrupalFieldWidget extends FieldWidgetBase
                     $e[$i][$ii]['#name'] = $name;
                 }
             }
+        }
+
+        if ($returnArray) {
+            return $form;
         }
 
         return drupal_render($form);
