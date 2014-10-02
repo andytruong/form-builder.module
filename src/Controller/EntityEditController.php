@@ -6,16 +6,6 @@ use Drupal\form_builder\Controller\EntityEditController\Render;
 use Drupal\form_builder\Controller\EntityEditController\SubmitHandler;
 use Drupal\form_builder\FormEntity;
 
-/**
- * TODO:
- *
- * 1. User add/remove entity type => update fields.
- * 2. Available fields list
- * 3. Added fields list
- * 4. …
- * n. Submit handler
- *
- */
 class EntityEditController
 {
 
