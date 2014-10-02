@@ -18,6 +18,10 @@ class EntityViewController
             if ($slug !== $form->getSlug()) {
                 drupal_goto($form->getPath($pageNumber));
             }
+
+            // include client script
+            drupal_add_js(drupal_get_path('module', 'form_builder') . '/js/render.js');
+
             return $form->render($pageNumber, self::createFormSubmissionFromCache($form, $pageNumber));
         }
 
