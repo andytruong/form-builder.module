@@ -72,7 +72,8 @@ class DrupalFieldWidget extends FieldWidgetBase
 
         $e = &$form[$dFName][$dLang];
         if ($dField['cardinality'] == -1) {
-            $dFormState['field']['#parents'][$dFName]['und']['#fields'][$dFName]['und'] = ['items_count' => 2];
+            $items_count = max([2, count($fieldValueItems) + 1]);
+            $dFormState['field']['#parents'][$dFName]['und']['#fields'][$dFName]['und']['items_count'] = $items_count;
         }
         $e = field_multiple_value_form($dField, $dFieldInstance, $dLang, $dItems, $dForm, $dFormState);
 
