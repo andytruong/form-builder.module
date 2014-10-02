@@ -26,6 +26,11 @@ function form_builder_menu()
         'page arguments'   => [1],
     ];
 
+    $items['form/%form_builder/more/%/%'] = [
+        'page callback'  => 'Drupal\\form_builder\\Controller\\FormAjaxMoreController::pageCallback',
+        'page arguments' => [1, 3, 4],
+        ] + $items['form/%form_builder'];
+
     $items['form/%/%/autocomplete'] = [
         'title'            => 'Entity type',
         'access arguments' => ['access content'],
