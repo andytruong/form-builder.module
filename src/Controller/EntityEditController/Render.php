@@ -14,12 +14,6 @@ class Render
     /** @var string */
     public $template;
 
-    /** @var array */
-    protected $externalJS = [
-        '//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.4/angular.min.js',
-        '//cdn.rawgit.com/ganarajpr/angular-dragdrop/89d4fcaedc5023527aa1e542fd84adc21f30c70b/draganddrop.js',
-    ];
-
     public function __construct($ctrl)
     {
         $this->ctrl = $ctrl;
@@ -40,21 +34,10 @@ class Render
                 'data' => $jsSettings['data']['FormBuilder']
             ]),
             '#attached' => [
-                'css' => [
-                    drupal_get_path('module', 'form_builder') . '/css/entity.editing.css'
-                ],
-                'js'  => array_merge(
-                    array_map(function($path) {
-                        return ['type' => 'external', 'data' => $path];
-                    }, $this->externalJS), [
-                    $jsSettings,
-                    drupal_get_path('module', 'form_builder') . '/js/builder/pages.js',
-                    drupal_get_path('module', 'form_builder') . '/js/builder/groups.js',
-                    drupal_get_path('module', 'form_builder') . '/js/builder/fields.js',
-                    drupal_get_path('module', 'form_builder') . '/js/builder/types.js',
-                    drupal_get_path('module', 'form_builder') . '/js/builder/form.js',
-                    drupal_get_path('module', 'form_builder') . '/js/builder/app.js'
-                ])
+                'library' => [['form_builder', 'form_builder.application']],
+                'js'      => [
+                    $jsSettings
+                ]
             ]
         ];
     }

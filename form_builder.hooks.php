@@ -13,6 +13,41 @@ function form_builder_permission()
 }
 
 /**
+ * Implements hook_library()
+ */
+function form_builder_library()
+{
+    $libraries['form_builder.application'] = [
+        'title'        => 'Form Builder',
+        'version'      => '7.x-1.x-dev',
+        'dependencies' => [
+            ['angularjs', 'angularjs']
+        ],
+        'css'          => [
+            drupal_get_path('module', 'form_builder') . '/css/entity.editing.css' => [],
+        ],
+        'js'           => [
+            'drag-drop'                                                         => [
+                'type' => 'external',
+                'data' => '//cdn.rawgit.com/ganarajpr/angular-dragdrop/89d4fcaedc5023527aa1e542fd84adc21f30c70b/draganddrop.js'
+            ],
+            drupal_get_path('module', 'form_builder') . '/js/builder/pages.js'  => [],
+            drupal_get_path('module', 'form_builder') . '/js/builder/groups.js' => [],
+            drupal_get_path('module', 'form_builder') . '/js/builder/fields.js' => [],
+            drupal_get_path('module', 'form_builder') . '/js/builder/types.js'  => [],
+            drupal_get_path('module', 'form_builder') . '/js/builder/form.js'   => [],
+            drupal_get_path('module', 'form_builder') . '/js/builder/app.js'    => [],
+        ],
+    ];
+
+
+    #kpr($libraries['form_builder.application']);
+    #exit;
+
+    return $libraries;
+}
+
+/**
  * Implements hook_menu()
  */
 function form_builder_menu()
