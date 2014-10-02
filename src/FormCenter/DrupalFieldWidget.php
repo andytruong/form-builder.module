@@ -40,7 +40,7 @@ class DrupalFieldWidget extends FieldWidgetBase
      * @param FieldValueItemInterface[] $fieldValueItems
      * @return string
      */
-    public function renderDrupalField(FieldInterface $field, FieldOptions $fieldOptions, array $fieldValueItems = [], $returnArray = false)
+    public function renderDrupalField(FieldInterface $field, FieldOptions $fieldOptions, array $fieldValueItems = [])
     {
         $eTName = $field->getEntityType()->getName();
         $dETName = $field->getEntityType()->getDrupalEntityTypeName();
@@ -106,10 +106,6 @@ class DrupalFieldWidget extends FieldWidgetBase
                     $e[$i][$ii]['#name'] = $name;
                 }
             }
-        }
-
-        if ($returnArray) {
-            return $form;
         }
 
         return drupal_render($form);
