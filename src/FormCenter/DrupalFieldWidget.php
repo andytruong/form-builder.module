@@ -75,6 +75,11 @@ class DrupalFieldWidget extends FieldWidgetBase
 
         $form['#parents'] = [];
         $form_state = ['values' => [], 'complete form' => $form];
+
+        if (!empty($e['add_more']['#ajax'])) {
+            $e['add_more']['#ajax']['path'] = 'form/' . arg(1) . '/more/' . $eTName . '/' . $field->getName();
+        }
+
         form_builder('form_builder_element', $form, $form_state);
 
         foreach (element_children($form[$dFName][$dLang]) as $delta) {
