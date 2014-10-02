@@ -119,9 +119,8 @@ class DrupalFieldWidget extends FieldWidgetBase
     protected function renderDrupalProperty(FieldInterface $field, FieldOptions $fieldOptions, array $fieldValueItems = [])
     {
         $e = [
-            '#name'          => $field->getEntityType()->getName() . '[' . $field->getName() . ']',
             '#type'          => 'textfield',
-            '#parents'       => [],
+            '#parents'       => [$field->getEntityType()->getName(), $field->getName()],
             '#required'      => !empty($this->drupalFieldInfo['required']),
             '#title'         => $this->drupalFieldInfo['label'],
             '#default_value' => isset($fieldValueItems[0]) ? $fieldValueItems[0]['value'] : '',
