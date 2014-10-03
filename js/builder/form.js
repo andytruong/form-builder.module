@@ -29,8 +29,12 @@
             $scope.formSaving = true;
             $http
                     .post(window.location.pathname, {action: 'save', entity: this.entity})
-                    .success(function () {
+                    .success(function (data) {
                         $scope.formSaving = false;
+
+                        if ('new' === data.result) {
+                            window.location = '/admin/structure/fob-form/manage/' + data.id;
+                        }
                     });
         };
 

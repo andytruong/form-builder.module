@@ -97,8 +97,12 @@ class Manager extends ManagerBase
 
     public function createForm()
     {
+        global $user;
+
         $form = new FormEntity();
         $form->setLayout(new DrupalFormLayout());
+
+        $form->setUid($user->uid);
 
         // Add default page
         $layoutOptions = new FormLayoutOptions();

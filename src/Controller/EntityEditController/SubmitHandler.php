@@ -100,10 +100,18 @@ class SubmitHandler
     protected function handleSave(array $request)
     {
         $entity = (new ArrayToFormEntity($request['entity']))->convert();
-        return [
+        $result = entity_save('form_entity_form', $entity);
+
+        $output = [
             'status' => 'OK',
-            'result' => entity_save('form_entity_form', $entity)
+            'result' => $result === \SAVED_NEW ? 'new' : 'updated',
         ];
+
+        if (\SAVED_NEW == $result) {
+            $output['id'] = (int) db_query('SELECT max(fid) FROM {fob_form}')->fetchColumn();
+        }
+
+        return $output;
     }
 
 }

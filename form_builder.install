@@ -13,11 +13,10 @@ function form_builder_schema()
         'description' => 'FOB forms',
         'fields'      => [
             'fid'            => [
-                'type'        => 'int',
+                'type'        => 'serial',
                 'unsigned'    => true,
                 'not null'    => true,
                 'description' => 'Primary Key: Unique form ID.',
-                'default'     => 0,
             ],
             'title'          => [
                 'type'        => 'varchar',
@@ -90,7 +89,7 @@ function form_builder_schema()
             'form_listeners' => [
                 'description' => 'JSON encoded of added listeners.',
                 'type'        => 'text',
-                'not null'    => true,
+                'not null'    => false,
             ],
         ],
         'indexes'     => [
