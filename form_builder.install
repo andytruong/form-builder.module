@@ -91,6 +91,7 @@ function form_builder_schema() {
               'not null'    => false,
           ],
       ],
+      'primary key' => ['fid'],
       'indexes'     => [
           'form_status'  => ['status'],
           'form_created' => ['created'],
