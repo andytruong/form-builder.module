@@ -11,15 +11,14 @@ require_once dirname(__FILE__) . '/form_builder.hooks.php';
  * @staticvar Manager $manager
  * @return Manager
  */
-function form_builder_manager()
-{
-    static $manager = null;
+function form_builder_manager() {
+  static $manager = null;
 
-    if (null === $manager) {
-        $manager = new Manager();
-    }
+  if (null === $manager) {
+    $manager = new Manager();
+  }
 
-    return $manager;
+  return $manager;
 }
 
 /**
@@ -27,12 +26,11 @@ function form_builder_manager()
  *
  * @return boolean
  */
-function form_builder_entity_access()
-{
-    if (user_access('administer forms')) {
-        return true;
-    }
-    return call_user_func_array('entity_access', func_get_args());
+function form_builder_entity_access() {
+  if (user_access('administer forms')) {
+    return true;
+  }
+  return call_user_func_array('entity_access', func_get_args());
 }
 
 /**
@@ -41,7 +39,6 @@ function form_builder_entity_access()
  * @param int $fid
  * @return FormEntity
  */
-function form_builder_load($fid)
-{
-    return entity_load_single('form_builder_form', $fid);
+function form_builder_load($fid) {
+  return entity_load_single('form_builder_form', $fid);
 }

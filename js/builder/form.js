@@ -1,4 +1,4 @@
-(function (angular) {
+(function (angular, window) {
     angular.module('FormBuilderFormHelper', []).factory('$formHelper', function ($http) {
         var helper = {};
 
@@ -40,4 +40,4 @@
 
         return helper;
     });
-})(angular);
+})(angular, window);

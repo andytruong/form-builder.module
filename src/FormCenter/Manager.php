@@ -7,109 +7,100 @@ use Drupal\form_builder\FormEntity;
 use GO1\FormCenter\Form\Layout\FormLayoutOptions;
 use GO1\FormCenter\Manager\Manager as ManagerBase;
 
-class Manager extends ManagerBase
-{
+class Manager extends ManagerBase {
 
-    private $ran = [];
+  private $ran = [];
 
-    public function __construct()
-    {
-        $this->setUuidGenerator(Uuid::getGenerator());
+  public function __construct() {
+    $this->setUuidGenerator(Uuid::getGenerator());
+  }
+
+  public function getEntityStorageHandlers() {
+    $this->entityStorageHandlers = parent::getEntityStorageHandlers();
+
+    if (!isset($this->ran[__FUNCTION__]) && $this->ran[__FUNCTION__] = true) {
+      $this->entityStorageHandlers['drupal'] = new DrupalEntityStorageHandler();
     }
 
-    public function getEntityStorageHandlers()
-    {
-        $this->entityStorageHandlers = parent::getEntityStorageHandlers();
+    return $this->entityStorageHandlers;
+  }
 
-        if (!isset($this->ran[__FUNCTION__]) && $this->ran[__FUNCTION__] = true) {
-            $this->entityStorageHandlers['drupal'] = new DrupalEntityStorageHandler();
-        }
+  public function getEntityTypes() {
+    $this->entityTypes = parent::getEntityTypes();
 
-        return $this->entityStorageHandlers;
+    if (!isset($this->ran[__FUNCTION__]) && $this->ran[__FUNCTION__] = true) {
+      $this->entityTypes += $this->discoverEntityTypes();
     }
 
-    public function getEntityTypes()
-    {
-        $this->entityTypes = parent::getEntityTypes();
+    return $this->entityTypes;
+  }
 
-        if (!isset($this->ran[__FUNCTION__]) && $this->ran[__FUNCTION__] = true) {
-            $this->entityTypes += $this->discoverEntityTypes();
-        }
+  private function discoverEntityTypes() {
+    $entityTypes = [];
+    foreach (entity_get_info() as $entityName => $entityInfo) {
+      if ('form_builder_form' === $entityName) {
+        continue;
+      }
 
-        return $this->entityTypes;
+      foreach ($entityInfo['bundles'] as $bundleName => $bundleInfo) {
+        unset($entityInfo['bundles'][$bundleName]);
+        $machineName = "drupal.{$entityName}.{$bundleName}";
+        $entityType = new DrupalEntityType();
+        $entityType->setName($machineName);
+        $entityType->setHumanName($entityInfo['label'] !== $bundleInfo['label'] ? $bundleInfo['label'] . ' (' . $entityInfo['label'] . ')' : $entityInfo['label']);
+        $entityType->setIDKey($entityInfo['entity keys']['id']);
+        $entityType->setDrupalEntityTypeInfo($entityInfo);
+        $entityType->setDrupalBundleInfo($bundleInfo);
+        $entityTypes[$machineName] = $entityType;
+      }
+    }
+    return $entityTypes;
+  }
+
+  public function getFieldTypes() {
+    $this->fieldTypes = parent::getFieldTypes();
+
+    if (!isset($this->ran[__FUNCTION__]) && $this->ran[__FUNCTION__] = true) {
+      foreach (field_info_field_types() as $name => $info) {
+        $this->fieldTypes['drupal.' . $name] = $this->drupalArrayToFieldType($name, $info);
+      }
     }
 
-    private function discoverEntityTypes()
-    {
-        $entityTypes = [];
-        foreach (entity_get_info() as $entityName => $entityInfo) {
-            if ('form_builder_form' === $entityName) {
-                continue;
-            }
+    return $this->fieldTypes;
+  }
 
-            foreach ($entityInfo['bundles'] as $bundleName => $bundleInfo) {
-                unset($entityInfo['bundles'][$bundleName]);
-                $machineName = "drupal.{$entityName}.{$bundleName}";
-                $entityType = new DrupalEntityType();
-                $entityType->setName($machineName);
-                $entityType->setHumanName($entityInfo['label'] !== $bundleInfo['label'] ? $bundleInfo['label'] . ' (' . $entityInfo['label'] . ')' : $entityInfo['label']);
-                $entityType->setIDKey($entityInfo['entity keys']['id']);
-                $entityType->setDrupalEntityTypeInfo($entityInfo);
-                $entityType->setDrupalBundleInfo($bundleInfo);
-                $entityTypes[$machineName] = $entityType;
-            }
-        }
-        return $entityTypes;
-    }
+  private function drupalArrayToFieldType($fieldTypeName, array $info) {
+    $fieldType = new DrupalFieldType();
+    $fieldType->setName($fieldTypeName);
+    $fieldType->setHumanName($info['label']);
+    $fieldType->setDescription($info['description']);
+    $fieldType->setSchema($this->drupalFieldTypeSchema($fieldTypeName));
+    $fieldType->setDrupalFieldTypeInfo($info);
+    return $fieldType;
+  }
 
-    public function getFieldTypes()
-    {
-        $this->fieldTypes = parent::getFieldTypes();
+  private function drupalFieldTypeSchema($fieldTypeName) {
+    $fType = field_info_field_types($fieldTypeName);
+    $module = $fType['module'];
+    $hook = "{$module}_field_schema";
+    module_load_install($module);
+    return $hook($field = ['type' => $fieldTypeName]);
+  }
 
-        if (!isset($this->ran[__FUNCTION__]) && $this->ran[__FUNCTION__] = true) {
-            foreach (field_info_field_types() as $name => $info) {
-                $this->fieldTypes['drupal.' . $name] = $this->drupalArrayToFieldType($name, $info);
-            }
-        }
+  public function createForm() {
+    global $user;
 
-        return $this->fieldTypes;
-    }
+    $form = new FormEntity();
+    $form->setLayout(new DrupalFormLayout());
 
-    private function drupalArrayToFieldType($fieldTypeName, array $info)
-    {
-        $fieldType = new DrupalFieldType();
-        $fieldType->setName($fieldTypeName);
-        $fieldType->setHumanName($info['label']);
-        $fieldType->setDescription($info['description']);
-        $fieldType->setSchema($this->drupalFieldTypeSchema($fieldTypeName));
-        $fieldType->setDrupalFieldTypeInfo($info);
-        return $fieldType;
-    }
+    $form->setUid($user->uid);
 
-    private function drupalFieldTypeSchema($fieldTypeName)
-    {
-        $fType = field_info_field_types($fieldTypeName);
-        $module = $fType['module'];
-        $hook = "{$module}_field_schema";
-        module_load_install($module);
-        return $hook($field = ['type' => $fieldTypeName]);
-    }
+    // Add default page
+    $layoutOptions = new FormLayoutOptions();
+    $layoutOptions->addPage('master', 'Master');
+    $form->setLayoutOptions($layoutOptions);
 
-    public function createForm()
-    {
-        global $user;
-
-        $form = new FormEntity();
-        $form->setLayout(new DrupalFormLayout());
-
-        $form->setUid($user->uid);
-
-        // Add default page
-        $layoutOptions = new FormLayoutOptions();
-        $layoutOptions->addPage('master', 'Master');
-        $form->setLayoutOptions($layoutOptions);
-
-        return $form;
-    }
+    return $form;
+  }
 
 }
