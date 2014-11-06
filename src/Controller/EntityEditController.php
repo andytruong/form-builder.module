@@ -5,6 +5,7 @@ namespace Drupal\form_builder\Controller;
 use Drupal\form_builder\Controller\EntityEditController\Render;
 use Drupal\form_builder\Controller\EntityEditController\SubmitHandler;
 use Drupal\form_builder\FormEntity;
+use RuntimeException;
 
 class EntityEditController {
 
@@ -36,6 +37,9 @@ class EntityEditController {
 
     switch ($_SERVER['REQUEST_METHOD']) {
       case 'GET':
+        if (0 > version_compare(variable_get('angularjs_version'), '1.2.26')) {
+          throw new RuntimeException('Please select AngularJS 1.2.26 or later.');
+        }
         return $me->getRender()->render($entityType);
 
       case 'POST':
