@@ -48,7 +48,7 @@ class DrupalEntityType extends EntityTypeBase {
   }
 
   public function getFields() {
-    if (null !== $this->fields) {
+    if (isset($this->fields)) {
       return parent::getFields();
     }
 
@@ -75,7 +75,7 @@ class DrupalEntityType extends EntityTypeBase {
 
   private function drupalArrayToField($fieldName, array $fieldInfo) {
     // Not support read-only and token (node.type) properties for now.
-    if (!isset($fieldInfo['setter callback']) || $fieldInfo['type'] === 'token') {
+    if (!isset($fieldInfo['setter callback']) || (isset($fieldInfo['type']) && $fieldInfo['type'] === 'token')) {
       return;
     }
 
